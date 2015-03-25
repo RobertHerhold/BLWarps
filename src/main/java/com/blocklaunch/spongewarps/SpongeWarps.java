@@ -19,6 +19,7 @@ import org.spongepowered.api.service.scheduler.AsynchronousScheduler;
 import org.spongepowered.api.util.event.Subscribe;
 
 import com.blocklaunch.spongewarps.commands.SetWarpCommand;
+import com.blocklaunch.spongewarps.commands.WarpCommand;
 import com.google.inject.Inject;
 
 @Plugin(id = "SpongeWarps", name = "SpongeWarps", version = "1.0")
@@ -36,6 +37,7 @@ public class SpongeWarps {
 
 	public static Logger logger = LoggerFactory.getLogger(SpongeWarps.class);
 	public static File configFolder;
+	public static File warpsFile;
 
 	@Inject
 	@DefaultConfig(sharedRoot = true)
@@ -56,8 +58,9 @@ public class SpongeWarps {
 		game = event.getGame();
 		scheduler = game.getAsyncScheduler();
 		plugin = game.getPluginManager().getPlugin("SpongeWarps").get();
-		
+
 		configFolder = configFile.getParentFile();
+		warpsFile = new File(SpongeWarps.configFolder, "warps.json");
 		
 		// Create default config if it doesn't exist
 		if (!configFile.exists()) {
@@ -66,11 +69,14 @@ public class SpongeWarps {
 			loadConfig();
 		}
 
+		// Load warps
+		WarpManager.loadWarps();
+
 		// Register commands
 		CommandService cmdService = game.getCommandDispatcher();
-
 		logger.info(PREFIX + " Registering commands");
 		cmdService.register(plugin, new SetWarpCommand(), "setwarp", "addwarp");
+		cmdService.register(plugin, new WarpCommand(), "warp");
 	}
 
 	private void loadConfig() {

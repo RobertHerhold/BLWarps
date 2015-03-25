@@ -9,6 +9,7 @@ import org.spongepowered.api.util.command.CommandCallable;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandSource;
 
+import com.blocklaunch.spongewarps.SpongeWarps;
 import com.blocklaunch.spongewarps.Warp;
 import com.blocklaunch.spongewarps.WarpManager;
 import com.flowpowered.math.vector.Vector3d;
@@ -19,11 +20,11 @@ public class SetWarpCommand implements CommandCallable {
 	private static final String USAGE = "/setwarp <warp name> [world name] [x] [y] [z]";
 	private static final String HELP = "Sets a warp at your location, or at the specified coordinates";
 
-	private static final String MUST_BE_PLAYER_MSG = "You must be a player to send that command (not console)";
-	private static final String SUCCESSFULLY_CREATED_WARP_MSG = "You have successfully created a warp: ";
-	private static final String ERROR_CREATING_WARP_MSG = "There was an error creating the warp: ";
-	private static final String INVALID_NUM_ARGS = "There is an invalid number of arguments. Try: " + USAGE;
-	private static final String ERROR_PARSING_NUMBER = "There was an error parsing the warp coordinates.";
+	private static final String MUST_BE_PLAYER_MSG = SpongeWarps.PREFIX	+ " You must be a player to send that command (not console)";
+	private static final String SUCCESSFULLY_CREATED_WARP_MSG = SpongeWarps.PREFIX + " You have successfully created a warp: ";
+	private static final String ERROR_CREATING_WARP_MSG = SpongeWarps.PREFIX + " There was an error creating the warp: ";
+	private static final String INVALID_NUM_ARGS = SpongeWarps.PREFIX + " There is an invalid number of arguments. Try: " + USAGE;
+	private static final String ERROR_PARSING_NUMBER = SpongeWarps.PREFIX + " There was an error parsing the warp coordinates.";
 
 	@Override
 	public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
@@ -116,7 +117,7 @@ public class SetWarpCommand implements CommandCallable {
 
 		Optional<String> error = WarpManager.addWarp(newWarp);
 		if (error.isPresent()) {
-			source.sendMessage(Texts.builder(ERROR_CREATING_WARP_MSG + error.get()).build());
+			source.sendMessage(Texts.builder(ERROR_CREATING_WARP_MSG + error.get()).color(TextColors.RED).build());
 			return false;
 		} else {
 			source.sendMessage(Texts.builder(SUCCESSFULLY_CREATED_WARP_MSG + newWarp.toString())

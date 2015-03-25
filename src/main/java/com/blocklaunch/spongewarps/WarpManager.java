@@ -1,10 +1,10 @@
 package com.blocklaunch.spongewarps;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 
@@ -15,6 +15,7 @@ public class WarpManager {
 	private static final String WARP_NAME_EXISTS_MSG = "A warp with that name already exists!";
 	private static final String WARP_LOCATION_EXISTS_MSG = "A warp at that location already exists!";
 	private static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
+	private static final String ERROR_FILE_READ = "There was an error reading the warps file!";
 
 	/**
 	 * Adds a warp with the passed in name and location
@@ -52,16 +53,49 @@ public class WarpManager {
 	 * Saves all currently loaded warps to the disk.
 	 */
 	private static void saveWarps() {
-		File warpsFile = new File(SpongeWarps.configFolder, "warps.json");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			// Only creates the file if it doesn't already exist.
-			warpsFile.createNewFile();
-			mapper.writeValue(warpsFile, warps);
+			SpongeWarps.warpsFile.createNewFile();
+			mapper.writeValue(SpongeWarps.warpsFile, warps);
 		} catch (IOException e) {
 			SpongeWarps.logger.warn(ERROR_FILE_WRITE);
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Reads in warps file, and serializes it to a List<Warp>
+	 */
+	public static void loadWarps() {
+		if(!SpongeWarps.warpsFile.exists()){
+			return;
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			warps = mapper.readValue(SpongeWarps.warpsFile, new TypeReference<List<Warp>>() {
+			});
+		} catch (IOException e) {
+			SpongeWarps.logger.warn(ERROR_FILE_READ);
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Gets the warp with the given name
+	 * 
+	 * @param warpName
+	 * @return the corresponding warp if it exists, Optional.absent() otherwise
+	 */
+	public static Optional<Warp> getWarp(String warpName) {
+		for (Warp warp : warps) {
+			if (warp.getName().equalsIgnoreCase(warpName)) {
+				return Optional.of(warp);
+			}
+		}
+		return Optional.absent();
 	}
 
 }
