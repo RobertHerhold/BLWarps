@@ -16,6 +16,7 @@ public class WarpManager {
 	private static final String WARP_LOCATION_EXISTS_MSG = "A warp at that location already exists!";
 	private static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
 	private static final String ERROR_FILE_READ = "There was an error reading the warps file!";
+	private static final String WARP_NOT_EXIST = "That warp does not exist!";
 
 	/**
 	 * Adds a warp with the passed in name and location
@@ -96,6 +97,23 @@ public class WarpManager {
 			}
 		}
 		return Optional.absent();
+	}
+
+	/**
+	 * Deletes the warp with the provided name
+	 * 
+	 * @param warpName
+	 * @return
+	 */
+	public static Optional<String> deleteWarp(String warpName) {
+		for(Warp warp : warps){
+			if (warp.getName().equalsIgnoreCase(warpName)) {
+				warps.remove(warp);
+				saveWarps();
+				return Optional.absent();
+			}
+		}
+		return Optional.of(WARP_NOT_EXIST);
 	}
 
 }
