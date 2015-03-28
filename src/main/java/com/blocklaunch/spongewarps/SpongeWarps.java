@@ -19,6 +19,7 @@ import org.spongepowered.api.service.scheduler.AsynchronousScheduler;
 import org.spongepowered.api.util.event.Subscribe;
 
 import com.blocklaunch.spongewarps.commands.DeleteWarpCommand;
+import com.blocklaunch.spongewarps.commands.ListWarpsCommand;
 import com.blocklaunch.spongewarps.commands.SetWarpCommand;
 import com.blocklaunch.spongewarps.commands.WarpCommand;
 import com.google.inject.Inject;
@@ -79,6 +80,7 @@ public class SpongeWarps {
 		cmdService.register(plugin, new SetWarpCommand(), "setwarp", "addwarp");
 		cmdService.register(plugin, new WarpCommand(), "warp");
 		cmdService.register(plugin, new DeleteWarpCommand(), "deletewarp", "delwarp");
+		cmdService.register(plugin, new ListWarpsCommand(), "listwarps", "listwarp");
 	}
 
 	private void loadConfig() {

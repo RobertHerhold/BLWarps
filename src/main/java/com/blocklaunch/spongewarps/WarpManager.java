@@ -10,7 +10,7 @@ import com.google.common.base.Optional;
 
 public class WarpManager {
 
-	private static List<Warp> warps = new ArrayList<Warp>();
+	public static List<Warp> warps = new ArrayList<Warp>();
 
 	private static final String WARP_NAME_EXISTS_MSG = "A warp with that name already exists!";
 	private static final String WARP_LOCATION_EXISTS_MSG = "A warp at that location already exists!";
@@ -51,7 +51,7 @@ public class WarpManager {
 	}
 
 	/**
-	 * Saves all currently loaded warps to the disk.
+	 * Serializes all currently loaded warps, and saves to the disk
 	 */
 	private static void saveWarps() {
 		ObjectMapper mapper = new ObjectMapper();
@@ -66,13 +66,13 @@ public class WarpManager {
 	}
 
 	/**
-	 * Reads in warps file, and serializes it to a List<Warp>
+	 * Reads in warps file, and de-serializes it to a List<Warp>
 	 */
 	public static void loadWarps() {
-		if(!SpongeWarps.warpsFile.exists()){
+		if (!SpongeWarps.warpsFile.exists()) {
 			return;
 		}
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			warps = mapper.readValue(SpongeWarps.warpsFile, new TypeReference<List<Warp>>() {
@@ -106,7 +106,7 @@ public class WarpManager {
 	 * @return
 	 */
 	public static Optional<String> deleteWarp(String warpName) {
-		for(Warp warp : warps){
+		for (Warp warp : warps) {
 			if (warp.getName().equalsIgnoreCase(warpName)) {
 				warps.remove(warp);
 				saveWarps();
