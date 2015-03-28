@@ -5,9 +5,9 @@ SpongeWarps is a [Sponge](https://www.spongepowered.org/) plugin for easily sett
 * `/setwarp <warp name> [world name] [x] [y] [z]`
 * `/warp <warp name>`
 * `/delwarp <warp name>`
+* `/listwarps [page number]`
 
 ##TODO
-* Add `/listwarp`
 * Add support for REST-based warp storage
 * Add support for SQL(?) based warp storage
 * Add permissions
