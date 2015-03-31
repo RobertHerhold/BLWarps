@@ -2,6 +2,7 @@ package com.blocklaunch.spongewarps.commands;
 
 import java.util.List;
 
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TextBuilder;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -19,8 +20,8 @@ public class ListWarpsCommand implements CommandCallable {
 	private static final String USAGE = "/listwarps [page number]";
 	private static final String HELP = "Lists all warps.";
 
-	private static final String ERROR_PARSING_NUMBER = SpongeWarps.PREFIX
-			+ " There was an error parsing the page number.";
+	private static final Text ERROR_PARSING_NUMBER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+			+ " There was an error parsing the page number.");
 
 	private static final int WARPS_PER_PAGE = 10;
 
@@ -50,7 +51,7 @@ public class ListWarpsCommand implements CommandCallable {
 			try {
 				pageNum = Integer.parseInt(args[0]);
 			} catch (Exception e) {
-				source.sendMessage(Texts.builder(ERROR_PARSING_NUMBER).color(TextColors.RED).build());
+				source.sendMessage(ERROR_PARSING_NUMBER_MSG);
 				return false;
 			}
 		}

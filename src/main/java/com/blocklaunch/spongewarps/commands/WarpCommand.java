@@ -3,6 +3,7 @@ package com.blocklaunch.spongewarps.commands;
 import java.util.List;
 
 import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandCallable;
@@ -21,10 +22,13 @@ public class WarpCommand implements CommandCallable {
 	private static final String USAGE = "/warp <warp name>";
 	private static final String HELP = "Teleports you to the location of the specified warp.";
 
-	private static final String MUST_BE_PLAYER_MSG = SpongeWarps.PREFIX	+ " You must be a player to send that command (not console)";
-	private static final String INVALID_NUM_ARGS = SpongeWarps.PREFIX + " There is an invalid number of arguments. Try: " + USAGE;
-	private static final String WARP_NOT_EXIST = SpongeWarps.PREFIX + " That warp does not exist!";
-	private static final String WARP_SUCCESS = SpongeWarps.PREFIX + " You have been warped to ";
+	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+			+ " You must be a player to send that command (not console)");
+	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+			+ " There is an invalid number of arguments. Try: " + USAGE);
+	private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+			+ " That warp does not exist!");
+	private static final String WARP_SUCCESS_MSG = SpongeWarps.PREFIX + " You have been warped to ";
 
 	@Override
 	public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
@@ -35,7 +39,7 @@ public class WarpCommand implements CommandCallable {
 	@Override
 	public boolean call(CommandSource source, String arguments, List<String> parents) throws CommandException {
 		if (!(source instanceof Player)) {
-			source.sendMessage(Texts.builder(MUST_BE_PLAYER_MSG).color(TextColors.RED).build());
+			source.sendMessage(MUST_BE_PLAYER_MSG);
 			return false;
 		}
 
@@ -43,7 +47,7 @@ public class WarpCommand implements CommandCallable {
 		// event it is empty, the split will still return an array of size 1
 		// containing the empty String
 		if (arguments.isEmpty()) {
-			source.sendMessage(Texts.builder(INVALID_NUM_ARGS).color(TextColors.RED).build());
+			source.sendMessage(INVALID_NUM_ARGS_MSG);
 			return false;
 		}
 
@@ -51,13 +55,13 @@ public class WarpCommand implements CommandCallable {
 		String[] args = arguments.split(" ");
 
 		if (args.length != 1) {
-			source.sendMessage(Texts.builder(INVALID_NUM_ARGS).color(TextColors.RED).build());
+			source.sendMessage(INVALID_NUM_ARGS_MSG);
 		}
 
 		// Get the warp by it's name
 		Optional<Warp> optWarp = WarpManager.getWarp(args[0]);
 		if (!optWarp.isPresent()) {
-			source.sendMessage(Texts.builder(WARP_NOT_EXIST).color(TextColors.RED).build());
+			source.sendMessage(Texts.builder(WARP_NOT_EXIST_MSG).color(TextColors.RED).build());
 		}
 
 		Warp warp = optWarp.get();
@@ -71,7 +75,7 @@ public class WarpCommand implements CommandCallable {
 		Location newLoc = oldLoc.setPosition(new Vector3d(warp.getX(), warp.getY(), warp.getZ()));
 		player.setLocation(newLoc);
 
-		player.sendMessage(Texts.builder(WARP_SUCCESS + warp.getName()).color(TextColors.GREEN).build());
+		player.sendMessage(Texts.builder(WARP_SUCCESS_MSG + warp.getName()).color(TextColors.GREEN).build());
 
 		return true;
 	}

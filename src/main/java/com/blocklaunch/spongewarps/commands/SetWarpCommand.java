@@ -3,6 +3,7 @@ package com.blocklaunch.spongewarps.commands;
 import java.util.List;
 
 import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandCallable;
@@ -20,11 +21,16 @@ public class SetWarpCommand implements CommandCallable {
 	private static final String USAGE = "/setwarp <warp name> [world name] [x] [y] [z]";
 	private static final String HELP = "Sets a warp at your location, or at the specified coordinates";
 
-	private static final String MUST_BE_PLAYER_MSG = SpongeWarps.PREFIX	+ " You must be a player to send that command (not console)";
-	private static final String SUCCESSFULLY_CREATED_WARP_MSG = SpongeWarps.PREFIX + " You have successfully created a warp: ";
-	private static final String ERROR_CREATING_WARP_MSG = SpongeWarps.PREFIX + " There was an error creating the warp: ";
-	private static final String INVALID_NUM_ARGS = SpongeWarps.PREFIX + " There is an invalid number of arguments. Try: " + USAGE;
-	private static final String ERROR_PARSING_NUMBER = SpongeWarps.PREFIX + " There was an error parsing the warp coordinates.";
+	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+			+ " You must be a player to send that command (not console)");
+	private static final String SUCCESSFULLY_CREATED_WARP_MSG = SpongeWarps.PREFIX
+			+ " You have successfully created a warp: ";
+	private static final String ERROR_CREATING_WARP_MSG = SpongeWarps.PREFIX
+			+ " There was an error creating the warp: ";
+	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+			+ " There is an invalid number of arguments. Try: " + USAGE);
+	private static final Text ERROR_PARSING_NUMBER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+			+ " There was an error parsing the warp coordinates.");
 
 	@Override
 	public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
@@ -38,7 +44,7 @@ public class SetWarpCommand implements CommandCallable {
 		// event it is empty, the split will still return an array of size 1
 		// containing the empty String
 		if (arguments.isEmpty()) {
-			source.sendMessage(Texts.builder(INVALID_NUM_ARGS).color(TextColors.RED).build());
+			source.sendMessage(INVALID_NUM_ARGS_MSG);
 			return false;
 		}
 
@@ -57,7 +63,7 @@ public class SetWarpCommand implements CommandCallable {
 			if (source instanceof Player) {
 				player = (Player) source;
 			} else {
-				source.sendMessage(Texts.builder(MUST_BE_PLAYER_MSG).color(TextColors.RED).build());
+				source.sendMessage(MUST_BE_PLAYER_MSG);
 				return false;
 			}
 			Vector3d location = player.getLocation().getPosition();
@@ -88,7 +94,7 @@ public class SetWarpCommand implements CommandCallable {
 				warpY = Integer.parseInt(args[2]);
 				warpZ = Integer.parseInt(args[3]);
 			} catch (Exception e) {
-				source.sendMessage(Texts.builder(ERROR_PARSING_NUMBER).color(TextColors.RED).build());
+				source.sendMessage(ERROR_PARSING_NUMBER_MSG);
 				return false;
 			}
 
@@ -105,13 +111,13 @@ public class SetWarpCommand implements CommandCallable {
 				warpY = Integer.parseInt(args[3]);
 				warpZ = Integer.parseInt(args[4]);
 			} catch (Exception e) {
-				source.sendMessage(Texts.builder(ERROR_PARSING_NUMBER).color(TextColors.RED).build());
+				source.sendMessage(ERROR_PARSING_NUMBER_MSG);
 				return false;
 			}
 			newWarp = new Warp(warpName, worldName, warpX, warpY, warpZ);
 
 		} else {
-			source.sendMessage(Texts.builder(INVALID_NUM_ARGS).color(TextColors.RED).build());
+			source.sendMessage(INVALID_NUM_ARGS_MSG);
 			return false;
 		}
 
