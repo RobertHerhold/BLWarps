@@ -16,7 +16,8 @@ import com.google.common.base.Optional;
 public class DeleteWarpCommand implements CommandCallable {
 
 	private static final String USAGE = "/warp <warp name>";
-	private static final String HELP = "Teleports you to the location of the specified warp.";
+	private static final Text HELP = Texts.of("Deletes the specified warp.");
+	private static final String SHORT_DESC = "Delete a warp";
 
 	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " There is an invalid number of arguments. Try: " + USAGE);
@@ -58,25 +59,25 @@ public class DeleteWarpCommand implements CommandCallable {
 	}
 
 	@Override
+	public Text getHelp(CommandSource arg0) {
+		return HELP;
+	}
+
+	@Override
+	public String getShortDescription(CommandSource arg0) {
+		return SHORT_DESC;
+	}
+
+	@Override
+	public String getUsage(CommandSource arg0) {
+		return USAGE;
+	}
+
+	@Override
 	public boolean testPermission(CommandSource source) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public Optional<String> getShortDescription() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<String> getHelp() {
-		return Optional.of(HELP);
-	}
-
-	@Override
-	public String getUsage() {
-		return USAGE;
-	}
 
 }

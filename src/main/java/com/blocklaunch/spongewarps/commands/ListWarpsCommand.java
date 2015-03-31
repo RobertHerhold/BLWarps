@@ -18,7 +18,9 @@ import com.google.common.base.Optional;
 public class ListWarpsCommand implements CommandCallable {
 
 	private static final String USAGE = "/listwarps [page number]";
-	private static final String HELP = "Lists all warps.";
+	private static final Text HELP = Texts
+			.of("Lists all warps, split up into pages. Optionally, specify a page number as an argument");
+	private static final String SHORT_DESC = "List warps";
 
 	private static final Text ERROR_PARSING_NUMBER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " There was an error parsing the page number.");
@@ -95,25 +97,24 @@ public class ListWarpsCommand implements CommandCallable {
 	}
 
 	@Override
+	public Text getHelp(CommandSource arg0) {
+		return HELP;
+	}
+
+	@Override
+	public String getShortDescription(CommandSource arg0) {
+		return SHORT_DESC;
+	}
+
+	@Override
+	public String getUsage(CommandSource arg0) {
+		return USAGE;
+	}
+
+	@Override
 	public boolean testPermission(CommandSource source) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public Optional<String> getShortDescription() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<String> getHelp() {
-		return Optional.of(HELP);
-	}
-
-	@Override
-	public String getUsage() {
-		return USAGE;
 	}
 
 }

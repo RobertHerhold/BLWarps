@@ -19,7 +19,8 @@ import com.google.common.base.Optional;
 public class SetWarpCommand implements CommandCallable {
 
 	private static final String USAGE = "/setwarp <warp name> [world name] [x] [y] [z]";
-	private static final String HELP = "Sets a warp at your location, or at the specified coordinates";
+	private static final Text HELP = Texts.of("Sets a warp at your location, or at the specified coordinates and world");
+	private static final String SHORT_DESC = "Set a warp";
 
 	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " You must be a player to send that command (not console)");
@@ -134,25 +135,24 @@ public class SetWarpCommand implements CommandCallable {
 	}
 
 	@Override
+	public Text getHelp(CommandSource arg0) {
+		return HELP;
+	}
+
+	@Override
+	public String getShortDescription(CommandSource arg0) {
+		return SHORT_DESC;
+	}
+
+	@Override
+	public String getUsage(CommandSource arg0) {
+		return USAGE;
+	}
+
+	@Override
 	public boolean testPermission(CommandSource source) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public Optional<String> getShortDescription() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<String> getHelp() {
-		return Optional.of(HELP);
-	}
-
-	@Override
-	public String getUsage() {
-		return USAGE;
 	}
 
 }

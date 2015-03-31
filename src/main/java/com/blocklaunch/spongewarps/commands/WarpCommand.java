@@ -20,7 +20,8 @@ import com.google.common.base.Optional;
 public class WarpCommand implements CommandCallable {
 
 	private static final String USAGE = "/warp <warp name>";
-	private static final String HELP = "Teleports you to the location of the specified warp.";
+	private static final Text HELP = Texts.of("Teleports you to the location of the specified warp.");
+	private static final String SHORT_DESC = "Teleport to a warp location";
 
 	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " You must be a player to send that command (not console)");
@@ -81,25 +82,24 @@ public class WarpCommand implements CommandCallable {
 	}
 
 	@Override
+	public Text getHelp(CommandSource arg0) {
+		return HELP;
+	}
+
+	@Override
+	public String getShortDescription(CommandSource arg0) {
+		return SHORT_DESC;
+	}
+
+	@Override
+	public String getUsage(CommandSource arg0) {
+		return USAGE;
+	}
+
+	@Override
 	public boolean testPermission(CommandSource source) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public Optional<String> getShortDescription() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Optional<String> getHelp() {
-		return Optional.of(HELP);
-	}
-
-	@Override
-	public String getUsage() {
-		return USAGE;
 	}
 
 }
