@@ -9,12 +9,10 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandCallable;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.world.Location;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
 import com.blocklaunch.spongewarps.Warp;
 import com.blocklaunch.spongewarps.WarpManager;
-import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 
 public class WarpCommand implements CommandCallable {
@@ -29,7 +27,7 @@ public class WarpCommand implements CommandCallable {
 			+ " There is an invalid number of arguments. Try: " + USAGE);
 	private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " That warp does not exist!");
-	private static final String WARP_SUCCESS_MSG = SpongeWarps.PREFIX + " You have been warped to ";
+	private static final String ERROR_WARPING_MSG = SpongeWarps.PREFIX + " There was an error scheduling your warp: ";
 
 	@Override
 	public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
@@ -69,14 +67,12 @@ public class WarpCommand implements CommandCallable {
 
 		Player player = (Player) source;
 
-		// Get old location of player --> insert new coordinates --> set
-		// player's location
-		// Does not support warping across worlds
-		Location oldLoc = player.getLocation();
-		Location newLoc = oldLoc.setPosition(new Vector3d(warp.getX(), warp.getY(), warp.getZ()));
-		player.setLocation(newLoc);
+		Optional<String> optError = WarpManager.scheduleWarp(player, warp);
 
-		player.sendMessage(Texts.builder(WARP_SUCCESS_MSG + warp.getName()).color(TextColors.GREEN).build());
+		if(optError.isPresent()){
+			player.sendMessage(Texts.of(TextColors.RED, ERROR_WARPING_MSG + optError.get()));
+			return true;
+		}
 
 		return true;
 	}

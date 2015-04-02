@@ -15,7 +15,7 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.service.config.DefaultConfig;
-import org.spongepowered.api.service.scheduler.AsynchronousScheduler;
+import org.spongepowered.api.service.scheduler.SynchronousScheduler;
 import org.spongepowered.api.util.event.Subscribe;
 
 import com.blocklaunch.spongewarps.commands.DeleteWarpCommand;
@@ -35,7 +35,7 @@ public class SpongeWarps {
 
 	public static Game game;
 	public static PluginContainer plugin;
-	public static AsynchronousScheduler scheduler;
+	public static SynchronousScheduler scheduler;
 
 	public static Logger logger = LoggerFactory.getLogger(SpongeWarps.class);
 	public static File configFolder;
@@ -58,7 +58,7 @@ public class SpongeWarps {
 	@Subscribe
 	public void preInit(PreInitializationEvent event) {
 		game = event.getGame();
-		scheduler = game.getAsyncScheduler();
+		scheduler = game.getSyncScheduler();
 		plugin = game.getPluginManager().getPlugin("SpongeWarps").get();
 
 		configFolder = configFile.getParentFile();
