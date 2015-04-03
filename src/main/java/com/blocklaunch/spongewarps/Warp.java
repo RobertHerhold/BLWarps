@@ -1,11 +1,18 @@
 package com.blocklaunch.spongewarps;
 
+import java.text.NumberFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Bean for representing a warp with name and location. Meant for easy
  * (de)serialization with Jackson
  *
  */
 public class Warp {
+	
+	@JsonIgnore
+	private static final int TRUNCATE_DIGITS = 2;
 
 	private String name;
 	private String world;
@@ -20,9 +27,14 @@ public class Warp {
 		super();
 		this.name = name;
 		this.world = world;
-		this.x = x;
-		this.y = y;
-		this.z = z;
+
+		// Truncate all coordinates to 2 decimal places for better readability
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMaximumFractionDigits(TRUNCATE_DIGITS);
+		
+		this.x = Double.parseDouble(nf.format(x));
+		this.y = Double.parseDouble(nf.format(y));
+		this.z = Double.parseDouble(nf.format(z));
 	}
 
 	/**
