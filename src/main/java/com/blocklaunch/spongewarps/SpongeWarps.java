@@ -10,13 +10,13 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Game;
+import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.state.PreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.service.scheduler.SynchronousScheduler;
-import org.spongepowered.api.util.event.Subscribe;
 
 import com.blocklaunch.spongewarps.commands.DeleteWarpCommand;
 import com.blocklaunch.spongewarps.commands.ListWarpsCommand;

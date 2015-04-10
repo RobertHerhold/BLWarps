@@ -83,7 +83,7 @@ public class SetWarpCommand implements CommandCallable {
 			if (source instanceof Player) {
 				player = (Player) source;
 			} else {
-				source.sendMessage(Texts.builder(MUST_BE_PLAYER_MSG).color(TextColors.RED).build());
+				source.sendMessage(MUST_BE_PLAYER_MSG);
 				return false;
 			}
 
