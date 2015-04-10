@@ -63,7 +63,7 @@ public class SpongeWarps {
 
 		configFolder = configFile.getParentFile();
 		warpsFile = new File(SpongeWarps.configFolder, "warps.json");
-		
+
 		// Create default config if it doesn't exist
 		if (!configFile.exists()) {
 			saveDefaultConfig();
@@ -83,6 +83,10 @@ public class SpongeWarps {
 		cmdService.register(plugin, new ListWarpsCommand(), "listwarps", "listwarp");
 	}
 
+	/**
+	 * Reads in config values supplied from the ConfigManager. Falls back on the
+	 * default configuration values in Settings
+	 */
 	private void loadConfig() {
 		ConfigurationNode config = null;
 		try {
@@ -101,10 +105,7 @@ public class SpongeWarps {
 	 * @return true if default config was successfully created, false if the
 	 *         file was not created
 	 */
-	public boolean saveDefaultConfig() {
-		if (configFile.exists())
-			return false;
-
+	public void saveDefaultConfig() {
 		try {
 			if (!configFile.exists()) {
 				logger.info(PREFIX + " Generating config file...");
@@ -117,11 +118,11 @@ public class SpongeWarps {
 
 				configManager.save(config);
 				logger.info(PREFIX + " Config file successfully generated.");
+			} else {
+				return;
 			}
 		} catch (IOException exception) {
 			logger.warn(PREFIX + " The default configuration could not be created!");
-			return false;
 		}
-		return true;
 	}
 }
