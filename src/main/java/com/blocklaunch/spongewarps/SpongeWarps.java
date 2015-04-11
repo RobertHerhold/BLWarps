@@ -42,11 +42,11 @@ public class SpongeWarps {
 	public static File warpsFile;
 
 	@Inject
-	@DefaultConfig(sharedRoot = true)
+	@DefaultConfig(sharedRoot = false)
 	private File configFile;
 
 	@Inject
-	@DefaultConfig(sharedRoot = true)
+	@DefaultConfig(sharedRoot = false)
 	private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
 	/**
@@ -109,6 +109,7 @@ public class SpongeWarps {
 		try {
 			if (!configFile.exists()) {
 				logger.info(PREFIX + " Generating config file...");
+				configFile.getParentFile().mkdirs();
 				configFile.createNewFile();
 				ConfigurationNode config = configManager.load();
 
