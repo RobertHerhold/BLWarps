@@ -12,6 +12,7 @@ import org.spongepowered.api.service.scheduler.Task;
 import com.blocklaunch.spongewarps.runnable.WarpPlayerRunnable;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Optional;
 
 public class WarpManager {
@@ -68,6 +69,7 @@ public class WarpManager {
 		try {
 			// Only creates the file if it doesn't already exist.
 			SpongeWarps.warpsFile.createNewFile();
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 			mapper.writeValue(SpongeWarps.warpsFile, warps);
 		} catch (IOException e) {
 			SpongeWarps.logger.warn(ERROR_FILE_WRITE);
