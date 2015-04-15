@@ -16,14 +16,23 @@ Regardless of the storage solution, each warp has 5 properties:
 * z - the z coordinate of the warp (stored as a double)
 
 ###Flat File Storage
-For flat file storage, warps are stored as JSON (serialized using [Jackson](http://wiki.fasterxml.com/JacksonHome)) in the `config/warps.json` file. A sample `warps.json` file would be similar to the following:
+For flat file storage, warps are stored as JSON (serialized using [Jackson](http://wiki.fasterxml.com/JacksonHome)) in the `config/SpongeWarps/warps.json` file. A sample `warps.json` file would be similar to the following:
 
 ```json
-[{"name":"warp1","world":"world_overworld","x":-190,"y":73,"z":-135},
-{"name":"warp2","world":"world_overworld","x":147,"y":26,"z":97}]
+[ {
+    "name" : "warp1",
+    "world" : "world",
+    "x" : 40.3,
+    "y" : 41.0,
+    "z" : 72.07
+}, {
+    "name" : "warp2",
+    "world" : "DIM-1",
+    "x" : 7.63,
+    "y" : 64.0,
+    "z" : 11.79
+} ]
 ```
-
-Note the use of square brackets to indicate the presence of an array. This *is* necessary for the proper de-serialization of the JSON objects (even when there is only 1 warp).
 
 ##TODO
 * Add support for REST-based warp storage
