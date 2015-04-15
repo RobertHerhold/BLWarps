@@ -3,6 +3,7 @@ package com.blocklaunch.spongewarps;
 import java.text.NumberFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.flowpowered.math.vector.Vector3d;
 
 /**
  * Bean for representing a warp with name and location. Meant for easy
@@ -10,9 +11,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  */
 public class Warp {
-	
-	@JsonIgnore
+
 	private static final int TRUNCATE_DIGITS = 2;
+
+	private static Vector3d position;
 
 	private String name;
 	private String world;
@@ -31,7 +33,7 @@ public class Warp {
 		// Truncate all coordinates to 2 decimal places for better readability
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(TRUNCATE_DIGITS);
-		
+
 		this.x = Double.parseDouble(nf.format(x));
 		this.y = Double.parseDouble(nf.format(y));
 		this.z = Double.parseDouble(nf.format(z));
@@ -51,6 +53,17 @@ public class Warp {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @return the Vector3d containing the warp's x, y, and z coordinates
+	 */
+	@JsonIgnore
+	public Vector3d getPosition() {
+		if(position == null){
+			position = new Vector3d(this. x, this.y, this.z);
+		}
+		return position;
 	}
 
 	public String getName() {
