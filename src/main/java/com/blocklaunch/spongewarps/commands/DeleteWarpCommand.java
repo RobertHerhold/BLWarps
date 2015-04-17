@@ -11,7 +11,7 @@ import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.WarpManager;
+import com.blocklaunch.spongewarps.manager.WarpManager;
 import com.google.common.base.Optional;
 
 public class DeleteWarpCommand implements CommandCallable {

@@ -13,7 +13,7 @@ import org.spongepowered.api.util.command.CommandSource;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
 import com.blocklaunch.spongewarps.Warp;
-import com.blocklaunch.spongewarps.WarpManager;
+import com.blocklaunch.spongewarps.manager.WarpManager;
 import com.google.common.base.Optional;
 
 public class ListWarpsCommand implements CommandCallable {

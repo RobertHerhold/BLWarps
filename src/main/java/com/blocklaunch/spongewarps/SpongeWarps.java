@@ -22,6 +22,10 @@ import com.blocklaunch.spongewarps.commands.DeleteWarpCommand;
 import com.blocklaunch.spongewarps.commands.ListWarpsCommand;
 import com.blocklaunch.spongewarps.commands.SetWarpCommand;
 import com.blocklaunch.spongewarps.commands.WarpCommand;
+import com.blocklaunch.spongewarps.manager.FlatFileManager;
+import com.blocklaunch.spongewarps.manager.RestManager;
+import com.blocklaunch.spongewarps.manager.StorageManager;
+import com.blocklaunch.spongewarps.manager.WarpManager;
 import com.google.inject.Inject;
 
 @Plugin(id = "SpongeWarps", name = "SpongeWarps", version = "1.0")
@@ -40,6 +44,7 @@ public class SpongeWarps {
 	public static Logger logger = LoggerFactory.getLogger(SpongeWarps.class);
 	public static File configFolder;
 	public static File warpsFile;
+	public static StorageManager storageManager;
 
 	@Inject
 	@DefaultConfig(sharedRoot = false)
@@ -70,10 +75,12 @@ public class SpongeWarps {
 		} else {
 			loadConfig();
 		}
+		
+		setupStorageManager();
 
 		// Load warps
 		WarpManager.loadWarps();
-
+		
 		// Register commands
 		CommandService cmdService = game.getCommandDispatcher();
 		logger.info(PREFIX + " Registering commands");
@@ -93,9 +100,20 @@ public class SpongeWarps {
 			config = configManager.load();
 			Settings.warpDelay = config.getNode("warp-delay").getInt();
 			Settings.pvpProtect = config.getNode("pvp-protect").getBoolean();
+			Settings.storageType = StorageType.valueOf(config.getNode("storage-type").getString().toUpperCase());
 		} catch (IOException e) {
 			logger.warn(PREFIX + " The configuration could not be loaded! Using the default configuration");
-
+		} catch (IllegalArgumentException e) {
+			// Everything after this is only for stringifying the array of all StorageType values
+			StringBuilder sb = new StringBuilder();
+			StorageType[] storageTypes = StorageType.values();
+			for(int i = 0; i < storageTypes.length; i++){
+				sb.append(storageTypes[i].toString());
+				if(i+1 != storageTypes.length){
+					sb.append(", ");
+				}
+			}
+			logger.warn(PREFIX + " The specified storage type could not be found. Reverting to flatfile storage. Try: " + sb.toString());
 		}
 	}
 
@@ -116,6 +134,7 @@ public class SpongeWarps {
 				// Populate config with default values
 				config.getNode("warp-delay").setValue(Settings.warpDelay);
 				config.getNode("pvp-protect").setValue(Settings.pvpProtect);
+				config.getNode("storage-type").setValue(Settings.storageType.toString());
 
 				configManager.save(config);
 				logger.info(PREFIX + " Config file successfully generated.");
@@ -125,5 +144,20 @@ public class SpongeWarps {
 		} catch (IOException exception) {
 			logger.warn(PREFIX + " The default configuration could not be created!");
 		}
+	}
+	
+	private void setupStorageManager() {
+		switch (Settings.storageType) {
+		case FLATFILE:
+			storageManager = new FlatFileManager();
+			break;
+		case REST:
+			storageManager = new RestManager();
+			break;
+		default:
+			storageManager = new FlatFileManager();
+			break;
+		}
+		
 	}
 }

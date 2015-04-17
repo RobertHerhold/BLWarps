@@ -13,7 +13,7 @@ import org.spongepowered.api.util.command.CommandSource;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
 import com.blocklaunch.spongewarps.Warp;
-import com.blocklaunch.spongewarps.WarpManager;
+import com.blocklaunch.spongewarps.manager.WarpManager;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 

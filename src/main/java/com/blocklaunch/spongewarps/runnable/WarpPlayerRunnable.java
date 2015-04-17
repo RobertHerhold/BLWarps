@@ -7,7 +7,7 @@ import org.spongepowered.api.world.Location;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
 import com.blocklaunch.spongewarps.Warp;
-import com.blocklaunch.spongewarps.WarpManager;
+import com.blocklaunch.spongewarps.manager.WarpManager;
 import com.flowpowered.math.vector.Vector3d;
 
 public class WarpPlayerRunnable implements Runnable {

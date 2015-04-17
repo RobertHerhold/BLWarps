@@ -11,4 +11,9 @@ public class Settings {
 	 * Whether or not to cancel a player's warp if they move or get hurt
 	 */
 	public static boolean pvpProtect = false;
+	
+	/**
+	 * The storage solution to store warps in
+	 */
+	public static StorageType storageType = StorageType.FLATFILE;
 }

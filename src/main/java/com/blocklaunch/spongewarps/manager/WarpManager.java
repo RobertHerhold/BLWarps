@@ -1,6 +1,5 @@
-package com.blocklaunch.spongewarps;
+package com.blocklaunch.spongewarps.manager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,10 +8,10 @@ import java.util.Map;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.service.scheduler.Task;
 
+import com.blocklaunch.spongewarps.Settings;
+import com.blocklaunch.spongewarps.SpongeWarps;
+import com.blocklaunch.spongewarps.Warp;
 import com.blocklaunch.spongewarps.runnable.WarpPlayerRunnable;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Optional;
 
 public class WarpManager {
@@ -24,8 +23,6 @@ public class WarpManager {
 
 	private static final String WARP_NAME_EXISTS_MSG = "A warp with that name already exists!";
 	private static final String WARP_LOCATION_EXISTS_MSG = "A warp at that location already exists!";
-	private static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
-	private static final String ERROR_FILE_READ = "There was an error reading the warps file!";
 	private static final String WARP_NOT_EXIST = "That warp does not exist!";
 	private static final String ERROR_SCHEDULING_WARP_MSG = "There was an error scheduling your warp. Please try again.";
 
@@ -62,38 +59,17 @@ public class WarpManager {
 	}
 
 	/**
-	 * Serializes all currently loaded warps, and saves to the disk
+	 * Saves the currently loaded warps
 	 */
 	private static void saveWarps() {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			// Only creates the file if it doesn't already exist.
-			SpongeWarps.warpsFile.createNewFile();
-			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			mapper.writeValue(SpongeWarps.warpsFile, warps);
-		} catch (IOException e) {
-			SpongeWarps.logger.warn(ERROR_FILE_WRITE);
-			e.printStackTrace();
-		}
+		SpongeWarps.storageManager.saveWarps();
 	}
 
 	/**
-	 * Reads in warps file, and de-serializes it to a List<Warp>
+	 * Loads all saved warps
 	 */
 	public static void loadWarps() {
-		if (!SpongeWarps.warpsFile.exists()) {
-			return;
-		}
-
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			warps = mapper.readValue(SpongeWarps.warpsFile, new TypeReference<List<Warp>>() {
-			});
-		} catch (IOException e) {
-			SpongeWarps.logger.warn(ERROR_FILE_READ);
-			e.printStackTrace();
-		}
-
+		SpongeWarps.storageManager.loadWarps();
 	}
 
 	/**
