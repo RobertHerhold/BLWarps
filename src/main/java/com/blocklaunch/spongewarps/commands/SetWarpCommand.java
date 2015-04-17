@@ -8,6 +8,7 @@ import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandCallable;
 import org.spongepowered.api.util.command.CommandException;
+import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
@@ -18,9 +19,9 @@ import com.google.common.base.Optional;
 
 public class SetWarpCommand implements CommandCallable {
 
-	private static final String USAGE = "/setwarp <warp name> [world name] [x] [y] [z]";
+	private static final Text USAGE = Texts.of("/setwarp <warp name> [world name] [x] [y] [z]");
 	private static final Text HELP = Texts.of("Sets a warp at your location, or at the specified coordinates and world");
-	private static final String SHORT_DESC = "Set a warp";
+	private static final Text SHORT_DESC = Texts.of("Set a warp");
 
 	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " You must be a player to send that command (not console)");
@@ -40,13 +41,13 @@ public class SetWarpCommand implements CommandCallable {
 	}
 
 	@Override
-	public boolean call(CommandSource source, String arguments, List<String> parents) throws CommandException {
+	public Optional<CommandResult> process(CommandSource source, String arguments) throws CommandException {
 		// Check if the arguments String is empty before splitting b/c in the
 		// event it is empty, the split will still return an array of size 1
 		// containing the empty String
 		if (arguments.isEmpty()) {
 			source.sendMessage(INVALID_NUM_ARGS_MSG);
-			return false;
+			return Optional.of(CommandResult.empty());
 		}
 
 		// Parse the arguments into an array
@@ -65,7 +66,7 @@ public class SetWarpCommand implements CommandCallable {
 				player = (Player) source;
 			} else {
 				source.sendMessage(MUST_BE_PLAYER_MSG);
-				return false;
+				return Optional.of(CommandResult.empty());
 			}
 			Vector3d location = player.getLocation().getPosition();
 
@@ -84,7 +85,7 @@ public class SetWarpCommand implements CommandCallable {
 				player = (Player) source;
 			} else {
 				source.sendMessage(MUST_BE_PLAYER_MSG);
-				return false;
+				return Optional.of(CommandResult.empty());
 			}
 
 			String warpName = args[0];
@@ -96,7 +97,7 @@ public class SetWarpCommand implements CommandCallable {
 				warpZ = Integer.parseInt(args[3]);
 			} catch (Exception e) {
 				source.sendMessage(ERROR_PARSING_NUMBER_MSG);
-				return false;
+				return Optional.of(CommandResult.empty());
 			}
 
 			newWarp = new Warp(warpName, worldName, warpX, warpY, warpZ);
@@ -113,39 +114,39 @@ public class SetWarpCommand implements CommandCallable {
 				warpZ = Integer.parseInt(args[4]);
 			} catch (Exception e) {
 				source.sendMessage(ERROR_PARSING_NUMBER_MSG);
-				return false;
+				return Optional.of(CommandResult.empty());
 			}
 			newWarp = new Warp(warpName, worldName, warpX, warpY, warpZ);
 
 		} else {
 			source.sendMessage(INVALID_NUM_ARGS_MSG);
-			return false;
+			return Optional.of(CommandResult.empty());
 		}
 
 		Optional<String> error = WarpManager.addWarp(newWarp);
 		if (error.isPresent()) {
 			source.sendMessage(Texts.builder(ERROR_CREATING_WARP_MSG + error.get()).color(TextColors.RED).build());
-			return false;
+			return Optional.of(CommandResult.empty());
 		} else {
 			source.sendMessage(Texts.builder(SUCCESSFULLY_CREATED_WARP_MSG + newWarp.toString())
 					.color(TextColors.GREEN).build());
-			return true;
+			return Optional.of(CommandResult.success());
 		}
 
 	}
 
 	@Override
-	public Text getHelp(CommandSource arg0) {
-		return HELP;
+	public Optional<Text> getHelp(CommandSource arg0) {
+		return Optional.of(HELP);
 	}
 
 	@Override
-	public String getShortDescription(CommandSource arg0) {
-		return SHORT_DESC;
+	public Optional<Text> getShortDescription(CommandSource arg0) {
+		return Optional.of(SHORT_DESC);
 	}
 
 	@Override
-	public String getUsage(CommandSource arg0) {
+	public Text getUsage(CommandSource arg0) {
 		return USAGE;
 	}
 

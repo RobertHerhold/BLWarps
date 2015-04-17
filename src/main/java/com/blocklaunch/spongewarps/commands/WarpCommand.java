@@ -8,6 +8,7 @@ import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandCallable;
 import org.spongepowered.api.util.command.CommandException;
+import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
@@ -17,9 +18,9 @@ import com.google.common.base.Optional;
 
 public class WarpCommand implements CommandCallable {
 
-	private static final String USAGE = "/warp <warp name>";
+	private static final Text USAGE = Texts.of("/warp <warp name>");
 	private static final Text HELP = Texts.of("Teleports you to the location of the specified warp.");
-	private static final String SHORT_DESC = "Teleport to a warp location";
+	private static final Text SHORT_DESC = Texts.of("Teleport to a warp location");
 
 	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " You must be a player to send that command (not console)");
@@ -36,10 +37,10 @@ public class WarpCommand implements CommandCallable {
 	}
 
 	@Override
-	public boolean call(CommandSource source, String arguments, List<String> parents) throws CommandException {
+	public Optional<CommandResult> process(CommandSource source, String arguments) throws CommandException {
 		if (!(source instanceof Player)) {
 			source.sendMessage(MUST_BE_PLAYER_MSG);
-			return false;
+			return Optional.of(CommandResult.empty());
 		}
 
 		// Check if the arguments String is empty before splitting b/c in the
@@ -47,7 +48,7 @@ public class WarpCommand implements CommandCallable {
 		// containing the empty String
 		if (arguments.isEmpty()) {
 			source.sendMessage(INVALID_NUM_ARGS_MSG);
-			return false;
+			return Optional.of(CommandResult.empty());
 		}
 
 		// Parse the arguments into an array
@@ -71,24 +72,24 @@ public class WarpCommand implements CommandCallable {
 
 		if(optError.isPresent()){
 			player.sendMessage(Texts.of(TextColors.RED, ERROR_WARPING_MSG + optError.get()));
-			return true;
+			return Optional.of(CommandResult.empty());
 		}
 
-		return true;
+		return Optional.of(CommandResult.success());
 	}
 
 	@Override
-	public Text getHelp(CommandSource arg0) {
-		return HELP;
+	public Optional<Text> getHelp(CommandSource arg0) {
+		return Optional.of(HELP);
 	}
 
 	@Override
-	public String getShortDescription(CommandSource arg0) {
-		return SHORT_DESC;
+	public Optional<Text> getShortDescription(CommandSource arg0) {
+		return Optional.of(SHORT_DESC);
 	}
 
 	@Override
-	public String getUsage(CommandSource arg0) {
+	public Text getUsage(CommandSource arg0) {
 		return USAGE;
 	}
 

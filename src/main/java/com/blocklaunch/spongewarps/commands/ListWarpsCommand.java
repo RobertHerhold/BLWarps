@@ -8,6 +8,7 @@ import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandCallable;
 import org.spongepowered.api.util.command.CommandException;
+import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
@@ -17,10 +18,10 @@ import com.google.common.base.Optional;
 
 public class ListWarpsCommand implements CommandCallable {
 
-	private static final String USAGE = "/listwarps [page number]";
+	private static final Text USAGE = Texts.of("/listwarps [page number]");
 	private static final Text HELP = Texts
 			.of("Lists all warps, split up into pages. Optionally, specify a page number as an argument");
-	private static final String SHORT_DESC = "List warps";
+	private static final Text SHORT_DESC = Texts.of("List warps");
 
 	private static final Text ERROR_PARSING_NUMBER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " There was an error parsing the page number.");
@@ -44,7 +45,7 @@ public class ListWarpsCommand implements CommandCallable {
 	 * @throws CommandException
 	 */
 	@Override
-	public boolean call(CommandSource source, String arguments, List<String> parents) throws CommandException {
+	public Optional<CommandResult> process(CommandSource source, String arguments) throws CommandException {
 		int pageNum = 1;
 
 		// If there are arguments, parse them and get a page number
@@ -54,7 +55,7 @@ public class ListWarpsCommand implements CommandCallable {
 				pageNum = Integer.parseInt(args[0]);
 			} catch (Exception e) {
 				source.sendMessage(ERROR_PARSING_NUMBER_MSG);
-				return false;
+				return Optional.of(CommandResult.empty());
 			}
 		}
 
@@ -93,27 +94,26 @@ public class ListWarpsCommand implements CommandCallable {
 		}
 		source.sendMessage(textBuilder.build());
 
-		return true;
+		return Optional.of(CommandResult.success());
 	}
 
 	@Override
-	public Text getHelp(CommandSource arg0) {
-		return HELP;
+	public Optional<Text> getHelp(CommandSource arg0) {
+		return Optional.of(HELP);
 	}
 
 	@Override
-	public String getShortDescription(CommandSource arg0) {
-		return SHORT_DESC;
+	public Optional<Text> getShortDescription(CommandSource arg0) {
+		return Optional.of(SHORT_DESC);
 	}
 
 	@Override
-	public String getUsage(CommandSource arg0) {
+	public Text getUsage(CommandSource arg0) {
 		return USAGE;
 	}
 
 	@Override
 	public boolean testPermission(CommandSource source) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
