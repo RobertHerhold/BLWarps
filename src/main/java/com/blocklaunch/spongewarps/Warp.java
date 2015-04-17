@@ -1,6 +1,6 @@
 package com.blocklaunch.spongewarps;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.flowpowered.math.vector.Vector3d;
@@ -11,8 +11,6 @@ import com.flowpowered.math.vector.Vector3d;
  *
  */
 public class Warp {
-
-	private static final int TRUNCATE_DIGITS = 2;
 
 	private static Vector3d position;
 
@@ -29,14 +27,12 @@ public class Warp {
 		super();
 		this.name = name;
 		this.world = world;
+		
+		DecimalFormat f = new DecimalFormat("##.00");
 
-		// Truncate all coordinates to 2 decimal places for better readability
-		NumberFormat nf = NumberFormat.getInstance();
-		nf.setMaximumFractionDigits(TRUNCATE_DIGITS);
-
-		this.x = Double.parseDouble(nf.format(x));
-		this.y = Double.parseDouble(nf.format(y));
-		this.z = Double.parseDouble(nf.format(z));
+		this.x = Double.valueOf(f.format(x));
+		this.y = Double.valueOf(f.format(y));
+		this.z = Double.valueOf(f.format(z));
 	}
 
 	/**
@@ -60,8 +56,8 @@ public class Warp {
 	 */
 	@JsonIgnore
 	public Vector3d getPosition() {
-		if(position == null){
-			position = new Vector3d(this. x, this.y, this.z);
+		if (position == null) {
+			position = new Vector3d(this.x, this.y, this.z);
 		}
 		return position;
 	}
