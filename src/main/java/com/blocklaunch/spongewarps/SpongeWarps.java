@@ -2,6 +2,8 @@ package com.blocklaunch.spongewarps;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -101,6 +103,7 @@ public class SpongeWarps {
 			Settings.warpDelay = config.getNode("warp-delay").getInt();
 			Settings.pvpProtect = config.getNode("pvp-protect").getBoolean();
 			Settings.storageType = StorageType.valueOf(config.getNode("storage-type").getString().toUpperCase());
+			Settings.restURI = new URI(config.getNode("rest-uri").getString());
 		} catch (IOException e) {
 			logger.warn(PREFIX + " The configuration could not be loaded! Using the default configuration");
 		} catch (IllegalArgumentException e) {
@@ -114,6 +117,8 @@ public class SpongeWarps {
 				}
 			}
 			logger.warn(PREFIX + " The specified storage type could not be found. Reverting to flatfile storage. Try: " + sb.toString());
+		} catch (URISyntaxException e) {
+			logger.warn(PREFIX + " The specified URI could not be parsed. Reverting to flatfile storage.");
 		}
 	}
 
@@ -135,6 +140,7 @@ public class SpongeWarps {
 				config.getNode("warp-delay").setValue(Settings.warpDelay);
 				config.getNode("pvp-protect").setValue(Settings.pvpProtect);
 				config.getNode("storage-type").setValue(Settings.storageType.toString());
+				config.getNode("rest-uri").setValue(Settings.restURI.toString());
 
 				configManager.save(config);
 				logger.info(PREFIX + " Config file successfully generated.");
