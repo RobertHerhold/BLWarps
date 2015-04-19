@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-public class FlatFileManager implements StorageManager {
+public class FlatFileManager extends StorageManager {
 
 	private static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
 	private static final String ERROR_FILE_READ = "There was an error reading the warps file!";

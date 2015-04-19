@@ -1,19 +1,29 @@
 package com.blocklaunch.spongewarps.manager;
 
-public interface StorageManager {
+import com.blocklaunch.spongewarps.SpongeWarps;
+
+public abstract class StorageManager {
+	
+	public void failedLoadWarps(){
+		SpongeWarps.fallbackManager.loadWarps();
+	}
+	
+	public void failedSaveWarps(){
+		SpongeWarps.fallbackManager.saveWarps();
+	}
 
 	/**
 	 * Loads all saved warps
 	 * 
 	 * @return the success of the loading operation
 	 */
-	boolean loadWarps();
+	abstract boolean loadWarps();
 	
 	/**
 	 * Saves the currently loaded warps
 	 * 
 	 * @return the success of the saving operation
 	 */
-	boolean saveWarps();
+	abstract boolean saveWarps();
 	
 }

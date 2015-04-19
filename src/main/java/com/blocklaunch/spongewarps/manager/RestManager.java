@@ -12,7 +12,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import com.blocklaunch.spongewarps.Settings;
 import com.blocklaunch.spongewarps.SpongeWarps;
 
-public class RestManager implements StorageManager {
+public class RestManager extends StorageManager {
 
 	WebTarget webTarget;
 
@@ -28,6 +28,7 @@ public class RestManager implements StorageManager {
 		if (response.getStatus() != 200) {
 			SpongeWarps.logger.warn("There was an error loading the warps from the {} storage. Error code: {}",
 					Settings.storageType, response.getStatus());
+			failedLoadWarps();
 			return false;
 		}
 		return true;
@@ -41,6 +42,7 @@ public class RestManager implements StorageManager {
 		if (response.getStatus() != 201) {
 			SpongeWarps.logger.warn("There was an error saving the warps to the {} storage. Error code: {}",
 					Settings.storageType, response.getStatus());
+			failedSaveWarps();
 			return false;
 		}
 		return true;

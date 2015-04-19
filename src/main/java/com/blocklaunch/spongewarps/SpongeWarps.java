@@ -42,11 +42,16 @@ public class SpongeWarps {
 	public static Game game;
 	public static PluginContainer plugin;
 	public static SynchronousScheduler scheduler;
-
 	public static Logger logger = LoggerFactory.getLogger(SpongeWarps.class);
 	public static File configFolder;
+	
 	public static File warpsFile;
 	public static StorageManager storageManager;
+	/**
+	 * Fallback flat file manager to save/load warps in case any of the other
+	 * storage methods fail to load or save warps
+	 */
+	public static FlatFileManager fallbackManager = new FlatFileManager();
 
 	@Inject
 	@DefaultConfig(sharedRoot = false)
