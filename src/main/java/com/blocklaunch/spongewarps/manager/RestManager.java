@@ -1,9 +1,12 @@
 package com.blocklaunch.spongewarps.manager;
 
+import java.util.List;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -11,6 +14,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.blocklaunch.spongewarps.Settings;
 import com.blocklaunch.spongewarps.SpongeWarps;
+import com.blocklaunch.spongewarps.Warp;
 
 public class RestManager extends StorageManager {
 
@@ -31,6 +35,7 @@ public class RestManager extends StorageManager {
 			failedLoadWarps();
 			return false;
 		}
+		WarpManager.warps = response.readEntity(new GenericType<List<Warp>>(){});
 		return true;
 	}
 
