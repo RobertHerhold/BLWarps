@@ -33,9 +33,11 @@ For flat file storage, warps are stored as JSON (serialized using [Jackson](http
     "z" : 11.79
 } ]
 ```
+###[REST API](http://en.wikipedia.org/wiki/Representational_state_transfer) Storage
+For REST-based storage, HTTP requests are sent using the  [Jersey Client](https://jersey.java.net/documentation/latest/client.html) to the URI specified by the `rest-uri` field in the configuration. The plugin will send a `GET` request (when loading warps) or a `POST` request (when saving warps). It is up to the REST API to return a List of [Warps](https://github.com/BlockLaunch/SpongeWarps/blob/master/src/main/java/com/blocklaunch/spongewarps/Warp.java) with the `application/json` media type upon receiving a `GET` request, and to appropriately save the warps upon receiving a `POST` request containing the serialized warps
+
 
 ##TODO
-* Add support for REST-based warp storage
-* Add support for SQL(?) based warp storage
+* Add support for MySQL based warp storage
 * Add permissions
 * Add support for warping across worlds
