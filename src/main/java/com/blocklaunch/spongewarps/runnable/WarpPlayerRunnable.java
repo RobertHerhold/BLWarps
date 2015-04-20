@@ -1,14 +1,13 @@
 package com.blocklaunch.spongewarps.runnable;
 
 import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.world.Location;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
 import com.blocklaunch.spongewarps.Warp;
 import com.blocklaunch.spongewarps.manager.WarpManager;
-import com.flowpowered.math.vector.Vector3d;
 
 public class WarpPlayerRunnable implements Runnable {
 
@@ -16,6 +15,8 @@ public class WarpPlayerRunnable implements Runnable {
 	private Warp warp;
 
 	private static final String WARP_SUCCESS_MSG = SpongeWarps.PREFIX + " You have been warped to ";
+	private static final Text WORLD_NOT_FOUND_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+			+ " The world you requested to be warped to could not be found!");
 
 	public WarpPlayerRunnable(Player player, Warp warp) {
 		this.player = player;
@@ -24,15 +25,13 @@ public class WarpPlayerRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		// Get old location of player --> insert new coordinates --> set
-		// player's location
-		// Does not support warping across worlds
-		Location oldLoc = player.getLocation();
-		Location newLoc = oldLoc.setPosition(new Vector3d(warp.getX(), warp.getY(), warp.getZ()));
-		player.setLocation(newLoc);
+		if (!player.transferToWorld(warp.getWorld(), warp.getPosition())) {
+			player.sendMessage(WORLD_NOT_FOUND_MSG);
+		} else {
+			player.sendMessage(Texts.builder(WARP_SUCCESS_MSG).color(TextColors.GREEN)
+					.append(Texts.of(TextColors.GOLD, warp.getName())).build());
 
-		player.sendMessage(Texts.builder(WARP_SUCCESS_MSG).color(TextColors.GREEN)
-				.append(Texts.of(TextColors.GOLD, warp.getName())).build());
+		}
 
 		WarpManager.warpCompleted(player);
 
