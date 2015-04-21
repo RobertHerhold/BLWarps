@@ -42,3 +42,5 @@ For REST-based storage, HTTP requests are sent using the  [Jersey Client](https:
 ##TODO
 * Add support for MySQL based warp storage
 * Add permissions
+* Add sign warps
+* Add authentication for REST
