@@ -35,19 +35,33 @@ public class RestManager extends StorageManager {
 			failedLoadWarps();
 			return false;
 		}
-		WarpManager.warps = response.readEntity(new GenericType<List<Warp>>(){});
+		WarpManager.warps = response.readEntity(new GenericType<List<Warp>>() {
+		});
 		return true;
 	}
 
 	@Override
-	public boolean saveWarps() {
+	boolean saveNewWarp(Warp warp) {
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(
-				Entity.entity(WarpManager.warps, MediaType.APPLICATION_JSON_TYPE));
+				Entity.entity(warp, MediaType.APPLICATION_JSON_TYPE));
 
 		if (response.getStatus() != 201) {
 			SpongeWarps.logger.warn("There was an error saving the warps to the {} storage. Error code: {}",
 					Settings.storageType, response.getStatus());
-			failedSaveWarps();
+			failedSaveNewWarp(warp);
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	boolean deleteWarp(Warp warp) {
+		Response response = webTarget.path(warp.getName()).request(MediaType.APPLICATION_JSON_TYPE).delete();
+
+		if (response.getStatus() != 200) {
+			SpongeWarps.logger.warn("There was an error saving the warps to the {} storage. Error code: {}",
+					Settings.storageType, response.getStatus());
+			failedSaveNewWarp(warp);
 			return false;
 		}
 		return true;

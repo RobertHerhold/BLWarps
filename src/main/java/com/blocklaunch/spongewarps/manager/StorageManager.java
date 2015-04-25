@@ -1,6 +1,7 @@
 package com.blocklaunch.spongewarps.manager;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
+import com.blocklaunch.spongewarps.Warp;
 
 public abstract class StorageManager {
 
@@ -11,13 +12,21 @@ public abstract class StorageManager {
 	public void failedLoadWarps() {
 		SpongeWarps.fallbackManager.loadWarps();
 	}
-	
+
 	/**
 	 * To be called when saving the warps to a storage solution like REST,
 	 * MySQL, etc. fails
 	 */
-	public void failedSaveWarps() {
-		SpongeWarps.fallbackManager.saveWarps();
+	public void failedSaveNewWarp(Warp warp) {
+		SpongeWarps.fallbackManager.saveNewWarp(warp);
+	}
+
+	/**
+	 * To be called when deleting a warp with a storage solution like REST,
+	 * MySQL, etc. fails
+	 */
+	public void failedDeleteWarp(Warp warp) {
+		SpongeWarps.fallbackManager.deleteWarp(warp);
 	}
 
 	/**
@@ -28,10 +37,17 @@ public abstract class StorageManager {
 	abstract boolean loadWarps();
 
 	/**
-	 * Saves the currently loaded warps
+	 * Saves an individual newly added warp
 	 * 
 	 * @return the success of the saving operation
 	 */
-	abstract boolean saveWarps();
+	abstract boolean saveNewWarp(Warp warp);
+
+	/**
+	 * Deletes an individual warp
+	 * 
+	 * @return the success of the deletion operation
+	 */
+	abstract boolean deleteWarp(Warp warp);
 
 }

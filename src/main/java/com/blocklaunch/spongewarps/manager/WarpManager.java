@@ -51,7 +51,7 @@ public class WarpManager {
 
 		// Save warps after putting a new one in rather than saving when server
 		// shuts down to prevent loss of data if the server crashed
-		saveWarps();
+		saveNewWarp(newWarp);
 
 		// No errors, return an absent optional
 		return Optional.absent();
@@ -61,8 +61,8 @@ public class WarpManager {
 	/**
 	 * Saves the currently loaded warps
 	 */
-	private static void saveWarps() {
-		SpongeWarps.storageManager.saveWarps();
+	private static void saveNewWarp(Warp warp) {
+		SpongeWarps.storageManager.saveNewWarp(warp);
 	}
 
 	/**
@@ -97,11 +97,15 @@ public class WarpManager {
 		for (Warp warp : warps) {
 			if (warp.getName().equalsIgnoreCase(warpName)) {
 				warps.remove(warp);
-				saveWarps();
+				deleteWarp(warp);
 				return Optional.absent();
 			}
 		}
 		return Optional.of(WARP_NOT_EXIST);
+	}
+
+	private static void deleteWarp(Warp warp) {
+		SpongeWarps.storageManager.deleteWarp(warp);
 	}
 
 	/**

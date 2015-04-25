@@ -36,16 +36,78 @@ public class FlatFileManager extends StorageManager {
 	}
 
 	/**
-	 * Serializes all currently loaded warps, and saves to the disk
+	 * Read in warp file and deserialize to List<Warp> Insert new warp to List
+	 * Serialize to JSON and write to file
+	 * 
+	 * @param warp
+	 *            the new warp to save
+	 * @return the success of the saving operation
 	 */
 	@Override
-	public boolean saveWarps() {
+	boolean saveNewWarp(Warp warp) {
+		if (!SpongeWarps.warpsFile.exists()) {
+			return false;
+		}
+
 		ObjectMapper mapper = new ObjectMapper();
+		List<Warp> currentlySavedWarps;
+		try {
+			currentlySavedWarps = mapper.readValue(SpongeWarps.warpsFile, new TypeReference<List<Warp>>() {
+			});
+		} catch (IOException e) {
+			SpongeWarps.logger.warn(ERROR_FILE_READ);
+			e.printStackTrace();
+			return false;
+		}
+
+		currentlySavedWarps.add(warp);
+
 		try {
 			// Only creates the file if it doesn't already exist.
 			SpongeWarps.warpsFile.createNewFile();
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			mapper.writeValue(SpongeWarps.warpsFile, WarpManager.warps);
+			mapper.writeValue(SpongeWarps.warpsFile, currentlySavedWarps);
+			return true;
+		} catch (IOException e) {
+			SpongeWarps.logger.warn(ERROR_FILE_WRITE);
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+
+	/**
+	 * Read in warp file and deserialize to List<Warp>. Remove the warp from the
+	 * list Serialize to JSON and write to file
+	 * 
+	 * @param warp
+	 *            the warp to remove
+	 * @return the success of the deletion operation
+	 */
+	@Override
+	boolean deleteWarp(Warp warp) {
+		if (!SpongeWarps.warpsFile.exists()) {
+			return false;
+		}
+
+		ObjectMapper mapper = new ObjectMapper();
+		List<Warp> currentlySavedWarps;
+		try {
+			currentlySavedWarps = mapper.readValue(SpongeWarps.warpsFile, new TypeReference<List<Warp>>() {
+			});
+		} catch (IOException e) {
+			SpongeWarps.logger.warn(ERROR_FILE_READ);
+			e.printStackTrace();
+			return false;
+		}
+
+		currentlySavedWarps.remove(warp);
+
+		try {
+			// Only creates the file if it doesn't already exist.
+			SpongeWarps.warpsFile.createNewFile();
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+			mapper.writeValue(SpongeWarps.warpsFile, currentlySavedWarps);
 			return true;
 		} catch (IOException e) {
 			SpongeWarps.logger.warn(ERROR_FILE_WRITE);
