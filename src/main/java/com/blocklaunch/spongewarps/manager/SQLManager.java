@@ -15,10 +15,10 @@ public class SQLManager extends StorageManager {
 		sb.append("jdbc:");
 		// We don't need to worry about the StorageType not being a SQL database
 		// because this constructor will only be called if StorageType is SQL.
-		sb.append(Settings.storageType.toString().toLowerCase());
+		sb.append(Settings.SQLDatabase.toLowerCase());
 		sb.append("://");
 		sb.append(Settings.SQLURL);
-		sb.append("/").append(Settings.SQLDatabase);
+		sb.append("/").append(Settings.SQLDatabaseName);
 
 		DBI dbi = new DBI(sb.toString(), Settings.SQLUsername, Settings.SQLPassword);
 		// Use on demand so we don't have to bother closing connections

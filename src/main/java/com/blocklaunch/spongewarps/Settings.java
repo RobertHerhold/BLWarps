@@ -30,6 +30,11 @@ public class Settings {
 	public static URI restURI = URI.create("http://localhost:8080");
 	
 	/**
+	 * The specific SQL database to use, Ex. MySQL, H2, SQLite, etc.
+	 */
+	public static String SQLDatabase = "MySQL";
+	
+	/**
 	 * The URL of the SQL database, if that option is being used
 	 */
 	public static String SQLURL = "localhost:3306";
@@ -37,7 +42,7 @@ public class Settings {
 	/**
 	 * The name of the SQL database, if that option is being used
 	 */
-	public static String SQLDatabase = "SpongeWarps";
+	public static String SQLDatabaseName = "SpongeWarps";
 	
 	
 	/**

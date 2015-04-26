@@ -110,8 +110,9 @@ public class SpongeWarps {
 			Settings.pvpProtect = config.getNode("pvp-protect").getBoolean();
 			Settings.storageType = StorageType.valueOf(config.getNode("storage-type").getString().toUpperCase());
 			Settings.restURI = new URI(config.getNode("rest-uri").getString());
-			Settings.SQLURL = config.getNode("sql", "url").getString();
 			Settings.SQLDatabase = config.getNode("sql", "database").getString();
+			Settings.SQLURL = config.getNode("sql", "url").getString();
+			Settings.SQLDatabaseName = config.getNode("sql", "database-name").getString();
 			Settings.SQLUsername = config.getNode("sql", "username").getString();
 			Settings.SQLPassword = config.getNode("sql", "password").getString();
 		} catch (IOException e) {
@@ -153,8 +154,9 @@ public class SpongeWarps {
 				config.getNode("pvp-protect").setValue(Settings.pvpProtect);
 				config.getNode("storage-type").setValue(Settings.storageType.toString());
 				config.getNode("rest-uri").setValue(Settings.restURI.toString());
-				config.getNode("sql", "url").setValue(Settings.SQLURL);
 				config.getNode("sql", "database").setValue(Settings.SQLDatabase);
+				config.getNode("sql", "url").setValue(Settings.SQLURL);
+				config.getNode("sql", "database-name").setValue(Settings.SQLDatabaseName);
 				config.getNode("sql", "username").setValue(Settings.SQLUsername);
 				config.getNode("sql", "password").setValue(Settings.SQLPassword);
 
@@ -176,7 +178,7 @@ public class SpongeWarps {
 		case REST:
 			storageManager = new RestManager();
 			break;
-		case MYSQL:
+		case SQL:
 			storageManager = new SQLManager();
 			break;
 		default:
