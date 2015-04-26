@@ -1,6 +1,7 @@
 package com.blocklaunch.spongewarps.manager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.blocklaunch.spongewarps.SpongeWarps;
@@ -45,19 +46,18 @@ public class FlatFileManager extends StorageManager {
 	 */
 	@Override
 	boolean saveNewWarp(Warp warp) {
-		if (!SpongeWarps.warpsFile.exists()) {
-			return false;
-		}
-
+		List<Warp> currentlySavedWarps = new ArrayList<Warp>();
 		ObjectMapper mapper = new ObjectMapper();
-		List<Warp> currentlySavedWarps;
-		try {
-			currentlySavedWarps = mapper.readValue(SpongeWarps.warpsFile, new TypeReference<List<Warp>>() {
-			});
-		} catch (IOException e) {
-			SpongeWarps.logger.warn(ERROR_FILE_READ);
-			e.printStackTrace();
-			return false;
+
+		if (SpongeWarps.warpsFile.exists()) {
+			try {
+				currentlySavedWarps = mapper.readValue(SpongeWarps.warpsFile, new TypeReference<List<Warp>>() {
+				});
+			} catch (IOException e) {
+				SpongeWarps.logger.warn(ERROR_FILE_READ);
+				e.printStackTrace();
+				return false;
+			}
 		}
 
 		currentlySavedWarps.add(warp);

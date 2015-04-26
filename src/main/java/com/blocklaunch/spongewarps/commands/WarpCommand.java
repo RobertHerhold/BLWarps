@@ -62,6 +62,7 @@ public class WarpCommand implements CommandCallable {
 		Optional<Warp> optWarp = WarpManager.getWarp(args[0]);
 		if (!optWarp.isPresent()) {
 			source.sendMessage(WARP_NOT_EXIST_MSG);
+			return Optional.of(CommandResult.empty());
 		}
 
 		Warp warp = optWarp.get();
