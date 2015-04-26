@@ -65,5 +65,10 @@
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>2.13</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jdbi</groupId>
+			<artifactId>jdbi</artifactId>
+			<version>2.62</version>
+		</dependency>
 	</dependencies>
 </project>

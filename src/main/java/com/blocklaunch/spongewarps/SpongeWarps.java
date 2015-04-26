@@ -26,6 +26,7 @@ import com.blocklaunch.spongewarps.commands.SetWarpCommand;
 import com.blocklaunch.spongewarps.commands.WarpCommand;
 import com.blocklaunch.spongewarps.manager.FlatFileManager;
 import com.blocklaunch.spongewarps.manager.RestManager;
+import com.blocklaunch.spongewarps.manager.SQLManager;
 import com.blocklaunch.spongewarps.manager.StorageManager;
 import com.blocklaunch.spongewarps.manager.WarpManager;
 import com.google.inject.Inject;
@@ -44,7 +45,7 @@ public class SpongeWarps {
 	public static SynchronousScheduler scheduler;
 	public static Logger logger = LoggerFactory.getLogger(SpongeWarps.class);
 	public static File configFolder;
-	
+
 	public static File warpsFile;
 	public static StorageManager storageManager;
 	/**
@@ -82,12 +83,12 @@ public class SpongeWarps {
 		} else {
 			loadConfig();
 		}
-		
+
 		setupStorageManager();
 
 		// Load warps
 		WarpManager.loadWarps();
-		
+
 		// Register commands
 		CommandService cmdService = game.getCommandDispatcher();
 		logger.info(PREFIX + " Registering commands");
@@ -109,19 +110,25 @@ public class SpongeWarps {
 			Settings.pvpProtect = config.getNode("pvp-protect").getBoolean();
 			Settings.storageType = StorageType.valueOf(config.getNode("storage-type").getString().toUpperCase());
 			Settings.restURI = new URI(config.getNode("rest-uri").getString());
+			Settings.SQLURL = config.getNode("sql", "url").getString();
+			Settings.SQLDatabase = config.getNode("sql", "database").getString();
+			Settings.SQLUsername = config.getNode("sql", "username").getString();
+			Settings.SQLPassword = config.getNode("sql", "password").getString();
 		} catch (IOException e) {
 			logger.warn(PREFIX + " The configuration could not be loaded! Using the default configuration");
 		} catch (IllegalArgumentException e) {
-			// Everything after this is only for stringifying the array of all StorageType values
+			// Everything after this is only for stringifying the array of all
+			// StorageType values
 			StringBuilder sb = new StringBuilder();
 			StorageType[] storageTypes = StorageType.values();
-			for(int i = 0; i < storageTypes.length; i++){
+			for (int i = 0; i < storageTypes.length; i++) {
 				sb.append(storageTypes[i].toString());
-				if(i+1 != storageTypes.length){
+				if (i + 1 != storageTypes.length) {
 					sb.append(", ");
 				}
 			}
-			logger.warn(PREFIX + " The specified storage type could not be found. Reverting to flatfile storage. Try: " + sb.toString());
+			logger.warn(PREFIX + " The specified storage type could not be found. Reverting to flatfile storage. Try: "
+					+ sb.toString());
 		} catch (URISyntaxException e) {
 			logger.warn(PREFIX + " The specified URI could not be parsed. Reverting to flatfile storage.");
 		}
@@ -146,6 +153,10 @@ public class SpongeWarps {
 				config.getNode("pvp-protect").setValue(Settings.pvpProtect);
 				config.getNode("storage-type").setValue(Settings.storageType.toString());
 				config.getNode("rest-uri").setValue(Settings.restURI.toString());
+				config.getNode("sql", "url").setValue(Settings.SQLURL);
+				config.getNode("sql", "database").setValue(Settings.SQLDatabase);
+				config.getNode("sql", "username").setValue(Settings.SQLUsername);
+				config.getNode("sql", "password").setValue(Settings.SQLPassword);
 
 				configManager.save(config);
 				logger.info(PREFIX + " Config file successfully generated.");
@@ -156,7 +167,7 @@ public class SpongeWarps {
 			logger.warn(PREFIX + " The default configuration could not be created!");
 		}
 	}
-	
+
 	private void setupStorageManager() {
 		switch (Settings.storageType) {
 		case FLATFILE:
@@ -165,10 +176,13 @@ public class SpongeWarps {
 		case REST:
 			storageManager = new RestManager();
 			break;
+		case MYSQL:
+			storageManager = new SQLManager();
+			break;
 		default:
 			storageManager = new FlatFileManager();
 			break;
 		}
-		
+
 	}
 }

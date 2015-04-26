@@ -28,4 +28,25 @@ public class Settings {
 	 * The URL of the REST API, if that option is being used
 	 */
 	public static URI restURI = URI.create("http://localhost:8080");
+	
+	/**
+	 * The URL of the SQL database, if that option is being used
+	 */
+	public static String SQLURL = "localhost:3306";
+	
+	/**
+	 * The name of the SQL database, if that option is being used
+	 */
+	public static String SQLDatabase = "SpongeWarps";
+	
+	
+	/**
+	 * The username to log into a SQL database with
+	 */
+	public static String SQLUsername = "root";
+	
+	/**
+	 * The password to log into a SQL database with
+	 */
+	public static String SQLPassword = "pass";
 }
