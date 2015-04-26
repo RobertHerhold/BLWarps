@@ -23,7 +23,7 @@ public class DeleteWarpCommand implements CommandCallable {
 	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " There is an invalid number of arguments. Try: " + USAGE);
 	private static final String ERROR_DELETE_WARP_MSG = SpongeWarps.PREFIX + " There was an error deleting the warp: ";
-	private static final String SUCCESS_DELETE_WARP_MSG = SpongeWarps.PREFIX + " You successfully deleted the warp: ";
+	private static final Text SUCCESS_DELETE_WARP_MSG = Texts.of(TextColors.GREEN, SpongeWarps.PREFIX + " You successfully deleted the warp: ");
 
 	@Override
 	public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
@@ -53,8 +53,8 @@ public class DeleteWarpCommand implements CommandCallable {
 			source.sendMessage(Texts.builder(ERROR_DELETE_WARP_MSG + optError.get()).color(TextColors.RED).build());
 			return Optional.of(CommandResult.empty());
 		}
-
-		source.sendMessage(Texts.builder(SUCCESS_DELETE_WARP_MSG + args[0]).color(TextColors.GREEN).build());
+		
+		source.sendMessage(SUCCESS_DELETE_WARP_MSG.builder().append(Texts.of(TextColors.GOLD, args[0])).build());
 		return Optional.of(CommandResult.success());
 	}
 

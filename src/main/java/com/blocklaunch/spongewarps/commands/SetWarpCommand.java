@@ -20,13 +20,14 @@ import com.google.common.base.Optional;
 public class SetWarpCommand implements CommandCallable {
 
 	private static final Text USAGE = Texts.of("/setwarp <warp name> [world name] [x] [y] [z]");
-	private static final Text HELP = Texts.of("Sets a warp at your location, or at the specified coordinates and world");
+	private static final Text HELP = Texts
+			.of("Sets a warp at your location, or at the specified coordinates and world");
 	private static final Text SHORT_DESC = Texts.of("Set a warp");
 
 	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
 			+ " You must be a player to send that command (not console)");
-	private static final String SUCCESSFULLY_CREATED_WARP_MSG = SpongeWarps.PREFIX
-			+ " You have successfully created a warp: ";
+	private static final Text SUCCESSFULLY_CREATED_WARP_MSG = Texts.of(TextColors.GREEN, SpongeWarps.PREFIX
+			+ " You have successfully created a warp: ");
 	private static final String ERROR_CREATING_WARP_MSG = SpongeWarps.PREFIX
 			+ " There was an error creating the warp: ";
 	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
@@ -128,8 +129,8 @@ public class SetWarpCommand implements CommandCallable {
 			source.sendMessage(Texts.builder(ERROR_CREATING_WARP_MSG + error.get()).color(TextColors.RED).build());
 			return Optional.of(CommandResult.empty());
 		} else {
-			source.sendMessage(Texts.builder(SUCCESSFULLY_CREATED_WARP_MSG + newWarp.toString())
-					.color(TextColors.GREEN).build());
+			source.sendMessage(SUCCESSFULLY_CREATED_WARP_MSG.builder()
+					.append(Texts.of(TextColors.GOLD, newWarp.toString())).build());
 			return Optional.of(CommandResult.success());
 		}
 
