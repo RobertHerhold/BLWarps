@@ -155,21 +155,28 @@ public class SpongeWarps {
 				logger.info(PREFIX + " Generating config file...");
 				configFile.getParentFile().mkdirs();
 				configFile.createNewFile();
-				ConfigurationNode config = configManager.load();
+				CommentedConfigurationNode config = configManager.load();
 
 				// Populate config with default values
 
 				// GENERAL SETTINGS
+				config.getNode("warp-delay").setComment("Time, in seconds, between initiating a warp and teleporting the player");
 				config.getNode("warp-delay").setValue(Settings.warpDelay);
+				
+				config.getNode("pvp-protect").setComment("Whether or not to cancel a player's warp if they move or get hurt");
 				config.getNode("pvp-protect").setValue(Settings.pvpProtect);
+				
+				config.getNode("storage-type").setValue("The storage solution to store warps in");
 				config.getNode("storage-type").setValue(Settings.storageType.toString());
 
 				// REST SETTINGS
+				config.getNode("rest").setComment("These settings are only applicable if the 'REST' value is selected in the storage-type field");
 				config.getNode("rest", "uri").setValue(Settings.RESTURI.toString());
 				config.getNode("rest", "username").setValue(Settings.RESTUsername);
 				config.getNode("rest", "password").setValue(Settings.RESTPassword);
 
 				// SQL SETTINGS
+				config.getNode("sql").setComment("These settings are only applicable if the 'SQL' value is selected in the storage-type field");
 				config.getNode("sql", "database").setValue(Settings.SQLDatabase);
 				config.getNode("sql", "url").setValue(Settings.SQLURL);
 				config.getNode("sql", "database-name").setValue(Settings.SQLDatabaseName);
