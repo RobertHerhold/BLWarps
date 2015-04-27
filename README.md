@@ -41,6 +41,8 @@ Any SQL database supported by [JDBC](http://www.oracle.com/technetwork/java/over
 ###[REST API](http://en.wikipedia.org/wiki/Representational_state_transfer) Storage
 For REST-based storage, HTTP requests are sent using the  [Jersey Client](https://jersey.java.net/documentation/latest/client.html) to the URI specified by the `rest-uri` field in the configuration. The plugin will send a `GET` request (when loading warps) or a `POST` request (when saving warps). It is up to the REST API to return a List of [Warps](https://github.com/BlockLaunch/SpongeWarps/blob/master/src/main/java/com/blocklaunch/spongewarps/Warp.java) with the `application/json` media type upon receiving a `GET` request, and to appropriately save the new warp upon receiving a `POST` request containing the serialized warps. Additionally, a `DELETE` request with the name of the warp as a path parameter will be sent to signal to the server to delete the specified warp.
 
+##Building SpongeWarps
+SpongeWarps uses Maven as a dependency manager and as a build tool. To build the plugin from source, make sure [Maven](https://maven.apache.org/download.cgi) is installed, and run `mvn clean install`. The newly built plugin will be in `target/sponge-warps-1.0.jar`
 
 ##TODO
 * Add permissions
