@@ -106,10 +106,18 @@ public class SpongeWarps {
 		ConfigurationNode config = null;
 		try {
 			config = configManager.load();
+			
+			// GENERAL SETTINGS
 			Settings.warpDelay = config.getNode("warp-delay").getInt();
 			Settings.pvpProtect = config.getNode("pvp-protect").getBoolean();
 			Settings.storageType = StorageType.valueOf(config.getNode("storage-type").getString().toUpperCase());
-			Settings.restURI = new URI(config.getNode("rest-uri").getString());
+			
+			// REST SETTINGS
+			Settings.RESTURI = new URI(config.getNode("rest","uri").getString());
+			Settings.RESTUsername = config.getNode("rest", "username").getString();
+			Settings.RESTPassword = config.getNode("rest", "password").getString();
+			
+			// SQL SETTINGS
 			Settings.SQLDatabase = config.getNode("sql", "database").getString();
 			Settings.SQLURL = config.getNode("sql", "url").getString();
 			Settings.SQLDatabaseName = config.getNode("sql", "database-name").getString();
@@ -150,10 +158,18 @@ public class SpongeWarps {
 				ConfigurationNode config = configManager.load();
 
 				// Populate config with default values
+
+				// GENERAL SETTINGS
 				config.getNode("warp-delay").setValue(Settings.warpDelay);
 				config.getNode("pvp-protect").setValue(Settings.pvpProtect);
 				config.getNode("storage-type").setValue(Settings.storageType.toString());
-				config.getNode("rest-uri").setValue(Settings.restURI.toString());
+
+				// REST SETTINGS
+				config.getNode("rest", "uri").setValue(Settings.RESTURI.toString());
+				config.getNode("rest", "username").setValue(Settings.RESTUsername);
+				config.getNode("rest", "password").setValue(Settings.RESTPassword);
+
+				// SQL SETTINGS
 				config.getNode("sql", "database").setValue(Settings.SQLDatabase);
 				config.getNode("sql", "url").setValue(Settings.SQLURL);
 				config.getNode("sql", "database-name").setValue(Settings.SQLDatabaseName);

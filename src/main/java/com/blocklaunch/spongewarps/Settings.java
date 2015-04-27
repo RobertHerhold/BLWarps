@@ -6,6 +6,10 @@ import java.net.URI;
  * Class that contains all the configurable options for the plugin
  */
 public class Settings {
+	
+	//////////////////////
+	// General Settings //
+	//////////////////////
 
 	/**
 	 * Time, in seconds, between initiating a warp and teleporting the player
@@ -24,10 +28,28 @@ public class Settings {
 	public static StorageType storageType = StorageType.FLATFILE;
 	
 	
+	///////////////////
+	// REST Settings //
+	///////////////////
+	
 	/**
 	 * The URL of the REST API, if that option is being used
 	 */
-	public static URI restURI = URI.create("http://localhost:8080");
+	public static URI RESTURI = URI.create("http://localhost:8080");
+	
+	/**
+	 * The username to log into a SQL database with
+	 */
+	public static String RESTUsername = "root";
+	
+	/**
+	 * The password to log into a SQL database with
+	 */
+	public static String RESTPassword = "pass";
+	
+	//////////////////
+	// SQL Settings //
+	//////////////////
 	
 	/**
 	 * The specific SQL database to use, Ex. MySQL, H2, SQLite, etc.
@@ -43,7 +65,6 @@ public class Settings {
 	 * The name of the SQL database, if that option is being used
 	 */
 	public static String SQLDatabaseName = "SpongeWarps";
-	
 	
 	/**
 	 * The username to log into a SQL database with

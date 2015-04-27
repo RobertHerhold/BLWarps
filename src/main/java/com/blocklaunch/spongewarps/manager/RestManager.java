@@ -10,6 +10,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.blocklaunch.spongewarps.Settings;
@@ -22,7 +23,10 @@ public class RestManager extends StorageManager {
 
 	public RestManager() {
 		Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
-		webTarget = client.target(Settings.restURI);
+		HttpAuthenticationFeature auth = HttpAuthenticationFeature.basicBuilder().nonPreemptive()
+				.credentials(Settings.RESTUsername, Settings.RESTPassword).build();
+		client.register(auth);
+		webTarget = client.target(Settings.RESTURI);
 
 	}
 
