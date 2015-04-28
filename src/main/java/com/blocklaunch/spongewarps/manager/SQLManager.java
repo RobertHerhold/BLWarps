@@ -24,14 +24,16 @@ public class SQLManager extends StorageManager {
 		sb.append(Settings.SQLDatabase.toLowerCase());
 		sb.append("://");
 		sb.append(Settings.SQLUsername);
-		sb.append(":");
-		sb.append(Settings.SQLPassword);
+		if (!Settings.SQLPassword.isEmpty()) {
+			sb.append(":");
+			sb.append(Settings.SQLPassword);
+		}
 		sb.append("@");
 		sb.append(Settings.SQLURL);
 		sb.append("/").append(Settings.SQLDatabaseName);
-		
+
 		SqlService sql = SpongeWarps.game.getServiceManager().provide(SqlService.class).get();
-		
+
 		DataSource dataSource = null;
 		try {
 			dataSource = sql.getDataSource(sb.toString());
