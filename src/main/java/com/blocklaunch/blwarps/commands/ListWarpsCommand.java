@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps.commands;
+package com.blocklaunch.blwarps.commands;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 
-import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.Warp;
-import com.blocklaunch.spongewarps.manager.WarpManager;
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.common.base.Optional;
 
 public class ListWarpsCommand implements CommandCallable {
@@ -23,7 +23,7 @@ public class ListWarpsCommand implements CommandCallable {
 			.of("Lists all warps, split up into pages. Optionally, specify a page number as an argument");
 	private static final Text SHORT_DESC = Texts.of("List warps");
 
-	private static final Text ERROR_PARSING_NUMBER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+	private static final Text ERROR_PARSING_NUMBER_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " There was an error parsing the page number.");
 
 	private static final int WARPS_PER_PAGE = 10;

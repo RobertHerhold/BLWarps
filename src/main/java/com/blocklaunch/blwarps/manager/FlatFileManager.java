@@ -1,11 +1,11 @@
-package com.blocklaunch.spongewarps.manager;
+package com.blocklaunch.blwarps.manager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.Warp;
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -88,16 +88,16 @@ public class FlatFileManager extends StorageManager {
 	 *         otherwise
 	 */
 	private Optional<List<Warp>> readInWarps() {
-		if (!SpongeWarps.warpsFile.exists()) {
+		if (!BLWarps.warpsFile.exists()) {
 			return Optional.absent();
 		}
 
 		try {
-			List<Warp> warps = mapper.readValue(SpongeWarps.warpsFile, new TypeReference<List<Warp>>() {
+			List<Warp> warps = mapper.readValue(BLWarps.warpsFile, new TypeReference<List<Warp>>() {
 			});
 			return Optional.of(warps);
 		} catch (IOException e) {
-			SpongeWarps.logger.warn(ERROR_FILE_READ);
+			BLWarps.logger.warn(ERROR_FILE_READ);
 			e.printStackTrace();
 			return Optional.absent();
 		}
@@ -114,12 +114,12 @@ public class FlatFileManager extends StorageManager {
 	private boolean writeOutWarps(List<Warp> warps) {
 		try {
 			// Only creates the file if it doesn't already exist.
-			SpongeWarps.warpsFile.createNewFile();
+			BLWarps.warpsFile.createNewFile();
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			mapper.writeValue(SpongeWarps.warpsFile, warps);
+			mapper.writeValue(BLWarps.warpsFile, warps);
 			return true;
 		} catch (IOException e) {
-			SpongeWarps.logger.warn(ERROR_FILE_WRITE);
+			BLWarps.logger.warn(ERROR_FILE_WRITE);
 			e.printStackTrace();
 			return false;
 		}

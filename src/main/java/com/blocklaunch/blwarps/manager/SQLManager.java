@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps.manager;
+package com.blocklaunch.blwarps.manager;
 
 import java.sql.SQLException;
 
@@ -7,10 +7,10 @@ import javax.sql.DataSource;
 import org.skife.jdbi.v2.DBI;
 import org.spongepowered.api.service.sql.SqlService;
 
-import com.blocklaunch.spongewarps.Settings;
-import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.Warp;
-import com.blocklaunch.spongewarps.sql.WarpDAO;
+import com.blocklaunch.blwarps.Settings;
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.sql.WarpDAO;
 
 public class SQLManager extends StorageManager {
 
@@ -32,7 +32,7 @@ public class SQLManager extends StorageManager {
 		sb.append(Settings.SQLURL);
 		sb.append("/").append(Settings.SQLDatabaseName);
 
-		SqlService sql = SpongeWarps.game.getServiceManager().provide(SqlService.class).get();
+		SqlService sql = BLWarps.game.getServiceManager().provide(SqlService.class).get();
 
 		DataSource dataSource = null;
 		try {

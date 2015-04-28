@@ -1,7 +1,7 @@
-package com.blocklaunch.spongewarps.manager;
+package com.blocklaunch.blwarps.manager;
 
-import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.Warp;
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
 
 public abstract class StorageManager {
 
@@ -10,7 +10,7 @@ public abstract class StorageManager {
 	 * MySQL, etc. fails
 	 */
 	public void failedLoadWarps() {
-		SpongeWarps.fallbackManager.loadWarps();
+		BLWarps.fallbackManager.loadWarps();
 	}
 
 	/**
@@ -18,7 +18,7 @@ public abstract class StorageManager {
 	 * MySQL, etc. fails
 	 */
 	public void failedSaveNewWarp(Warp warp) {
-		SpongeWarps.fallbackManager.saveNewWarp(warp);
+		BLWarps.fallbackManager.saveNewWarp(warp);
 	}
 
 	/**
@@ -26,7 +26,7 @@ public abstract class StorageManager {
 	 * MySQL, etc. fails
 	 */
 	public void failedDeleteWarp(Warp warp) {
-		SpongeWarps.fallbackManager.deleteWarp(warp);
+		BLWarps.fallbackManager.deleteWarp(warp);
 	}
 
 	/**

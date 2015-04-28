@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps;
+package com.blocklaunch.blwarps;
 
 import java.net.URI;
 
@@ -64,7 +64,7 @@ public class Settings {
 	/**
 	 * The name of the SQL database, if that option is being used
 	 */
-	public static String SQLDatabaseName = "SpongeWarps";
+	public static String SQLDatabaseName = "BLWarps";
 	
 	/**
 	 * The username to log into a SQL database with

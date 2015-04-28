@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps;
+package com.blocklaunch.blwarps;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,19 +20,19 @@ import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.service.scheduler.SynchronousScheduler;
 
-import com.blocklaunch.spongewarps.commands.DeleteWarpCommand;
-import com.blocklaunch.spongewarps.commands.ListWarpsCommand;
-import com.blocklaunch.spongewarps.commands.SetWarpCommand;
-import com.blocklaunch.spongewarps.commands.WarpCommand;
-import com.blocklaunch.spongewarps.manager.FlatFileManager;
-import com.blocklaunch.spongewarps.manager.RestManager;
-import com.blocklaunch.spongewarps.manager.SQLManager;
-import com.blocklaunch.spongewarps.manager.StorageManager;
-import com.blocklaunch.spongewarps.manager.WarpManager;
+import com.blocklaunch.blwarps.commands.DeleteWarpCommand;
+import com.blocklaunch.blwarps.commands.ListWarpsCommand;
+import com.blocklaunch.blwarps.commands.SetWarpCommand;
+import com.blocklaunch.blwarps.commands.WarpCommand;
+import com.blocklaunch.blwarps.manager.FlatFileManager;
+import com.blocklaunch.blwarps.manager.RestManager;
+import com.blocklaunch.blwarps.manager.SQLManager;
+import com.blocklaunch.blwarps.manager.StorageManager;
+import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.inject.Inject;
 
-@Plugin(id = "SpongeWarps", name = "SpongeWarps", version = "1.0")
-public class SpongeWarps {
+@Plugin(id = "BLWarps", name = "BLWarps", version = "1.0")
+public class BLWarps {
 
 	/**
 	 * Prefix to display at the beginning of messages to player, console
@@ -43,7 +43,7 @@ public class SpongeWarps {
 	public static Game game;
 	public static PluginContainer plugin;
 	public static SynchronousScheduler scheduler;
-	public static Logger logger = LoggerFactory.getLogger(SpongeWarps.class);
+	public static Logger logger = LoggerFactory.getLogger(BLWarps.class);
 	public static File configFolder;
 
 	public static File warpsFile;
@@ -72,10 +72,10 @@ public class SpongeWarps {
 	public void preInit(PreInitializationEvent event) {
 		game = event.getGame();
 		scheduler = game.getSyncScheduler();
-		plugin = game.getPluginManager().getPlugin("SpongeWarps").get();
+		plugin = game.getPluginManager().getPlugin("BLWarps").get();
 
 		configFolder = configFile.getParentFile();
-		warpsFile = new File(SpongeWarps.configFolder, "warps.json");
+		warpsFile = new File(BLWarps.configFolder, "warps.json");
 
 		// Create default config if it doesn't exist
 		if (!configFile.exists()) {
