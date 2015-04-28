@@ -50,3 +50,4 @@ SpongeWarps uses Maven as a dependency manager and as a build tool. To build the
 ##TODO
 * Add permissions
 * Add sign warps
+* Add inventory item warps
