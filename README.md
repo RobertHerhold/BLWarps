@@ -45,7 +45,7 @@ For REST-based storage, HTTP requests are sent using the  [Jersey Client](https:
 * `DELETE` when deleting a warp. The warp's name will be a path parameter. Ex: `http://localhost:8080/warps/deletethiswarp`
 
 ##Building SpongeWarps
-SpongeWarps uses Maven as a dependency manager and as a build tool. To build the plugin from source, make sure [Maven](https://maven.apache.org/download.cgi) is installed, and run `mvn clean install`. The newly built plugin will be in `target/sponge-warps-1.0.jar`
+SpongeWarps uses Maven as a dependency manager and as a build tool. To build the plugin from source, make sure [Maven](https://maven.apache.org/download.cgi) is installed, and run `mvn clean install`. The newly built plugin will be in `target/sponge-warps-{version}.jar`
 
 ##TODO
 * Add permissions
