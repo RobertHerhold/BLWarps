@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps.sql;
+package com.blocklaunch.blwarps.sql;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 
-import com.blocklaunch.spongewarps.Warp;
+import com.blocklaunch.blwarps.Warp;
 
 public interface WarpDAO {
 

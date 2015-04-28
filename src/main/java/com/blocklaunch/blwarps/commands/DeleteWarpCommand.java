@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps.commands;
+package com.blocklaunch.blwarps.commands;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 
-import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.manager.WarpManager;
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.common.base.Optional;
 
 public class DeleteWarpCommand implements CommandCallable {
@@ -20,10 +20,10 @@ public class DeleteWarpCommand implements CommandCallable {
 	private static final Text HELP = Texts.of("Deletes the specified warp.");
 	private static final Text SHORT_DESC = Texts.of("Delete a warp");
 
-	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " There is an invalid number of arguments. Try: " + USAGE);
-	private static final String ERROR_DELETE_WARP_MSG = SpongeWarps.PREFIX + " There was an error deleting the warp: ";
-	private static final Text SUCCESS_DELETE_WARP_MSG = Texts.of(TextColors.GREEN, SpongeWarps.PREFIX + " You successfully deleted the warp: ");
+	private static final String ERROR_DELETE_WARP_MSG = BLWarps.PREFIX + " There was an error deleting the warp: ";
+	private static final Text SUCCESS_DELETE_WARP_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX + " You successfully deleted the warp: ");
 
 	@Override
 	public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {

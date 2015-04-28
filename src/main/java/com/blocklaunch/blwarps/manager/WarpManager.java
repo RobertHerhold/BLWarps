@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps.manager;
+package com.blocklaunch.blwarps.manager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,10 +8,10 @@ import java.util.Map;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.service.scheduler.Task;
 
-import com.blocklaunch.spongewarps.Settings;
-import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.Warp;
-import com.blocklaunch.spongewarps.runnable.WarpPlayerRunnable;
+import com.blocklaunch.blwarps.Settings;
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.runnable.WarpPlayerRunnable;
 import com.google.common.base.Optional;
 
 public class WarpManager {
@@ -62,14 +62,14 @@ public class WarpManager {
 	 * Saves the currently loaded warps
 	 */
 	private static void saveNewWarp(Warp warp) {
-		SpongeWarps.storageManager.saveNewWarp(warp);
+		BLWarps.storageManager.saveNewWarp(warp);
 	}
 
 	/**
 	 * Loads all saved warps
 	 */
 	public static void loadWarps() {
-		SpongeWarps.storageManager.loadWarps();
+		BLWarps.storageManager.loadWarps();
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class WarpManager {
 	}
 
 	private static void deleteWarp(Warp warp) {
-		SpongeWarps.storageManager.deleteWarp(warp);
+		BLWarps.storageManager.deleteWarp(warp);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class WarpManager {
 		long delay = Settings.warpDelay * TICKS_PER_SECOND;
 
 		// Schedule the task
-		Optional<Task> optTask = SpongeWarps.scheduler.runTaskAfter(SpongeWarps.plugin, new WarpPlayerRunnable(player,
+		Optional<Task> optTask = BLWarps.scheduler.runTaskAfter(BLWarps.plugin, new WarpPlayerRunnable(player,
 				warp), delay);
 
 		if (!optTask.isPresent()) {

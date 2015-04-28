@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps.sql;
+package com.blocklaunch.blwarps.sql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
-import com.blocklaunch.spongewarps.Warp;
+import com.blocklaunch.blwarps.Warp;
 
 public class WarpMapper implements ResultSetMapper<Warp> {
 

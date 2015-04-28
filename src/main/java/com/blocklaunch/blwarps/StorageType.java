@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps;
+package com.blocklaunch.blwarps;
 
 public enum StorageType {
 

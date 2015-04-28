@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps.commands;
+package com.blocklaunch.blwarps.commands;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 
-import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.Warp;
-import com.blocklaunch.spongewarps.manager.WarpManager;
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.manager.WarpManager;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 
@@ -24,15 +24,15 @@ public class SetWarpCommand implements CommandCallable {
 			.of("Sets a warp at your location, or at the specified coordinates and world");
 	private static final Text SHORT_DESC = Texts.of("Set a warp");
 
-	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " You must be a player to send that command (not console)");
-	private static final Text SUCCESSFULLY_CREATED_WARP_MSG = Texts.of(TextColors.GREEN, SpongeWarps.PREFIX
+	private static final Text SUCCESSFULLY_CREATED_WARP_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX
 			+ " You have successfully created a warp: ");
-	private static final String ERROR_CREATING_WARP_MSG = SpongeWarps.PREFIX
+	private static final String ERROR_CREATING_WARP_MSG = BLWarps.PREFIX
 			+ " There was an error creating the warp: ";
-	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " There is an invalid number of arguments. Try: " + USAGE);
-	private static final Text ERROR_PARSING_NUMBER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+	private static final Text ERROR_PARSING_NUMBER_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " There was an error parsing the warp coordinates.");
 
 	@Override

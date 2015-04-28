@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps.commands;
+package com.blocklaunch.blwarps.commands;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 
-import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.Warp;
-import com.blocklaunch.spongewarps.manager.WarpManager;
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.common.base.Optional;
 
 public class WarpCommand implements CommandCallable {
@@ -22,13 +22,13 @@ public class WarpCommand implements CommandCallable {
 	private static final Text HELP = Texts.of("Teleports you to the location of the specified warp.");
 	private static final Text SHORT_DESC = Texts.of("Teleport to a warp location");
 
-	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+	private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " You must be a player to send that command (not console)");
-	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+	private static final Text INVALID_NUM_ARGS_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " There is an invalid number of arguments. Try: " + USAGE);
-	private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, SpongeWarps.PREFIX
+	private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " That warp does not exist!");
-	private static final String ERROR_WARPING_MSG = SpongeWarps.PREFIX + " There was an error scheduling your warp: ";
+	private static final String ERROR_WARPING_MSG = BLWarps.PREFIX + " There was an error scheduling your warp: ";
 
 	@Override
 	public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {

@@ -1,4 +1,4 @@
-package com.blocklaunch.spongewarps.manager;
+package com.blocklaunch.blwarps.manager;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
-import com.blocklaunch.spongewarps.Settings;
-import com.blocklaunch.spongewarps.SpongeWarps;
-import com.blocklaunch.spongewarps.Warp;
+import com.blocklaunch.blwarps.Settings;
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
 
 public class RestManager extends StorageManager {
 
@@ -34,7 +34,7 @@ public class RestManager extends StorageManager {
 	public boolean loadWarps() {
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
 		if (response.getStatus() != 200) {
-			SpongeWarps.logger.warn("There was an error loading the warps from the {} storage. Error code: {}",
+			BLWarps.logger.warn("There was an error loading the warps from the {} storage. Error code: {}",
 					Settings.storageType, response.getStatus());
 			failedLoadWarps();
 			return false;
@@ -50,7 +50,7 @@ public class RestManager extends StorageManager {
 				Entity.entity(warp, MediaType.APPLICATION_JSON_TYPE));
 
 		if (response.getStatus() != 201) {
-			SpongeWarps.logger.warn("There was an error saving the warps to the {} storage. Error code: {}",
+			BLWarps.logger.warn("There was an error saving the warps to the {} storage. Error code: {}",
 					Settings.storageType, response.getStatus());
 			failedSaveNewWarp(warp);
 			return false;
@@ -63,7 +63,7 @@ public class RestManager extends StorageManager {
 		Response response = webTarget.path(warp.getName()).request(MediaType.APPLICATION_JSON_TYPE).delete();
 
 		if (response.getStatus() != 200) {
-			SpongeWarps.logger.warn("There was an error saving the warps to the {} storage. Error code: {}",
+			BLWarps.logger.warn("There was an error saving the warps to the {} storage. Error code: {}",
 					Settings.storageType, response.getStatus());
 			failedSaveNewWarp(warp);
 			return false;
