@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 import org.skife.jdbi.v2.DBI;
 import org.spongepowered.api.service.sql.SqlService;
 
-import com.blocklaunch.blwarps.Settings;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.sql.WarpDAO;
@@ -21,16 +20,16 @@ public class SQLManager extends StorageManager {
 		sb.append("jdbc:");
 		// We don't need to worry about the StorageType not being a SQL database
 		// because this constructor will only be called if StorageType is SQL.
-		sb.append(Settings.SQLDatabase.toLowerCase());
+		sb.append(BLWarps.testConfig.getSQLDatabase().toLowerCase());
 		sb.append("://");
-		sb.append(Settings.SQLUsername);
-		if (!Settings.SQLPassword.isEmpty()) {
+		sb.append(BLWarps.testConfig.getSQLUsername());
+		if (!BLWarps.testConfig.getSQLPassword().isEmpty()) {
 			sb.append(":");
-			sb.append(Settings.SQLPassword);
+			sb.append(BLWarps.testConfig.getSQLPassword());
 		}
 		sb.append("@");
-		sb.append(Settings.SQLURL);
-		sb.append("/").append(Settings.SQLDatabaseName);
+		sb.append(BLWarps.testConfig.getSQLURL());
+		sb.append("/").append(BLWarps.testConfig.getSQLDatabaseName());
 
 		SqlService sql = BLWarps.game.getServiceManager().provide(SqlService.class).get();
 
