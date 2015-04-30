@@ -31,7 +31,7 @@ import com.blocklaunch.blwarps.manager.StorageManager;
 import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.inject.Inject;
 
-@Plugin(id = "BLWarps", name = "BLWarps", version = "1.0")
+@Plugin(id = "BLWarps", name = "BLWarps", version = "0.2.1")
 public class BLWarps {
 
 	/**
