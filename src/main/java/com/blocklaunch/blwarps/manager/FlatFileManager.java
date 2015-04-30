@@ -71,11 +71,15 @@ public class FlatFileManager extends StorageManager {
 			return false;
 		}
 
+		// Temporary warp for avoiding ConcurrentModificationException
+		Warp warpToRemove = null;		
 		for (Warp w : warps) {
 			if (w.getName().equalsIgnoreCase(warp.getName())) {
-				warps.remove(w);
+				warpToRemove = w;
 			}
 		}
+		if (warpToRemove != null)
+			warps.remove(warpToRemove);
 
 		return writeOutWarps(warps);
 	}
