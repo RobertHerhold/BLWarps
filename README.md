@@ -2,10 +2,10 @@
 BLWarps is a [Sponge](https://www.spongepowered.org/) plugin for easily setting locations for players to warp to.
 
 ##Commands
-* `/setwarp <warp name> [world name] [x] [y] [z]`
+* `/warp set <warp name> [x] [y] [z]`
 * `/warp <warp name>`
-* `/delwarp <warp name>`
-* `/listwarps [page number]`
+* `/warp delete <warp name>`
+* `/warp list [page number]`
 
 ##Storage
 Regardless of the storage solution, each warp has 5 properties:
