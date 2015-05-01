@@ -12,7 +12,6 @@ import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 
 import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.common.base.Optional;
 
@@ -25,6 +24,8 @@ public class ListWarpsCommand implements CommandCallable {
 
 	private static final Text ERROR_PARSING_NUMBER_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " There was an error parsing the page number.");
+	private static final Text NO_WARPS_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX
+			+ " There were no warps to display.");
 
 	private static final int WARPS_PER_PAGE = 10;
 
@@ -46,6 +47,11 @@ public class ListWarpsCommand implements CommandCallable {
 	 */
 	@Override
 	public Optional<CommandResult> process(CommandSource source, String arguments) throws CommandException {
+		if (WarpManager.warps.isEmpty()) {
+			source.sendMessage(NO_WARPS_MSG);
+			return Optional.of(CommandResult.success());
+		}
+
 		int pageNum = 1;
 
 		// If there are arguments, parse them and get a page number
@@ -70,8 +76,6 @@ public class ListWarpsCommand implements CommandCallable {
 		// 0-based index of where in the array to start listing the warps
 		int warpStartIndex = pageIndex * WARPS_PER_PAGE;
 
-		Warp[] warpArray = WarpManager.warps.toArray(new Warp[0]);
-
 		// For lack of a better name, "listNumber" is the number preceding
 		// the warp name in the ordered list
 		int listNumber = warpStartIndex + 1;
@@ -80,14 +84,15 @@ public class ListWarpsCommand implements CommandCallable {
 		TextBuilder textBuilder = Texts.builder();
 		for (int index = warpStartIndex; index < warpStartIndex + WARPS_PER_PAGE; index++) {
 			// Check if the array at the index exists to eliminate
-			// ArrayIndexOutOfBoundExceptions
-			if (warpArray.length <= index) {
+			// IndexOutOfBoundExceptions
+			if (WarpManager.warps.size() <= index) {
 				// element does not exist at that index
 				break;
 			}
 
 			textBuilder.append(Texts.builder(listNumber + ". ").color(TextColors.RED)
-					.append(Texts.builder(warpArray[index].getName()).color(TextColors.GOLD).build()).build());
+					.append(Texts.builder(WarpManager.warps.get(index).getName()).color(TextColors.GOLD).build())
+					.build());
 			textBuilder.append(Texts.of("\n"));
 
 			listNumber++;
