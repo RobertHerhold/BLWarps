@@ -62,12 +62,6 @@ public class BLWarps {
 	@DefaultConfig(sharedRoot = false)
 	private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
-	/**
-	 * Called when the server is being started. Similar to Bukkit's onEnable()
-	 * function
-	 * 
-	 * @param event
-	 */
 	@Subscribe
 	public void preInit(PreInitializationEvent event) {
 		game = event.getGame();
@@ -86,7 +80,6 @@ public class BLWarps {
 
 		setupStorageManager();
 
-		// Load warps
 		WarpManager.loadWarps();
 
 		// Register commands
