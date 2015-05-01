@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -16,9 +19,11 @@ import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.state.PreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.service.scheduler.SynchronousScheduler;
+import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.util.command.args.GenericArguments;
+import org.spongepowered.api.util.command.spec.CommandSpec;
 
 import com.blocklaunch.blwarps.commands.DeleteWarpCommand;
 import com.blocklaunch.blwarps.commands.ListWarpsCommand;
@@ -82,13 +87,59 @@ public class BLWarps {
 
 		WarpManager.loadWarps();
 
-		// Register commands
-		CommandService cmdService = game.getCommandDispatcher();
+		registerCommands();
+
+	}
+
+	private void registerCommands() {
 		logger.info(PREFIX + " Registering commands");
-		cmdService.register(plugin, new SetWarpCommand(), "setwarp", "addwarp");
-		cmdService.register(plugin, new WarpCommand(), "warp");
-		cmdService.register(plugin, new DeleteWarpCommand(), "deletewarp", "delwarp");
-		cmdService.register(plugin, new ListWarpsCommand(), "listwarps", "listwarp");
+
+		HashMap<List<String>, CommandSpec> subCommands = new HashMap<>();
+
+		CommandSpec createWarpSubCommand = CommandSpec.builder()
+				.setPermission("blwarps.create")
+				.setDescription(Texts.of("Set a warp"))
+				.setExtendedDescription(Texts.of("Sets a warp at your location, or at the specified coordinates"))
+				.setExecutor(new SetWarpCommand())
+				.setArguments(GenericArguments.seq(
+						GenericArguments.string(Texts.of("name")),
+						GenericArguments.optional(GenericArguments.vector3d(Texts.of("position")))))
+				.build();
+		subCommands.put(Arrays.asList("set", "add"), createWarpSubCommand);
+		
+		CommandSpec warpSubCommand = CommandSpec.builder()
+				.setPermission("blwarps.warp")
+				.setDescription(Texts.of("Teleport to a warp location"))
+				.setExtendedDescription(Texts.of("Teleports you to the location of the specified warp."))
+				.setExecutor(new WarpCommand())
+				.setArguments(GenericArguments.string(Texts.of("name")))
+				.build();
+		subCommands.put(Arrays.asList("warp"), warpSubCommand);
+		
+		CommandSpec deleteWarpSubCommand = CommandSpec.builder()
+				.setPermission("blwarps.delete")
+				.setDescription(Texts.of("Delete a warp"))
+				.setExtendedDescription(Texts.of("Deletes the warp with the specified name"))
+				.setExecutor(new DeleteWarpCommand())
+				.setArguments(GenericArguments.string(Texts.of("name")))
+				.build();
+		subCommands.put(Arrays.asList("delete", "del"), deleteWarpSubCommand);
+		
+		CommandSpec listWarpSubCommand = CommandSpec.builder()
+				.setPermission("blwarps.list")
+				.setDescription(Texts.of("List warps"))
+				.setExtendedDescription(Texts.of("Lists all warps, split up into pages. Optionally, specify a page number"))
+				.setExecutor(new ListWarpsCommand())
+				.setArguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page"))))
+				.build();
+		subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand);
+		
+		CommandSpec mainWarpCommand = CommandSpec
+				.builder()
+				.setChildren(subCommands)
+				.build();
+		
+		game.getCommandDispatcher().register(plugin, mainWarpCommand, "warp");
 	}
 
 	/**
