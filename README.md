@@ -46,8 +46,3 @@ For REST-based storage, HTTP requests are sent using the  [Jersey Client](https:
 
 ##Building BLWarps
 BLWarps uses Maven as a dependency manager and as a build tool. To build the plugin from source, make sure [Maven](https://maven.apache.org/download.cgi) is installed, and run `mvn clean install`. The newly built plugin will be in `target/bl-warps-{version}.jar`
-
-##TODO
-* Add permissions
-* Add sign warps
-* Add inventory item warps
