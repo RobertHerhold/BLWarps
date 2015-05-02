@@ -46,7 +46,7 @@ public class BLWarps {
 	public static SynchronousScheduler scheduler;
 	public static Logger logger = LoggerFactory.getLogger(BLWarps.class);
 	public static File configFolder;
-	public static BLWarpsConfiguration testConfig;
+	public static BLWarpsConfiguration config;
 
 	public static File warpsFile;
 	public static StorageManager storageManager;
@@ -105,15 +105,11 @@ public class BLWarps {
 	 * default configuration values in Settings
 	 */
 	private void loadConfig() {
-		ConfigurationNode config = null;
+		ConfigurationNode rawConfig = null;
 		try {
-			config = configManager.load();
+			rawConfig = configManager.load();
 			
-			System.out.println("HELLO");
-			
-//			System.out.println("BEFORE: " + testConfig.getMyThing());
-			
-			testConfig = BLWarpsConfiguration.MAPPER.bindToNew().populate(config);
+			config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
 			
 			// GENERAL SETTINGS
 //			BLWarpsConfiguration.warpDelay = config.getNode("warp-delay").getInt();
@@ -165,10 +161,10 @@ public class BLWarps {
 				logger.info(PREFIX + " Generating config file...");
 				configFile.getParentFile().mkdirs();
 				configFile.createNewFile();
-				CommentedConfigurationNode config = configManager.load();
+				CommentedConfigurationNode rawConfig = configManager.load();
 				
 				try {
-					BLWarpsConfiguration.MAPPER.bind(testConfig).serialize(config);
+					BLWarpsConfiguration.MAPPER.bind(config).serialize(rawConfig);
 				} catch (ObjectMappingException e) {
 					e.printStackTrace();
 				}
@@ -199,7 +195,7 @@ public class BLWarps {
 //				config.getNode("sql", "username").setValue(testConfig.getSQLUsername());
 //				config.getNode("sql", "password").setValue(testConfig.getSQLPassword());
 
-				configManager.save(config);
+				configManager.save(rawConfig);
 				logger.info(PREFIX + " Config file successfully generated.");
 			} else {
 				return;
@@ -210,7 +206,7 @@ public class BLWarps {
 	}
 
 	private void setupStorageManager() {
-		switch (testConfig.getStorageType()) {
+		switch (config.getStorageType()) {
 		case FLATFILE:
 			storageManager = new FlatFileManager();
 			break;

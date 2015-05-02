@@ -23,9 +23,9 @@ public class RestManager extends StorageManager {
 	public RestManager() {
 		Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
 		HttpAuthenticationFeature auth = HttpAuthenticationFeature.basicBuilder().nonPreemptive()
-				.credentials(BLWarps.testConfig.getRESTUsername(), BLWarps.testConfig.getRESTPassword()).build();
+				.credentials(BLWarps.config.getRESTUsername(), BLWarps.config.getRESTPassword()).build();
 		client.register(auth);
-		webTarget = client.target(BLWarps.testConfig.getRESTURI());
+		webTarget = client.target(BLWarps.config.getRESTURI());
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class RestManager extends StorageManager {
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
 		if (response.getStatus() != 200) {
 			BLWarps.logger.warn("There was an error loading the warps from the {} storage. Error code: {}",
-					BLWarps.testConfig.getStorageType(), response.getStatus());
+					BLWarps.config.getStorageType(), response.getStatus());
 			failedLoadWarps();
 			return false;
 		}
@@ -49,7 +49,7 @@ public class RestManager extends StorageManager {
 
 		if (response.getStatus() != 201) {
 			BLWarps.logger.warn("There was an error saving the warps to the {} storage. Error code: {}",
-					BLWarps.testConfig.getStorageType(), response.getStatus());
+					BLWarps.config.getStorageType(), response.getStatus());
 			failedSaveNewWarp(warp);
 			return false;
 		}
@@ -62,7 +62,7 @@ public class RestManager extends StorageManager {
 
 		if (response.getStatus() != 200) {
 			BLWarps.logger.warn("There was an error saving the warps to the {} storage. Error code: {}",
-					BLWarps.testConfig.getStorageType(), response.getStatus());
+					BLWarps.config.getStorageType(), response.getStatus());
 			failedSaveNewWarp(warp);
 			return false;
 		}

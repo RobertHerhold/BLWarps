@@ -118,7 +118,7 @@ public class WarpManager {
 	 * @return An error if one exists, or Optional.absent() otherwise
 	 */
 	public static Optional<String> scheduleWarp(Player player, Warp warp) {
-		long delay = BLWarps.testConfig.getWarpDelay() * TICKS_PER_SECOND;
+		long delay = BLWarps.config.getWarpDelay() * TICKS_PER_SECOND;
 
 		// Schedule the task
 		Optional<Task> optTask = BLWarps.scheduler.runTaskAfter(BLWarps.plugin, new WarpPlayerRunnable(player,
