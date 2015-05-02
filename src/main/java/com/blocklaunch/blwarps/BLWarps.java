@@ -20,6 +20,7 @@ import org.spongepowered.api.service.command.CommandService;
 import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.service.scheduler.SynchronousScheduler;
 
+import com.blocklaunch.blwarps.PomData;
 import com.blocklaunch.blwarps.commands.DeleteWarpCommand;
 import com.blocklaunch.blwarps.commands.ListWarpsCommand;
 import com.blocklaunch.blwarps.commands.SetWarpCommand;
@@ -31,7 +32,7 @@ import com.blocklaunch.blwarps.manager.StorageManager;
 import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.inject.Inject;
 
-@Plugin(id = "BLWarps", name = "BLWarps", version = "0.2.1")
+@Plugin(id = PomData.ARTIFACT_ID, name = PomData.NAME, version = PomData.VERSION)
 public class BLWarps {
 
 	/**
@@ -66,7 +67,7 @@ public class BLWarps {
 	public void preInit(PreInitializationEvent event) {
 		game = event.getGame();
 		scheduler = game.getSyncScheduler();
-		plugin = game.getPluginManager().getPlugin("BLWarps").get();
+		plugin = game.getPluginManager().getPlugin(PomData.ARTIFACT_ID).get();
 
 		configFolder = configFile.getParentFile();
 		warpsFile = new File(BLWarps.configFolder, "warps.json");
