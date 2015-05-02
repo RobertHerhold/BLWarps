@@ -115,8 +115,6 @@ public class BLWarps {
 			
 			testConfig = BLWarpsConfiguration.MAPPER.bindToNew().populate(config);
 			
-			System.out.println("After: " + testConfig.getMyThing());
-			
 			// GENERAL SETTINGS
 //			BLWarpsConfiguration.warpDelay = config.getNode("warp-delay").getInt();
 //			BLWarpsConfiguration.pvpProtect = config.getNode("pvp-protect").getBoolean();
@@ -168,32 +166,38 @@ public class BLWarps {
 				configFile.getParentFile().mkdirs();
 				configFile.createNewFile();
 				CommentedConfigurationNode config = configManager.load();
+				
+				try {
+					BLWarpsConfiguration.MAPPER.bind(testConfig).serialize(config);
+				} catch (ObjectMappingException e) {
+					e.printStackTrace();
+				}
 
 				// Populate config with default values
 
 				// GENERAL SETTINGS
-				config.getNode("warp-delay").setComment("Time, in seconds, between initiating a warp and teleporting the player");
-				config.getNode("warp-delay").setValue(testConfig.getWarpDelay());
-				
-				config.getNode("pvp-protect").setComment("Whether or not to cancel a player's warp if they move or get hurt");
-				config.getNode("pvp-protect").setValue(testConfig.isPvpProtect());
-				
-				config.getNode("storage-type").setValue("The storage solution to store warps in");
-				config.getNode("storage-type").setValue(testConfig.getStorageType().toString());
+//				config.getNode("warp-delay").setComment("Time, in seconds, between initiating a warp and teleporting the player");
+//				config.getNode("warp-delay").setValue(testConfig.getWarpDelay());
+//				
+//				config.getNode("pvp-protect").setComment("Whether or not to cancel a player's warp if they move or get hurt");
+//				config.getNode("pvp-protect").setValue(testConfig.isPvpProtect());
+//				
+//				config.getNode("storage-type").setValue("The storage solution to store warps in");
+//				config.getNode("storage-type").setValue(testConfig.getStorageType().toString());
 
 				// REST SETTINGS
-				config.getNode("rest").setComment("These settings are only applicable if the 'REST' value is selected in the storage-type field");
-				config.getNode("rest", "uri").setValue(testConfig.getRESTURI().toString());
-				config.getNode("rest", "username").setValue(testConfig.getRESTUsername());
-				config.getNode("rest", "password").setValue(testConfig.getRESTUsername());
+//				config.getNode("rest").setComment("These settings are only applicable if the 'REST' value is selected in the storage-type field");
+//				config.getNode("rest", "uri").setValue(testConfig.getRESTURI().toString());
+//				config.getNode("rest", "username").setValue(testConfig.getRESTUsername());
+//				config.getNode("rest", "password").setValue(testConfig.getRESTUsername());
 
 				// SQL SETTINGS
-				config.getNode("sql").setComment("These settings are only applicable if the 'SQL' value is selected in the storage-type field");
-				config.getNode("sql", "database").setValue(testConfig.getSQLDatabase());
-				config.getNode("sql", "url").setValue(testConfig.getSQLURL());
-				config.getNode("sql", "database-name").setValue(testConfig.getSQLDatabaseName());
-				config.getNode("sql", "username").setValue(testConfig.getSQLUsername());
-				config.getNode("sql", "password").setValue(testConfig.getSQLPassword());
+//				config.getNode("sql").setComment("These settings are only applicable if the 'SQL' value is selected in the storage-type field");
+//				config.getNode("sql", "database").setValue(testConfig.getSQLDatabase());
+//				config.getNode("sql", "url").setValue(testConfig.getSQLURL());
+//				config.getNode("sql", "database-name").setValue(testConfig.getSQLDatabaseName());
+//				config.getNode("sql", "username").setValue(testConfig.getSQLUsername());
+//				config.getNode("sql", "password").setValue(testConfig.getSQLPassword());
 
 				configManager.save(config);
 				logger.info(PREFIX + " Config file successfully generated.");
