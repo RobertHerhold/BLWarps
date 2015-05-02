@@ -62,7 +62,7 @@ public class BLWarps {
 
 	@Inject
 	@DefaultConfig(sharedRoot = false)
-	private ConfigurationLoader<CommentedConfigurationNode> configManager;
+	private ConfigurationLoader<CommentedConfigurationNode> configLoader;
 
 	/**
 	 * Called when the server is being started. Similar to Bukkit's onEnable()
@@ -107,7 +107,7 @@ public class BLWarps {
 	private void loadConfig() {
 		ConfigurationNode rawConfig = null;
 		try {
-			rawConfig = configManager.load();
+			rawConfig = configLoader.load();
 			
 			config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
 			
@@ -145,7 +145,7 @@ public class BLWarps {
 //		} catch (URISyntaxException e) {
 //			logger.warn(PREFIX + " The specified URI could not be parsed. Reverting to flatfile storage.");
 		} catch (ObjectMappingException e) {
-			e.printStackTrace();
+			logger.warn(PREFIX + " There was an loading the configuration." + e.getStackTrace());
 		}
 	}
 
@@ -161,7 +161,7 @@ public class BLWarps {
 				logger.info(PREFIX + " Generating config file...");
 				configFile.getParentFile().mkdirs();
 				configFile.createNewFile();
-				CommentedConfigurationNode rawConfig = configManager.load();
+				CommentedConfigurationNode rawConfig = configLoader.load();
 				
 				try {
 					BLWarpsConfiguration.MAPPER.bind(config).serialize(rawConfig);
@@ -195,7 +195,7 @@ public class BLWarps {
 //				config.getNode("sql", "username").setValue(testConfig.getSQLUsername());
 //				config.getNode("sql", "password").setValue(testConfig.getSQLPassword());
 
-				configManager.save(rawConfig);
+				configLoader.save(rawConfig);
 				logger.info(PREFIX + " Config file successfully generated.");
 			} else {
 				return;
