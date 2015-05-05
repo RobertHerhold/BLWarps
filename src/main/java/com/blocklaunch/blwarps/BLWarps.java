@@ -95,7 +95,7 @@ public class BLWarps {
 		logger.info(PREFIX + " Registering commands");
 
 		HashMap<List<String>, CommandSpec> subCommands = new HashMap<>();
-
+		
 		CommandSpec createWarpSubCommand = CommandSpec.builder()
 				.setPermission("blwarps.create")
 				.setDescription(Texts.of("Set a warp"))
@@ -107,14 +107,14 @@ public class BLWarps {
 				.build();
 		subCommands.put(Arrays.asList("set", "add"), createWarpSubCommand);
 		
-		CommandSpec warpSubCommand = CommandSpec.builder()
-				.setPermission("blwarps.warp")
-				.setDescription(Texts.of("Teleport to a warp location"))
-				.setExtendedDescription(Texts.of("Teleports you to the location of the specified warp."))
-				.setExecutor(new WarpCommand())
-				.setArguments(GenericArguments.string(Texts.of("name")))
-				.build();
-		subCommands.put(Arrays.asList("warp"), warpSubCommand);
+//		CommandSpec warpSubCommand = CommandSpec.builder()
+//				.setPermission("blwarps.warp")
+//				.setDescription(Texts.of("Teleport to a warp location"))
+//				.setExtendedDescription(Texts.of("Teleports you to the location of the specified warp."))
+//				.setExecutor(wc)
+//				.setArguments(GenericArguments.string(Texts.of("name")))
+//				.build();
+//		subCommands.put(Arrays.asList(""), warpSubCommand);
 		
 		CommandSpec deleteWarpSubCommand = CommandSpec.builder()
 				.setPermission("blwarps.delete")
@@ -136,6 +136,11 @@ public class BLWarps {
 		
 		CommandSpec mainWarpCommand = CommandSpec
 				.builder()
+				.setPermission("blwarps.warp")
+				.setDescription(Texts.of("Teleport to a warp location"))
+				.setExtendedDescription(Texts.of("Teleports you to the location of the specified warp."))
+				.setExecutor(new WarpCommand())
+				.setArguments(GenericArguments.string(Texts.of("name")))
 				.setChildren(subCommands)
 				.build();
 		
