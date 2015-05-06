@@ -4,13 +4,19 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 
 public abstract class StorageManager {
+	
+	protected BLWarps plugin;
+	
+	public StorageManager(BLWarps plugin) {
+		this.plugin = plugin;
+	}
 
 	/**
 	 * To be called when loading the warps from a storage solution like REST,
 	 * MySQL, etc. fails
 	 */
 	public void failedLoadWarps() {
-		BLWarps.fallbackManager.loadWarps();
+		plugin.getFallBackManager().loadWarps();
 	}
 
 	/**
@@ -18,7 +24,7 @@ public abstract class StorageManager {
 	 * MySQL, etc. fails
 	 */
 	public void failedSaveNewWarp(Warp warp) {
-		BLWarps.fallbackManager.saveNewWarp(warp);
+		plugin.getFallBackManager().saveNewWarp(warp);
 	}
 
 	/**
@@ -26,7 +32,7 @@ public abstract class StorageManager {
 	 * MySQL, etc. fails
 	 */
 	public void failedDeleteWarp(Warp warp) {
-		BLWarps.fallbackManager.deleteWarp(warp);
+		plugin.getFallBackManager().deleteWarp(warp);
 	}
 
 	/**

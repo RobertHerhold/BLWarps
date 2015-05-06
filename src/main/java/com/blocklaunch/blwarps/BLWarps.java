@@ -10,7 +10,6 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.state.PreInitializationEvent;
@@ -39,12 +38,10 @@ public class BLWarps {
 	 * Prefix to display at the beginning of messages to player, console
 	 * outputs, etc.
 	 */
-	public static final String PREFIX = "[Warps]";
-
+	public static final String PREFIX = "[BLWarps]";
 	public static Game game;
 	public static PluginContainer plugin;
 	public static SynchronousScheduler scheduler;
-	public static Logger logger = LoggerFactory.getLogger(BLWarps.class);
 	public static File configFolder;
 
 	public static File warpsFile;
@@ -53,8 +50,11 @@ public class BLWarps {
 	 * Fallback flat file manager to save/load warps in case any of the other
 	 * storage methods fail to load or save warps
 	 */
-	public static FlatFileManager fallbackManager = new FlatFileManager();
+	private FlatFileManager fallbackManager = new FlatFileManager(this);
 
+	@Inject
+	private Logger logger;
+	
 	@Inject
 	@DefaultConfig(sharedRoot = false)
 	private File configFile;
@@ -85,7 +85,7 @@ public class BLWarps {
 
 		// Register commands
 		CommandService cmdService = game.getCommandDispatcher();
-		logger.info(PREFIX + " Registering commands");
+		logger.info("Registering commands");
 		cmdService.register(plugin, new SetWarpCommand(), "setwarp", "addwarp");
 		cmdService.register(plugin, new WarpCommand(), "warp");
 		cmdService.register(plugin, new DeleteWarpCommand(), "deletewarp", "delwarp");
@@ -118,7 +118,7 @@ public class BLWarps {
 			Settings.SQLUsername = config.getNode("sql", "username").getString();
 			Settings.SQLPassword = config.getNode("sql", "password").getString();
 		} catch (IOException e) {
-			logger.warn(PREFIX + " The configuration could not be loaded! Using the default configuration");
+			logger.warn("The configuration could not be loaded! Using the default configuration");
 		} catch (IllegalArgumentException e) {
 			// Everything after this is only for stringifying the array of all
 			// StorageType values
@@ -130,10 +130,10 @@ public class BLWarps {
 					sb.append(", ");
 				}
 			}
-			logger.warn(PREFIX + " The specified storage type could not be found. Reverting to flatfile storage. Try: "
+			logger.warn("The specified storage type could not be found. Reverting to flatfile storage. Try: "
 					+ sb.toString());
 		} catch (URISyntaxException e) {
-			logger.warn(PREFIX + " The specified URI could not be parsed. Reverting to flatfile storage.");
+			logger.warn("The specified URI could not be parsed. Reverting to flatfile storage.");
 		}
 	}
 
@@ -146,7 +146,7 @@ public class BLWarps {
 	public void saveDefaultConfig() {
 		try {
 			if (!configFile.exists()) {
-				logger.info(PREFIX + " Generating config file...");
+				logger.info("Generating config file...");
 				configFile.getParentFile().mkdirs();
 				configFile.createNewFile();
 				CommentedConfigurationNode config = configManager.load();
@@ -178,30 +178,38 @@ public class BLWarps {
 				config.getNode("sql", "password").setValue(Settings.SQLPassword);
 
 				configManager.save(config);
-				logger.info(PREFIX + " Config file successfully generated.");
+				logger.info("Config file successfully generated.");
 			} else {
 				return;
 			}
 		} catch (IOException exception) {
-			logger.warn(PREFIX + " The default configuration could not be created!");
+			logger.warn("The default configuration could not be created!");
 		}
 	}
 
 	private void setupStorageManager() {
 		switch (Settings.storageType) {
 		case FLATFILE:
-			storageManager = new FlatFileManager();
+			storageManager = new FlatFileManager(this);
 			break;
 		case REST:
-			storageManager = new RestManager();
+			storageManager = new RestManager(this);
 			break;
 		case SQL:
-			storageManager = new SQLManager();
+			storageManager = new SQLManager(this);
 			break;
 		default:
-			storageManager = new FlatFileManager();
+			storageManager = new FlatFileManager(this);
 			break;
 		}
 
+	}
+	
+	public Logger getLogger() {
+		return logger;
+	}
+	
+	public StorageManager getFallBackManager() {
+		return fallbackManager;
 	}
 }

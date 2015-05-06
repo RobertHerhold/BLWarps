@@ -16,7 +16,8 @@ public class SQLManager extends StorageManager {
 
 	WarpDAO warpDAO;
 
-	public SQLManager() {
+	public SQLManager(BLWarps plugin) {
+		super(plugin);
 		StringBuilder sb = new StringBuilder();
 		sb.append("jdbc:");
 		// We don't need to worry about the StorageType not being a SQL database

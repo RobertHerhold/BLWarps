@@ -17,6 +17,10 @@ public class FlatFileManager extends StorageManager {
 
 	private static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
 	private static final String ERROR_FILE_READ = "There was an error reading the warps file!";
+	
+	public FlatFileManager(BLWarps plugin) {
+		super(plugin);
+	}
 
 	/**
 	 * Reads in warps file, and de-serializes it to a List<Warp>
@@ -101,7 +105,7 @@ public class FlatFileManager extends StorageManager {
 			});
 			return Optional.of(warps);
 		} catch (IOException e) {
-			BLWarps.logger.warn(ERROR_FILE_READ);
+			plugin.getLogger().warn(ERROR_FILE_READ);
 			e.printStackTrace();
 			return Optional.absent();
 		}
@@ -123,7 +127,7 @@ public class FlatFileManager extends StorageManager {
 			mapper.writeValue(BLWarps.warpsFile, warps);
 			return true;
 		} catch (IOException e) {
-			BLWarps.logger.warn(ERROR_FILE_WRITE);
+			plugin.getLogger().warn(ERROR_FILE_WRITE);
 			e.printStackTrace();
 			return false;
 		}
