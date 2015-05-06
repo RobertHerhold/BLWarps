@@ -45,4 +45,6 @@ For REST-based storage, HTTP requests are sent using the  [Jersey Client](https:
 * `DELETE` when deleting a warp. The warp's name will be a path parameter. Ex: `http://localhost:8080/warps/deletethiswarp`
 
 ##Building BLWarps
-BLWarps uses Maven as a dependency manager and as a build tool. To build the plugin from source, make sure [Maven](https://maven.apache.org/download.cgi) is installed, and run `mvn clean install`. The newly built plugin will be in `target/bl-warps-{version}.jar`
+BLWarps uses Maven as a dependency manager and as a build tool. To build the plugin from source, make sure [Maven](https://maven.apache.org/download.cgi) is installed, and run `mvn clean install`. The newly built plugin will be in `target/bl-warps-{version}.jar`. For developing, run the Maven build once, then add the `target/generated-sources/java-templates` directory as a source folder (see graphic below for how to do this in Eclipse).
+
+![Add generated sources as a source folder](mvn_build_tutorial.png)
