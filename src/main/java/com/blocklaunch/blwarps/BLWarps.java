@@ -29,6 +29,7 @@ import com.blocklaunch.blwarps.commands.DeleteWarpCommand;
 import com.blocklaunch.blwarps.commands.ListWarpsCommand;
 import com.blocklaunch.blwarps.commands.SetWarpCommand;
 import com.blocklaunch.blwarps.commands.WarpCommand;
+import com.blocklaunch.blwarps.commands.WarpCommandElement;
 import com.blocklaunch.blwarps.manager.FlatFileManager;
 import com.blocklaunch.blwarps.manager.RestManager;
 import com.blocklaunch.blwarps.manager.SQLManager;
@@ -140,7 +141,7 @@ public class BLWarps {
 				.setDescription(Texts.of("Teleport to a warp location"))
 				.setExtendedDescription(Texts.of("Teleports you to the location of the specified warp."))
 				.setExecutor(new WarpCommand())
-				.setArguments(GenericArguments.string(Texts.of("name")))
+				.setArguments(GenericArguments.firstParsing(new WarpCommandElement(Texts.of("warp"))))
 				.setChildren(subCommands)
 				.build();
 		
