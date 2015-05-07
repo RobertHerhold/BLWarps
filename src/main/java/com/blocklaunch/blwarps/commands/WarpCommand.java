@@ -1,5 +1,6 @@
 package com.blocklaunch.blwarps.commands;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.spongepowered.api.entity.player.Player;
@@ -29,6 +30,7 @@ public class WarpCommand implements CommandCallable {
 	private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
 			+ " That warp does not exist!");
 	private static final String ERROR_WARPING_MSG = BLWarps.PREFIX + " There was an error scheduling your warp: ";
+	private static final Text NO_PERMISSION = Texts.of(TextColors.RED, BLWarps.PREFIX + " You do not have permission to use that warp!");
 
 	@Override
 	public List<String> getSuggestions(CommandSource source, String arguments) throws CommandException {
@@ -42,6 +44,7 @@ public class WarpCommand implements CommandCallable {
 			source.sendMessage(MUST_BE_PLAYER_MSG);
 			return Optional.of(CommandResult.empty());
 		}
+		Player player = (Player) source;
 
 		// Check if the arguments String is empty before splitting b/c in the
 		// event it is empty, the split will still return an array of size 1
@@ -66,8 +69,25 @@ public class WarpCommand implements CommandCallable {
 		}
 
 		Warp warp = optWarp.get();
+		
+		String warpPermission = "blwarps.warp." + warp.getName();
+		String groupPermission = "blwarps.warp.group." + warp.getGroup();
+		String wildCardPermission = "blwarps.warp.*";
+		
+		List<String> validPermissions = Arrays.asList(warpPermission, groupPermission, wildCardPermission);
 
-		Player player = (Player) source;
+		boolean playerIsValid = false;
+		
+		for(String permission : validPermissions) {
+			if(player.hasPermission(permission)) {
+				playerIsValid = true;
+			}
+		}
+		
+		if(playerIsValid == false) {
+			player.sendMessage(NO_PERMISSION);
+			return Optional.of(CommandResult.empty());
+		}
 
 		Optional<String> optError = WarpManager.scheduleWarp(player, warp);
 
