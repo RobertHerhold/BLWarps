@@ -3,6 +3,8 @@ package com.blocklaunch.blwarps;
 import java.text.DecimalFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.flowpowered.math.vector.Vector3d;
 
 /**
@@ -10,6 +12,7 @@ import com.flowpowered.math.vector.Vector3d;
  * (de)serialization with Jackson
  *
  */
+@JsonInclude(Include.NON_EMPTY)
 public class Warp {
 
 	private Vector3d position;
@@ -20,9 +23,11 @@ public class Warp {
 	private double y;
 	private double z;
 
+	private String group;
+
 	public Warp() {
 	}
-
+	
 	public Warp(String name, String world, double x, double y, double z) {
 		this.name = name;
 		this.world = world;
@@ -114,9 +119,18 @@ public class Warp {
 		this.z = z;
 	}
 
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
 	@Override
 	public String toString() {
-		return "Warp [name=" + name + ", world=" + world + ", x=" + x + ", y=" + y + ", z=" + z + "]";
+		return "Warp [name=" + name + ", world=" + world + ", x=" + x + ", y=" + y + ", z=" + z + ", group=" + group
+				+ "]";
 	}
 
 }
