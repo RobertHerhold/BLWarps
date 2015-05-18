@@ -164,7 +164,9 @@ public class BLWarps {
 				CommentedConfigurationNode rawConfig = configLoader.load();
 				
 				try {
+					config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
 					BLWarpsConfiguration.MAPPER.bind(config).serialize(rawConfig);
+					configLoader.save(rawConfig);
 				} catch (ObjectMappingException e) {
 					e.printStackTrace();
 				}

@@ -23,9 +23,10 @@ public class RestManager extends StorageManager {
 	public RestManager() {
 		Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
 		HttpAuthenticationFeature auth = HttpAuthenticationFeature.basicBuilder().nonPreemptive()
-				.credentials(BLWarps.config.getRESTUsername(), BLWarps.config.getRESTPassword()).build();
+				.credentials(BLWarps.config.getRestConfig().getRESTUsername(), BLWarps.config.getRestConfig().getRESTPassword()).build();
+		
 		client.register(auth);
-		webTarget = client.target(BLWarps.config.getRESTURI());
+		webTarget = client.target(BLWarps.config.getRestConfig().getRESTURI());
 	}
 
 	@Override

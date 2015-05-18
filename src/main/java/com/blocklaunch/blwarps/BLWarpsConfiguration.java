@@ -5,12 +5,13 @@ import java.net.URI;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 /**
  * Class that contains all the configurable options for the plugin
  */
 public class BLWarpsConfiguration {
-	
+
 	public static final ObjectMapper<BLWarpsConfiguration> MAPPER;
 
 	static {
@@ -21,20 +22,20 @@ public class BLWarpsConfiguration {
 		}
 	}
 
-	// ////////////////////
-	// General Settings //
-	// ////////////////////
+	/********************
+	 * General Settings *
+	 ********************/
 
 	/**
 	 * Time, in seconds, between initiating a warp and teleporting the player
 	 */
-	@Setting("warp-delay")
+	@Setting(value = "warp-delay", comment = "Time, in seconds, between initiating a warp and teleporting the player")
 	private int warpDelay = 5;
 
 	/**
 	 * Whether or not to cancel a player's warp if they move or get hurt
 	 */
-	@Setting("pvp-protect")
+	@Setting(value = "pvp-protect", comment = "Whether or not to cancel a player's warp if they move or get hurt")
 	private boolean pvpProtect = false;
 
 	/**
@@ -42,64 +43,100 @@ public class BLWarpsConfiguration {
 	 * 
 	 * @see StorageType
 	 */
-	@Setting("storage-type")
+	@Setting(value = "storage-type", comment = "The storage solution to store warps in")
 	private StorageType storageType = StorageType.FLATFILE;
 
-	///////////////////
-	// REST Settings //
-	///////////////////
+	@Setting(value = "rest", comment = "Connection settings for a connected REST API. Only applicable for the 'REST' storage-type")
+	private RestConfiguration restConfig = new RestConfiguration();
 
-	/**
-	 * The URL of the REST API, if that option is being used
-	 */
-	@Setting("rest.uri")
-	private URI RESTURI = URI.create("http://localhost:8080");
+	@Setting(value = "sql", comment = "Connection settings for a connected SQL database. Only applicable for the 'SQL' storage-type")
+	private SQLConfiguration sqlConfig = new SQLConfiguration();
 
-	/**
-	 * The username to log into a SQL database with
-	 */
-	@Setting("rest.username")
-	private String RESTUsername = "root";
+	@ConfigSerializable
+	public static class RestConfiguration {
+		/**
+		 * The URL of the REST API, if that option is being used
+		 */
+		@Setting(value = "uri", comment = "The URI of the connected REST API (complete path with endpoint)")
+		private URI RESTURI = URI.create("http://localhost:8080");
 
-	/**
-	 * The password to log into a SQL database with
-	 */
-	@Setting("rest.password")
-	private String RESTPassword = "pass";
+		/**
+		 * The username to log into a SQL database with
+		 */
+		@Setting(value = "username", comment = "Username to authenticate to the REST API with (basic authentication)")
+		private String RESTUsername = "root";
 
-	//////////////////
-	// SQL Settings //
-	//////////////////
+		/**
+		 * The password to log into a SQL database with
+		 */
+		@Setting(value = "password", comment = "Password to authenticate to the REST API with (basic authentication)")
+		private String RESTPassword = "pass";
 
-	/**
-	 * The specific SQL database to use, Ex. MySQL, H2, SQLite, etc.
-	 */
-	@Setting("sql.database")
-	private String SQLDatabase = "MySQL";
+		public URI getRESTURI() {
+			return RESTURI;
+		}
 
-	/**
-	 * The URL of the SQL database, if that option is being used
-	 */
-	@Setting("sql.url")
-	private String SQLURL = "localhost:3306";
+		public String getRESTUsername() {
+			return RESTUsername;
+		}
 
-	/**
-	 * The name of the SQL database, if that option is being used
-	 */
-	@Setting("sql.database-name")
-	private String SQLDatabaseName = "BLWarps";
+		public String getRESTPassword() {
+			return RESTPassword;
+		}
+	}
 
-	/**
-	 * The username to log into a SQL database with
-	 */
-	@Setting("sql.username")
-	private String SQLUsername = "root";
+	@ConfigSerializable
+	public static class SQLConfiguration {
+		/**
+		 * The specific SQL database to use, Ex. MySQL, H2, SQLite, etc.
+		 */
+		@Setting(value = "database", comment = "The specific SQL database to use. Supported: MySQL, H2, SQLite")
+		private String SQLDatabase = "MySQL";
 
-	/**
-	 * The password to log into a SQL database with
-	 */
-	@Setting("sql.password")
-	private String SQLPassword = "pass";
+		/**
+		 * The URL of the SQL database, if that option is being used
+		 */
+		@Setting(value = "url", comment = "The URL of the connected SQL database")
+		private String SQLURL = "localhost:3306";
+
+		/**
+		 * The name of the SQL database, if that option is being used
+		 */
+		@Setting(value = "database-name", comment = "The name of the SQL database, if that option is being used")
+		private String SQLDatabaseName = "BLWarps";
+
+		/**
+		 * The username to log into a SQL database with
+		 */
+		@Setting(value = "username", comment = "Username to authenticate to the SQL database with")
+		private String SQLUsername = "root";
+
+		/**
+		 * The password to log into a SQL database with
+		 */
+		@Setting(value = "password", comment = "Password to authenticate to the SQL database with")
+		private String SQLPassword = "pass";
+
+		public String getSQLDatabase() {
+			return SQLDatabase;
+		}
+
+		public String getSQLURL() {
+			return SQLURL;
+		}
+
+		public String getSQLDatabaseName() {
+			return SQLDatabaseName;
+		}
+
+		public String getSQLUsername() {
+			return SQLUsername;
+		}
+
+		public String getSQLPassword() {
+			return SQLPassword;
+		}
+	}
 
 	public int getWarpDelay() {
 		return warpDelay;
@@ -113,35 +150,12 @@ public class BLWarpsConfiguration {
 		return storageType;
 	}
 
-	public URI getRESTURI() {
-		return RESTURI;
+	public RestConfiguration getRestConfig() {
+		return restConfig;
 	}
 
-	public String getRESTUsername() {
-		return RESTUsername;
+	public SQLConfiguration getSQLConfig() {
+		return sqlConfig;
 	}
 
-	public String getRESTPassword() {
-		return RESTPassword;
-	}
-
-	public String getSQLDatabase() {
-		return SQLDatabase;
-	}
-
-	public String getSQLURL() {
-		return SQLURL;
-	}
-
-	public String getSQLDatabaseName() {
-		return SQLDatabaseName;
-	}
-
-	public String getSQLUsername() {
-		return SQLUsername;
-	}
-
-	public String getSQLPassword() {
-		return SQLPassword;
-	}
 }

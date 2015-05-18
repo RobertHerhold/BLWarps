@@ -20,16 +20,16 @@ public class SQLManager extends StorageManager {
 		sb.append("jdbc:");
 		// We don't need to worry about the StorageType not being a SQL database
 		// because this constructor will only be called if StorageType is SQL.
-		sb.append(BLWarps.config.getSQLDatabase().toLowerCase());
+		sb.append(BLWarps.config.getSQLConfig().getSQLDatabase().toLowerCase());
 		sb.append("://");
-		sb.append(BLWarps.config.getSQLUsername());
-		if (!BLWarps.config.getSQLPassword().isEmpty()) {
+		sb.append(BLWarps.config.getSQLConfig().getSQLUsername());
+		if (!BLWarps.config.getSQLConfig().getSQLPassword().isEmpty()) {
 			sb.append(":");
-			sb.append(BLWarps.config.getSQLPassword());
+			sb.append(BLWarps.config.getSQLConfig().getSQLPassword());
 		}
 		sb.append("@");
-		sb.append(BLWarps.config.getSQLURL());
-		sb.append("/").append(BLWarps.config.getSQLDatabaseName());
+		sb.append(BLWarps.config.getSQLConfig().getSQLURL());
+		sb.append("/").append(BLWarps.config.getSQLConfig().getSQLDatabaseName());
 
 		SqlService sql = BLWarps.game.getServiceManager().provide(SqlService.class).get();
 
