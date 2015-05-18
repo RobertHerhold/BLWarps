@@ -98,11 +98,11 @@ public class BLWarps {
 		HashMap<List<String>, CommandSpec> subCommands = new HashMap<>();
 		
 		CommandSpec createWarpSubCommand = CommandSpec.builder()
-				.setPermission("blwarps.create")
-				.setDescription(Texts.of("Set a warp"))
-				.setExtendedDescription(Texts.of("Sets a warp at your location, or at the specified coordinates"))
-				.setExecutor(new SetWarpCommand())
-				.setArguments(GenericArguments.seq(
+				.permission("blwarps.create")
+				.description(Texts.of("Set a warp"))
+				.extendedDescription(Texts.of("Sets a warp at your location, or at the specified coordinates"))
+				.executor(new SetWarpCommand())
+				.arguments(GenericArguments.seq(
 						GenericArguments.string(Texts.of("name")),
 						GenericArguments.optional(GenericArguments.vector3d(Texts.of("position")))))
 				.build();
@@ -118,31 +118,31 @@ public class BLWarps {
 //		subCommands.put(Arrays.asList(""), warpSubCommand);
 		
 		CommandSpec deleteWarpSubCommand = CommandSpec.builder()
-				.setPermission("blwarps.delete")
-				.setDescription(Texts.of("Delete a warp"))
-				.setExtendedDescription(Texts.of("Deletes the warp with the specified name"))
-				.setExecutor(new DeleteWarpCommand())
-				.setArguments(GenericArguments.string(Texts.of("name")))
+				.permission("blwarps.delete")
+				.description(Texts.of("Delete a warp"))
+				.description(Texts.of("Deletes the warp with the specified name"))
+				.executor(new DeleteWarpCommand())
+				.arguments(GenericArguments.string(Texts.of("name")))
 				.build();
 		subCommands.put(Arrays.asList("delete", "del"), deleteWarpSubCommand);
 		
 		CommandSpec listWarpSubCommand = CommandSpec.builder()
-				.setPermission("blwarps.list")
-				.setDescription(Texts.of("List warps"))
-				.setExtendedDescription(Texts.of("Lists all warps, split up into pages. Optionally, specify a page number"))
-				.setExecutor(new ListWarpsCommand())
-				.setArguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page"))))
+				.permission("blwarps.list")
+				.description(Texts.of("List warps"))
+				.description(Texts.of("Lists all warps, split up into pages. Optionally, specify a page number"))
+				.executor(new ListWarpsCommand())
+				.arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page"))))
 				.build();
 		subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand);
 		
 		CommandSpec mainWarpCommand = CommandSpec
 				.builder()
-				.setPermission("blwarps.warp")
-				.setDescription(Texts.of("Teleport to a warp location"))
-				.setExtendedDescription(Texts.of("Teleports you to the location of the specified warp."))
-				.setExecutor(new WarpCommand())
-				.setArguments(GenericArguments.firstParsing(new WarpCommandElement(Texts.of("warp"))))
-				.setChildren(subCommands)
+				.permission("blwarps.warp")
+				.description(Texts.of("Teleport to a warp location"))
+				.description(Texts.of("Teleports you to the location of the specified warp."))
+				.executor(new WarpCommand())
+				.arguments(GenericArguments.firstParsing(new WarpCommandElement(Texts.of("warp"))))
+				.children(subCommands)
 				.build();
 		
 		game.getCommandDispatcher().register(plugin, mainWarpCommand, "warp");
