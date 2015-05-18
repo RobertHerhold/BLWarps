@@ -2,8 +2,6 @@ package com.blocklaunch.blwarps;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -108,25 +106,7 @@ public class BLWarps {
 		ConfigurationNode rawConfig = null;
 		try {
 			rawConfig = configLoader.load();
-			
 			config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
-			
-			// GENERAL SETTINGS
-//			BLWarpsConfiguration.warpDelay = config.getNode("warp-delay").getInt();
-//			BLWarpsConfiguration.pvpProtect = config.getNode("pvp-protect").getBoolean();
-//			BLWarpsConfiguration.storageType = StorageType.valueOf(config.getNode("storage-type").getString().toUpperCase());
-			
-			// REST SETTINGS
-//			BLWarpsConfiguration.RESTURI = new URI(config.getNode("rest","uri").getString());
-//			BLWarpsConfiguration.RESTUsername = config.getNode("rest", "username").getString();
-//			BLWarpsConfiguration.RESTPassword = config.getNode("rest", "password").getString();
-			
-			// SQL SETTINGS
-//			BLWarpsConfiguration.SQLDatabase = config.getNode("sql", "database").getString();
-//			BLWarpsConfiguration.SQLURL = config.getNode("sql", "url").getString();
-//			BLWarpsConfiguration.SQLDatabaseName = config.getNode("sql", "database-name").getString();
-//			BLWarpsConfiguration.SQLUsername = config.getNode("sql", "username").getString();
-//			BLWarpsConfiguration.SQLPassword = config.getNode("sql", "password").getString();
 		} catch (IOException e) {
 			logger.warn(PREFIX + " The configuration could not be loaded! Using the default configuration");
 		} catch (IllegalArgumentException e) {
@@ -142,8 +122,6 @@ public class BLWarps {
 			}
 			logger.warn(PREFIX + " The specified storage type could not be found. Reverting to flatfile storage. Try: "
 					+ sb.toString());
-//		} catch (URISyntaxException e) {
-//			logger.warn(PREFIX + " The specified URI could not be parsed. Reverting to flatfile storage.");
 		} catch (ObjectMappingException e) {
 			logger.warn(PREFIX + " There was an loading the configuration." + e.getStackTrace());
 		}
@@ -164,39 +142,13 @@ public class BLWarps {
 				CommentedConfigurationNode rawConfig = configLoader.load();
 				
 				try {
+					// Populate config with default values
 					config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
 					BLWarpsConfiguration.MAPPER.bind(config).serialize(rawConfig);
-					configLoader.save(rawConfig);
 				} catch (ObjectMappingException e) {
 					e.printStackTrace();
 				}
-
-				// Populate config with default values
-
-				// GENERAL SETTINGS
-//				config.getNode("warp-delay").setComment("Time, in seconds, between initiating a warp and teleporting the player");
-//				config.getNode("warp-delay").setValue(testConfig.getWarpDelay());
-//				
-//				config.getNode("pvp-protect").setComment("Whether or not to cancel a player's warp if they move or get hurt");
-//				config.getNode("pvp-protect").setValue(testConfig.isPvpProtect());
-//				
-//				config.getNode("storage-type").setValue("The storage solution to store warps in");
-//				config.getNode("storage-type").setValue(testConfig.getStorageType().toString());
-
-				// REST SETTINGS
-//				config.getNode("rest").setComment("These settings are only applicable if the 'REST' value is selected in the storage-type field");
-//				config.getNode("rest", "uri").setValue(testConfig.getRESTURI().toString());
-//				config.getNode("rest", "username").setValue(testConfig.getRESTUsername());
-//				config.getNode("rest", "password").setValue(testConfig.getRESTUsername());
-
-				// SQL SETTINGS
-//				config.getNode("sql").setComment("These settings are only applicable if the 'SQL' value is selected in the storage-type field");
-//				config.getNode("sql", "database").setValue(testConfig.getSQLDatabase());
-//				config.getNode("sql", "url").setValue(testConfig.getSQLURL());
-//				config.getNode("sql", "database-name").setValue(testConfig.getSQLDatabaseName());
-//				config.getNode("sql", "username").setValue(testConfig.getSQLUsername());
-//				config.getNode("sql", "password").setValue(testConfig.getSQLPassword());
-
+				
 				configLoader.save(rawConfig);
 				logger.info(PREFIX + " Config file successfully generated.");
 			} else {
