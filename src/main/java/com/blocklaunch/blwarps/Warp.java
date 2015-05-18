@@ -12,7 +12,7 @@ import com.flowpowered.math.vector.Vector3d;
  */
 public class Warp {
 
-	private static Vector3d position;
+	private Vector3d position;
 
 	private String name;
 	private String world;

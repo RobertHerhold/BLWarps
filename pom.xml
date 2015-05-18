@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.blocklaunch</groupId>
 	<artifactId>bl-warps</artifactId>
-	<version>0.2.0</version>
+	<version>0.2.1</version>
 	<name>BLWarps</name>
 
 	<build>
@@ -26,6 +26,19 @@
 						<phase>install</phase>
 						<goals>
 							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>templating-maven-plugin</artifactId>
+				<version>1.0-alpha-3</version>
+				<executions>
+					<execution>
+						<id>filter-src</id>
+						<goals>
+							<goal>filter-sources</goal>
 						</goals>
 					</execution>
 				</executions>
