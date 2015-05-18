@@ -2,12 +2,11 @@ package com.blocklaunch.blwarps;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
@@ -43,6 +42,7 @@ public class BLWarps {
 	public static PluginContainer plugin;
 	public static SynchronousScheduler scheduler;
 	public static File configFolder;
+	public static BLWarpsConfiguration config;
 
 	public static File warpsFile;
 	public static StorageManager storageManager;
@@ -61,7 +61,7 @@ public class BLWarps {
 
 	@Inject
 	@DefaultConfig(sharedRoot = false)
-	private ConfigurationLoader<CommentedConfigurationNode> configManager;
+	private ConfigurationLoader<CommentedConfigurationNode> configLoader;
 
 	@Subscribe
 	public void preInit(PreInitializationEvent event) {
@@ -97,26 +97,10 @@ public class BLWarps {
 	 * default configuration values in Settings
 	 */
 	private void loadConfig() {
-		ConfigurationNode config = null;
+		ConfigurationNode rawConfig = null;
 		try {
-			config = configManager.load();
-			
-			// GENERAL SETTINGS
-			Settings.warpDelay = config.getNode("warp-delay").getInt();
-			Settings.pvpProtect = config.getNode("pvp-protect").getBoolean();
-			Settings.storageType = StorageType.valueOf(config.getNode("storage-type").getString().toUpperCase());
-			
-			// REST SETTINGS
-			Settings.RESTURI = new URI(config.getNode("rest","uri").getString());
-			Settings.RESTUsername = config.getNode("rest", "username").getString();
-			Settings.RESTPassword = config.getNode("rest", "password").getString();
-			
-			// SQL SETTINGS
-			Settings.SQLDatabase = config.getNode("sql", "database").getString();
-			Settings.SQLURL = config.getNode("sql", "url").getString();
-			Settings.SQLDatabaseName = config.getNode("sql", "database-name").getString();
-			Settings.SQLUsername = config.getNode("sql", "username").getString();
-			Settings.SQLPassword = config.getNode("sql", "password").getString();
+			rawConfig = configLoader.load();
+			config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
 		} catch (IOException e) {
 			logger.warn("The configuration could not be loaded! Using the default configuration");
 		} catch (IllegalArgumentException e) {
@@ -132,8 +116,8 @@ public class BLWarps {
 			}
 			logger.warn("The specified storage type could not be found. Reverting to flatfile storage. Try: "
 					+ sb.toString());
-		} catch (URISyntaxException e) {
-			logger.warn("The specified URI could not be parsed. Reverting to flatfile storage.");
+		} catch (ObjectMappingException e) {
+			logger.warn(PREFIX + " There was an loading the configuration." + e.getStackTrace());
 		}
 	}
 
@@ -149,36 +133,18 @@ public class BLWarps {
 				logger.info("Generating config file...");
 				configFile.getParentFile().mkdirs();
 				configFile.createNewFile();
-				CommentedConfigurationNode config = configManager.load();
-
-				// Populate config with default values
-
-				// GENERAL SETTINGS
-				config.getNode("warp-delay").setComment("Time, in seconds, between initiating a warp and teleporting the player");
-				config.getNode("warp-delay").setValue(Settings.warpDelay);
+				CommentedConfigurationNode rawConfig = configLoader.load();
 				
-				config.getNode("pvp-protect").setComment("Whether or not to cancel a player's warp if they move or get hurt");
-				config.getNode("pvp-protect").setValue(Settings.pvpProtect);
+				try {
+					// Populate config with default values
+					config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
+					BLWarpsConfiguration.MAPPER.bind(config).serialize(rawConfig);
+				} catch (ObjectMappingException e) {
+					e.printStackTrace();
+				}
 				
-				config.getNode("storage-type").setValue("The storage solution to store warps in");
-				config.getNode("storage-type").setValue(Settings.storageType.toString());
-
-				// REST SETTINGS
-				config.getNode("rest").setComment("These settings are only applicable if the 'REST' value is selected in the storage-type field");
-				config.getNode("rest", "uri").setValue(Settings.RESTURI.toString());
-				config.getNode("rest", "username").setValue(Settings.RESTUsername);
-				config.getNode("rest", "password").setValue(Settings.RESTPassword);
-
-				// SQL SETTINGS
-				config.getNode("sql").setComment("These settings are only applicable if the 'SQL' value is selected in the storage-type field");
-				config.getNode("sql", "database").setValue(Settings.SQLDatabase);
-				config.getNode("sql", "url").setValue(Settings.SQLURL);
-				config.getNode("sql", "database-name").setValue(Settings.SQLDatabaseName);
-				config.getNode("sql", "username").setValue(Settings.SQLUsername);
-				config.getNode("sql", "password").setValue(Settings.SQLPassword);
-
-				configManager.save(config);
-				logger.info("Config file successfully generated.");
+				configLoader.save(rawConfig);
+				logger.info(PREFIX + " Config file successfully generated.");
 			} else {
 				return;
 			}
@@ -188,7 +154,7 @@ public class BLWarps {
 	}
 
 	private void setupStorageManager() {
-		switch (Settings.storageType) {
+		switch (config.getStorageType()) {
 		case FLATFILE:
 			storageManager = new FlatFileManager(this);
 			break;

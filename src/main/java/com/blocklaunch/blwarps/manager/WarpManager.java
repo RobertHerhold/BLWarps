@@ -8,7 +8,7 @@ import java.util.Map;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.service.scheduler.Task;
 
-import com.blocklaunch.blwarps.Settings;
+import com.blocklaunch.blwarps.BLWarpsConfiguration;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.runnable.WarpPlayerRunnable;
@@ -118,7 +118,7 @@ public class WarpManager {
 	 * @return An error if one exists, or Optional.absent() otherwise
 	 */
 	public static Optional<String> scheduleWarp(Player player, Warp warp) {
-		long delay = Settings.warpDelay * TICKS_PER_SECOND;
+		long delay = BLWarps.config.getWarpDelay() * TICKS_PER_SECOND;
 
 		// Schedule the task
 		Optional<Task> optTask = BLWarps.scheduler.runTaskAfter(BLWarps.plugin, new WarpPlayerRunnable(player,

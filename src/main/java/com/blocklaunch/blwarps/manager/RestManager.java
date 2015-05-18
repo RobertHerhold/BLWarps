@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
-import com.blocklaunch.blwarps.Settings;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 
@@ -26,10 +25,10 @@ public class RestManager extends StorageManager {
 		
 		Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
 		HttpAuthenticationFeature auth = HttpAuthenticationFeature.basicBuilder().nonPreemptive()
-				.credentials(Settings.RESTUsername, Settings.RESTPassword).build();
+				.credentials(BLWarps.config.getRestConfig().getRESTUsername(), BLWarps.config.getRestConfig().getRESTPassword()).build();
+		
 		client.register(auth);
-		webTarget = client.target(Settings.RESTURI);
-
+		webTarget = client.target(BLWarps.config.getRestConfig().getRESTURI());
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class RestManager extends StorageManager {
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
 		if (response.getStatus() != 200) {
 			plugin.getLogger().warn("There was an error loading the warps from the {} storage. Error code: {}",
-					Settings.storageType, response.getStatus());
+					BLWarps.config.getStorageType(), response.getStatus());
 			failedLoadWarps();
 			return false;
 		}
@@ -53,7 +52,7 @@ public class RestManager extends StorageManager {
 
 		if (response.getStatus() != 201) {
 			plugin.getLogger().warn("There was an error saving the warps to the {} storage. Error code: {}",
-					Settings.storageType, response.getStatus());
+					BLWarps.config.getStorageType(), response.getStatus());
 			failedSaveNewWarp(warp);
 			return false;
 		}
@@ -66,7 +65,7 @@ public class RestManager extends StorageManager {
 
 		if (response.getStatus() != 200) {
 			plugin.getLogger().warn("There was an error saving the warps to the {} storage. Error code: {}",
-					Settings.storageType, response.getStatus());
+					BLWarps.config.getStorageType(), response.getStatus());
 			failedSaveNewWarp(warp);
 			return false;
 		}
