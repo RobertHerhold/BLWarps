@@ -1,4 +1,4 @@
-# BLWarps
+# BLWarps [![Build Status](https://travis-ci.org/BlockLaunch/BLWarps.svg?branch=master)](https://travis-ci.org/BlockLaunch/BLWarps)
 BLWarps is a [Sponge](https://www.spongepowered.org/) plugin for easily setting locations for players to warp to.
 
 ##Commands
