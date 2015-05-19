@@ -31,7 +31,7 @@ public class WarpCommand implements CommandExecutor {
 		}
 
 		// Get the warp by it's name
-		Optional<Warp> optWarp = WarpManager.getWarp((String) args.getOne("name").orNull());
+		Optional<Warp> optWarp = args.getOne("warp");
 		if (!optWarp.isPresent()) {
 			source.sendMessage(WARP_NOT_EXIST_MSG);
 			return CommandResult.empty();
