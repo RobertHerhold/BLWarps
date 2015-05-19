@@ -24,15 +24,27 @@ public class Warp {
 	}
 
 	public Warp(String name, String world, double x, double y, double z) {
-		super();
 		this.name = name;
 		this.world = world;
-		
+
 		DecimalFormat f = new DecimalFormat("##.00");
 
 		this.x = Double.valueOf(f.format(x));
 		this.y = Double.valueOf(f.format(y));
 		this.z = Double.valueOf(f.format(z));
+	}
+
+	public Warp(String name, String world, Vector3d position) {
+		this.name = name;
+		this.world = world;
+		this.position = position;
+
+		DecimalFormat f = new DecimalFormat("##.00");
+
+		this.x = Double.valueOf(f.format(position.getX()));
+		this.y = Double.valueOf(f.format(position.getY()));
+		this.z = Double.valueOf(f.format(position.getZ()));
+
 	}
 
 	/**
