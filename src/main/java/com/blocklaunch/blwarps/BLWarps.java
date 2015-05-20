@@ -33,7 +33,7 @@ import com.blocklaunch.blwarps.commands.WarpCommand;
 import com.blocklaunch.blwarps.commands.WarpCommandElement;
 import com.blocklaunch.blwarps.manager.FlatFileManager;
 import com.blocklaunch.blwarps.manager.RestManager;
-import com.blocklaunch.blwarps.manager.SQLManager;
+import com.blocklaunch.blwarps.manager.SqlManager;
 import com.blocklaunch.blwarps.manager.StorageManager;
 import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.inject.Inject;
@@ -213,7 +213,7 @@ public class BLWarps {
 			storageManager = new RestManager(this);
 			break;
 		case SQL:
-			storageManager = new SQLManager(this);
+			storageManager = new SqlManager(this);
 			break;
 		default:
 			storageManager = new FlatFileManager(this);

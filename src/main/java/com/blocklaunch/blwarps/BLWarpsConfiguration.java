@@ -50,7 +50,7 @@ public class BLWarpsConfiguration {
 	private RestConfiguration restConfig = new RestConfiguration();
 
 	@Setting(value = "sql", comment = "Connection settings for a connected SQL database. Only applicable for the 'SQL' storage-type")
-	private SQLConfiguration sqlConfig = new SQLConfiguration();
+	private SqlConfiguration sqlConfig = new SqlConfiguration();
 
 	@ConfigSerializable
 	public static class RestConfiguration {
@@ -58,83 +58,83 @@ public class BLWarpsConfiguration {
 		 * The URL of the REST API, if that option is being used
 		 */
 		@Setting(value = "uri", comment = "The URI of the connected REST API (complete path with endpoint)")
-		private URI RESTURI = URI.create("http://localhost:8080");
+		private URI restUri = URI.create("http://localhost:8080");
 
 		/**
 		 * The username to log into a SQL database with
 		 */
 		@Setting(value = "username", comment = "Username to authenticate to the REST API with (basic authentication)")
-		private String RESTUsername = "root";
+		private String restUsername = "root";
 
 		/**
 		 * The password to log into a SQL database with
 		 */
 		@Setting(value = "password", comment = "Password to authenticate to the REST API with (basic authentication)")
-		private String RESTPassword = "pass";
+		private String restPassword = "pass";
 
 		public URI getRESTURI() {
-			return RESTURI;
+			return restUri;
 		}
 
 		public String getRESTUsername() {
-			return RESTUsername;
+			return restUsername;
 		}
 
 		public String getRESTPassword() {
-			return RESTPassword;
+			return restPassword;
 		}
 	}
 
 	@ConfigSerializable
-	public static class SQLConfiguration {
+	public static class SqlConfiguration {
 		/**
 		 * The specific SQL database to use, Ex. MySQL, H2, SQLite, etc.
 		 */
 		@Setting(value = "database", comment = "The specific SQL database to use. Supported: MySQL, H2, SQLite")
-		private String SQLDatabase = "MySQL";
+		private String sqlDatabase = "MySQL";
 
 		/**
 		 * The URL of the SQL database, if that option is being used
 		 */
 		@Setting(value = "url", comment = "The URL of the connected SQL database")
-		private String SQLURL = "localhost:3306";
+		private String sqlUrl = "localhost:3306";
 
 		/**
 		 * The name of the SQL database, if that option is being used
 		 */
 		@Setting(value = "database-name", comment = "The name of the SQL database, if that option is being used")
-		private String SQLDatabaseName = "BLWarps";
+		private String sqlDatabaseName = "BLWarps";
 
 		/**
 		 * The username to log into a SQL database with
 		 */
 		@Setting(value = "username", comment = "Username to authenticate to the SQL database with")
-		private String SQLUsername = "root";
+		private String sqlUsername = "root";
 
 		/**
 		 * The password to log into a SQL database with
 		 */
 		@Setting(value = "password", comment = "Password to authenticate to the SQL database with")
-		private String SQLPassword = "pass";
+		private String sqlPassword = "pass";
 
-		public String getSQLDatabase() {
-			return SQLDatabase;
+		public String getSqlDatabase() {
+			return sqlDatabase;
 		}
 
-		public String getSQLURL() {
-			return SQLURL;
+		public String getSqlUrl() {
+			return sqlUrl;
 		}
 
-		public String getSQLDatabaseName() {
-			return SQLDatabaseName;
+		public String getSqlDatabaseName() {
+			return sqlDatabaseName;
 		}
 
-		public String getSQLUsername() {
-			return SQLUsername;
+		public String getSqlUsername() {
+			return sqlUsername;
 		}
 
-		public String getSQLPassword() {
-			return SQLPassword;
+		public String getSqlPassword() {
+			return sqlPassword;
 		}
 	}
 
@@ -154,7 +154,7 @@ public class BLWarpsConfiguration {
 		return restConfig;
 	}
 
-	public SQLConfiguration getSQLConfig() {
+	public SqlConfiguration getSqlConfig() {
 		return sqlConfig;
 	}
 

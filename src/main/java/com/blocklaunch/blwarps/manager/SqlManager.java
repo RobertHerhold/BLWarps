@@ -11,26 +11,26 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.sql.WarpDAO;
 
-public class SQLManager extends StorageManager {
+public class SqlManager extends StorageManager {
 
 	WarpDAO warpDAO;
 
-	public SQLManager(BLWarps plugin) {
+	public SqlManager(BLWarps plugin) {
 		super(plugin);
 		StringBuilder sb = new StringBuilder();
 		sb.append("jdbc:");
 		// We don't need to worry about the StorageType not being a SQL database
 		// because this constructor will only be called if StorageType is SQL.
-		sb.append(BLWarps.config.getSQLConfig().getSQLDatabase().toLowerCase());
+		sb.append(BLWarps.config.getSqlConfig().getSqlDatabase().toLowerCase());
 		sb.append("://");
-		sb.append(BLWarps.config.getSQLConfig().getSQLUsername());
-		if (!BLWarps.config.getSQLConfig().getSQLPassword().isEmpty()) {
+		sb.append(BLWarps.config.getSqlConfig().getSqlUsername());
+		if (!BLWarps.config.getSqlConfig().getSqlPassword().isEmpty()) {
 			sb.append(":");
-			sb.append(BLWarps.config.getSQLConfig().getSQLPassword());
+			sb.append(BLWarps.config.getSqlConfig().getSqlPassword());
 		}
 		sb.append("@");
-		sb.append(BLWarps.config.getSQLConfig().getSQLURL());
-		sb.append("/").append(BLWarps.config.getSQLConfig().getSQLDatabaseName());
+		sb.append(BLWarps.config.getSqlConfig().getSqlUrl());
+		sb.append("/").append(BLWarps.config.getSqlConfig().getSqlDatabaseName());
 
 		SqlService sql = BLWarps.game.getServiceManager().provide(SqlService.class).get();
 
