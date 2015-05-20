@@ -19,8 +19,6 @@ public class SqlManager extends StorageManager {
 		super(plugin);
 		StringBuilder sb = new StringBuilder();
 		sb.append("jdbc:");
-		// We don't need to worry about the StorageType not being a SQL database
-		// because this constructor will only be called if StorageType is SQL.
 		sb.append(BLWarps.config.getSqlConfig().getSqlDatabase().toLowerCase());
 		sb.append("://");
 		sb.append(BLWarps.config.getSqlConfig().getSqlUsername());

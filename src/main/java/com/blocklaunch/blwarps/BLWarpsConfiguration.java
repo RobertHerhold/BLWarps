@@ -88,9 +88,9 @@ public class BLWarpsConfiguration {
 	@ConfigSerializable
 	public static class SqlConfiguration {
 		/**
-		 * The specific SQL database to use, Ex. MySQL, H2, SQLite, etc.
+		 * The specific SQL database to use. Tested only with MySQL
 		 */
-		@Setting(value = "database", comment = "The specific SQL database to use. Supported: MySQL, H2, SQLite")
+		@Setting(value = "database", comment = "The specific SQL database to use. Tested: MySQL")
 		private String sqlDatabase = "MySQL";
 
 		/**
@@ -102,7 +102,7 @@ public class BLWarpsConfiguration {
 		/**
 		 * The name of the SQL database, if that option is being used
 		 */
-		@Setting(value = "database-name", comment = "The name of the SQL database, if that option is being used")
+		@Setting(value = "database-name", comment = "The name of the SQL database")
 		private String sqlDatabaseName = "BLWarps";
 
 		/**
