@@ -32,21 +32,20 @@ public class RestManager extends StorageManager {
 	}
 
 	@Override
-	public boolean loadWarps() {
+	public void loadWarps() {
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
 		if (response.getStatus() != 200) {
 			plugin.getLogger().warn("There was an error loading the warps from the {} storage. Error code: {}",
 					BLWarps.config.getStorageType(), response.getStatus());
 			failedLoadWarps();
-			return false;
+			return;
 		}
 		WarpManager.warps = response.readEntity(new GenericType<List<Warp>>() {
 		});
-		return true;
 	}
 
 	@Override
-	boolean saveNewWarp(Warp warp) {
+	void saveNewWarp(Warp warp) {
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(
 				Entity.entity(warp, MediaType.APPLICATION_JSON_TYPE));
 
@@ -54,22 +53,18 @@ public class RestManager extends StorageManager {
 			plugin.getLogger().warn("There was an error saving the warps to the {} storage. Error code: {}",
 					BLWarps.config.getStorageType(), response.getStatus());
 			failedSaveNewWarp(warp);
-			return false;
 		}
-		return true;
 	}
 
 	@Override
-	boolean deleteWarp(Warp warp) {
+	void deleteWarp(Warp warp) {
 		Response response = webTarget.path(warp.getName()).request(MediaType.APPLICATION_JSON_TYPE).delete();
 
 		if (response.getStatus() != 200) {
 			plugin.getLogger().warn("There was an error saving the warps to the {} storage. Error code: {}",
 					BLWarps.config.getStorageType(), response.getStatus());
 			failedSaveNewWarp(warp);
-			return false;
 		}
-		return true;
 	}
 
 }

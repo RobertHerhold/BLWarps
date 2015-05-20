@@ -49,21 +49,18 @@ public class SqlManager extends StorageManager {
 	}
 
 	@Override
-	boolean loadWarps() {
+	void loadWarps() {
 		WarpManager.warps = warpDAO.getWarps();
-		return true;
 	}
 
 	@Override
-	boolean saveNewWarp(Warp warp) {
+	void saveNewWarp(Warp warp) {
 		warpDAO.insertWarp(warp);
-		return true;
 	}
 
 	@Override
-	boolean deleteWarp(Warp warp) {
+	void deleteWarp(Warp warp) {
 		warpDAO.deleteWarp(warp);
-		return true;
 	}
 
 }

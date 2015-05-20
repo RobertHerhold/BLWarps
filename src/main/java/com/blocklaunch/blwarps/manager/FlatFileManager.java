@@ -26,14 +26,13 @@ public class FlatFileManager extends StorageManager {
 	 * Reads in warps file, and de-serializes it to a List<Warp>
 	 */
 	@Override
-	public boolean loadWarps() {
+	public void loadWarps() {
 		Optional<List<Warp>> optWarps = readInWarps();
 		if (!optWarps.isPresent()) {
-			return false;
+			return;
 		}
 
 		WarpManager.warps = optWarps.get();
-		return true;
 	}
 
 	/**
@@ -45,7 +44,7 @@ public class FlatFileManager extends StorageManager {
 	 * @return the success of the saving operation
 	 */
 	@Override
-	boolean saveNewWarp(Warp warp) {
+	void saveNewWarp(Warp warp) {
 		Optional<List<Warp>> warpsOpt = readInWarps();
 
 		List<Warp> currentlySavedWarps = new ArrayList<Warp>();
@@ -54,7 +53,7 @@ public class FlatFileManager extends StorageManager {
 		}
 		currentlySavedWarps.add(warp);
 
-		return writeOutWarps(currentlySavedWarps);
+		writeOutWarps(currentlySavedWarps);
 	}
 
 	/**
@@ -66,13 +65,13 @@ public class FlatFileManager extends StorageManager {
 	 * @return the success of the deletion operation
 	 */
 	@Override
-	boolean deleteWarp(Warp warp) {
+	void deleteWarp(Warp warp) {
 		Optional<List<Warp>> warpsOpt = readInWarps();
 		List<Warp> warps;
 		if (warpsOpt.isPresent()) {
 			warps = warpsOpt.get();
 		} else {
-			return false;
+			return;
 		}
 
 		// Temporary warp for avoiding ConcurrentModificationException
@@ -85,7 +84,7 @@ public class FlatFileManager extends StorageManager {
 		if (warpToRemove != null)
 			warps.remove(warpToRemove);
 
-		return writeOutWarps(warps);
+		writeOutWarps(warps);
 	}
 
 	/**
@@ -119,17 +118,15 @@ public class FlatFileManager extends StorageManager {
 	 *            the warps to save to the file
 	 * @return the success of the saving operation
 	 */
-	private boolean writeOutWarps(List<Warp> warps) {
+	private void writeOutWarps(List<Warp> warps) {
 		try {
 			// Only creates the file if it doesn't already exist.
 			BLWarps.warpsFile.createNewFile();
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
 			mapper.writeValue(BLWarps.warpsFile, warps);
-			return true;
 		} catch (IOException e) {
 			plugin.getLogger().warn(ERROR_FILE_WRITE);
 			e.printStackTrace();
-			return false;
 		}
 	}
 

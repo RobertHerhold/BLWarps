@@ -38,22 +38,19 @@ public abstract class StorageManager {
 	/**
 	 * Loads all saved warps
 	 * 
-	 * @return the success of the loading operation
 	 */
-	abstract boolean loadWarps();
+	abstract void loadWarps();
 
 	/**
 	 * Saves an individual newly added warp
 	 * 
-	 * @return the success of the saving operation
 	 */
-	abstract boolean saveNewWarp(Warp warp);
+	abstract void saveNewWarp(Warp warp);
 
 	/**
 	 * Deletes an individual warp
 	 * 
-	 * @return the success of the deletion operation
 	 */
-	abstract boolean deleteWarp(Warp warp);
+	abstract void deleteWarp(Warp warp);
 
 }
