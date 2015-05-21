@@ -70,7 +70,7 @@ public class BLWarpsConfiguration {
          * The password to log into a SQL database with
          */
         @Setting(value = "password", comment = "Password to authenticate to the REST API with (basic authentication)")
-        private String restPassword = "pass";
+        private String restPassword = "jdbc:mysql://localhost:3306/?user=root";
 
         public URI getRESTURI() {
             return restUri;
@@ -87,54 +87,15 @@ public class BLWarpsConfiguration {
 
     @ConfigSerializable
     public static class SqlConfiguration {
+        
         /**
-         * The specific SQL database to use. Tested only with MySQL
+         * The JDBC connection url to access the SQL database with
          */
-        @Setting(value = "database", comment = "The specific SQL database to use. Tested: MySQL")
-        private String sqlDatabase = "MySQL";
+        @Setting(value = "connection-url", comment = "JDBC Connection URL to access the SQL database with")
+        private String jdbcConnectionUrl = "jdbc:mysql://localhost:3306/BLWarps?user=root";
 
-        /**
-         * The URL of the SQL database, if that option is being used
-         */
-        @Setting(value = "url", comment = "The URL of the connected SQL database")
-        private String sqlUrl = "localhost:3306";
-
-        /**
-         * The name of the SQL database, if that option is being used
-         */
-        @Setting(value = "database-name", comment = "The name of the SQL database")
-        private String sqlDatabaseName = "BLWarps";
-
-        /**
-         * The username to log into a SQL database with
-         */
-        @Setting(value = "username", comment = "Username to authenticate to the SQL database with")
-        private String sqlUsername = "root";
-
-        /**
-         * The password to log into a SQL database with
-         */
-        @Setting(value = "password", comment = "Password to authenticate to the SQL database with")
-        private String sqlPassword = "pass";
-
-        public String getSqlDatabase() {
-            return sqlDatabase;
-        }
-
-        public String getSqlUrl() {
-            return sqlUrl;
-        }
-
-        public String getSqlDatabaseName() {
-            return sqlDatabaseName;
-        }
-
-        public String getSqlUsername() {
-            return sqlUsername;
-        }
-
-        public String getSqlPassword() {
-            return sqlPassword;
+        public String getConnectionUrl() {
+            return jdbcConnectionUrl;
         }
     }
 

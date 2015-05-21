@@ -24,24 +24,11 @@ public class SqlManager extends StorageManager {
 
         mapper = new ObjectMapper();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("jdbc:");
-        sb.append(BLWarps.config.getSqlConfig().getSqlDatabase().toLowerCase());
-        sb.append("://");
-        sb.append(BLWarps.config.getSqlConfig().getSqlUsername());
-        if (!BLWarps.config.getSqlConfig().getSqlPassword().isEmpty()) {
-            sb.append(":");
-            sb.append(BLWarps.config.getSqlConfig().getSqlPassword());
-        }
-        sb.append("@");
-        sb.append(BLWarps.config.getSqlConfig().getSqlUrl());
-        sb.append("/").append(BLWarps.config.getSqlConfig().getSqlDatabaseName());
-
         SqlService sql = BLWarps.game.getServiceManager().provide(SqlService.class).get();
 
         DataSource dataSource = null;
         try {
-            dataSource = sql.getDataSource(sb.toString());
+            dataSource = sql.getDataSource(BLWarps.config.getSqlConfig().getConnectionUrl());
         } catch (SQLException e) {
             e.printStackTrace();
         }
