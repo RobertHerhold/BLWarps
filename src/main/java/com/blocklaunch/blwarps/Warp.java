@@ -118,7 +118,7 @@ public class Warp {
 		return groups;
 	}
 
-	public void setGroup(List<String> groups) {
+	public void setGroups(List<String> groups) {
 		this.groups = groups;
 	}
 

@@ -1,6 +1,7 @@
 package com.blocklaunch.blwarps.manager;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -10,6 +11,8 @@ import org.spongepowered.api.service.sql.SqlService;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.sql.WarpDAO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SqlManager extends StorageManager {
 
@@ -53,7 +56,7 @@ public class SqlManager extends StorageManager {
 
 	@Override
 	void saveNewWarp(Warp warp) {
-		warpDAO.insertWarp(warp);
+		warpDAO.insertWarp(warp, serializeGroupList(warp.getGroups()));
 	}
 
 	@Override
@@ -63,7 +66,21 @@ public class SqlManager extends StorageManager {
 
 	@Override
 	void updateWarp(Warp warp) {
-		warpDAO.updateWarp(warp);
+		warpDAO.updateWarp(warp, serializeGroupList(warp.getGroups()));
+	}
+
+	private String serializeGroupList(List<String> groupList) {
+		// Use Jackson to serialize List<String> because JDBI doesn't seem to be
+		// able
+		ObjectMapper mapper = new ObjectMapper();
+		String groups = "[]";
+		try {
+			groups = mapper.writeValueAsString(groupList);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		return groups;
 	}
 
 }
