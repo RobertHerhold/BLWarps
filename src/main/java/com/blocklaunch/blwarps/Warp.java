@@ -1,8 +1,12 @@
 package com.blocklaunch.blwarps;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.flowpowered.math.vector.Vector3d;
 
 /**
@@ -10,6 +14,7 @@ import com.flowpowered.math.vector.Vector3d;
  * (de)serialization with Jackson
  *
  */
+@JsonInclude(Include.NON_EMPTY)
 public class Warp {
 
 	private Vector3d position;
@@ -19,19 +24,11 @@ public class Warp {
 	private double x;
 	private double y;
 	private double z;
+	private List<String> groups;
 
+	// Empty constructor for Jackson
 	public Warp() {
-	}
 
-	public Warp(String name, String world, double x, double y, double z) {
-		this.name = name;
-		this.world = world;
-
-		DecimalFormat f = new DecimalFormat("##.00");
-
-		this.x = Double.valueOf(f.format(x));
-		this.y = Double.valueOf(f.format(y));
-		this.z = Double.valueOf(f.format(z));
 	}
 
 	public Warp(String name, String world, Vector3d position) {
@@ -56,8 +53,8 @@ public class Warp {
 	 *         otherwise
 	 */
 	public boolean locationIsSame(Warp warp) {
-		if (this.world.equals(warp.getWorld()) && this.x == warp.getX() && this.y == warp.getY()
-				&& this.z == warp.getZ()) {
+		if (this.world.equals(warp.getWorld()) && this.x == warp.getX()
+				&& this.y == warp.getY() && this.z == warp.getZ()) {
 			return true;
 		}
 		return false;
@@ -114,9 +111,22 @@ public class Warp {
 		this.z = z;
 	}
 
+	public List<String> getGroups() {
+		if (groups == null) {
+			this.groups = new ArrayList<>();
+		}
+		return groups;
+	}
+
+	public void setGroups(List<String> groups) {
+		this.groups = groups;
+	}
+
 	@Override
 	public String toString() {
-		return "Warp [name=" + name + ", world=" + world + ", x=" + x + ", y=" + y + ", z=" + z + "]";
+		return "Warp [position=" + position + ", name=" + name + ", world="
+				+ world + ", x=" + x + ", y=" + y + ", z=" + z + ", groups="
+				+ groups + "]";
 	}
 
 }

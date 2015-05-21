@@ -8,7 +8,6 @@ import java.util.Map;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.service.scheduler.Task;
 
-import com.blocklaunch.blwarps.BLWarpsConfiguration;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.runnable.WarpPlayerRunnable;
@@ -59,13 +58,6 @@ public class WarpManager {
 	}
 
 	/**
-	 * Saves the currently loaded warps
-	 */
-	private static void saveNewWarp(Warp warp) {
-		BLWarps.storageManager.saveNewWarp(warp);
-	}
-
-	/**
 	 * Loads all saved warps
 	 */
 	public static void loadWarps() {
@@ -104,8 +96,38 @@ public class WarpManager {
 		return Optional.of(WARP_NOT_EXIST);
 	}
 
-	private static void deleteWarp(Warp warp) {
-		BLWarps.storageManager.deleteWarp(warp);
+	/**
+	 * Adds the warp to the specified group (puts the group's name in the list
+	 * of the warp's groups)
+	 * 
+	 * @param warp
+	 *            the warp to be added to the group
+	 * @param group
+	 *            the group to add the warp to
+	 */
+	public static void addWarpToGroup(Warp warp, String group) {
+		if (warp.getGroups().contains(group)) {
+			return;
+		}
+		warp.getGroups().add(group);
+		BLWarps.storageManager.updateWarp(warp);
+	}
+
+	/**
+	 * Removes the warp from the specified group (removes the group's name from
+	 * the list of the warp's groups)
+	 * 
+	 * @param warp
+	 *            the warp to be removed from the group
+	 * @param group
+	 *            the group to remove the warp from
+	 */
+	public static void removeWarpFromGroup(Warp warp, String group) {
+		if (!warp.getGroups().contains(group)) {
+			return;
+		}
+		warp.getGroups().remove(group);
+		BLWarps.storageManager.updateWarp(warp);
 	}
 
 	/**
@@ -121,8 +143,8 @@ public class WarpManager {
 		long delay = BLWarps.config.getWarpDelay() * TICKS_PER_SECOND;
 
 		// Schedule the task
-		Optional<Task> optTask = BLWarps.scheduler.runTaskAfter(BLWarps.plugin, new WarpPlayerRunnable(player,
-				warp), delay);
+		Optional<Task> optTask = BLWarps.scheduler.runTaskAfter(BLWarps.plugin,
+				new WarpPlayerRunnable(player, warp), delay);
 
 		if (!optTask.isPresent()) {
 			// There was an error scheduling the warp
@@ -166,6 +188,26 @@ public class WarpManager {
 	 */
 	public static void addWarpInProgress(Player player, Task task) {
 		warpsInProgress.put(player, task);
+	}
+
+	/**
+	 * Adds a new warp and saves it
+	 * 
+	 * @param warp
+	 *            the warp to save
+	 */
+	private static void saveNewWarp(Warp warp) {
+		BLWarps.storageManager.saveNewWarp(warp);
+	}
+
+	/**
+	 * Deletes the specified warp
+	 * 
+	 * @param warp
+	 *            the warp to delete
+	 */
+	private static void deleteWarp(Warp warp) {
+		BLWarps.storageManager.deleteWarp(warp);
 	}
 
 }

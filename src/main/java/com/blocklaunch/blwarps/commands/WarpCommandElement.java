@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.ArgumentParseException;
 import org.spongepowered.api.util.command.args.CommandArgs;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.args.CommandElement;
 
+import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.common.base.Optional;
@@ -21,15 +23,11 @@ public class WarpCommandElement extends CommandElement {
 	}
 
 	@Override
-	protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
-		if(!args.hasNext()){
-			return null;
-		}
-		
+	protected Warp parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
 		String warpName = args.next();
 		Optional<Warp> optWarp = WarpManager.getWarp(warpName);
 		if (!optWarp.isPresent()) {
-			return null;
+			throw new ArgumentParseException(Texts.of(BLWarps.PREFIX + " A warp with that name could not be found!"), warpName, 0);
 		}
 		return optWarp.get();
 	}
