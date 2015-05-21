@@ -17,9 +17,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SqlManager extends StorageManager {
 
 	WarpDAO warpDAO;
+	ObjectMapper mapper;
 
 	public SqlManager(BLWarps plugin) {
 		super(plugin);
+		
+		mapper = new ObjectMapper();
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append("jdbc:");
 		sb.append(BLWarps.config.getSqlConfig().getSqlDatabase().toLowerCase());
@@ -72,7 +76,6 @@ public class SqlManager extends StorageManager {
 	private String serializeGroupList(List<String> groupList) {
 		// Use Jackson to serialize List<String> because JDBI doesn't seem to be
 		// able
-		ObjectMapper mapper = new ObjectMapper();
 		String groups = "[]";
 		try {
 			groups = mapper.writeValueAsString(groupList);
