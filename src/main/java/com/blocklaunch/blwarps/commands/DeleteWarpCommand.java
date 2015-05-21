@@ -1,5 +1,9 @@
 package com.blocklaunch.blwarps.commands;
 
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.manager.WarpManager;
+import com.google.common.base.Optional;
+
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -9,29 +13,24 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.manager.WarpManager;
-import com.google.common.base.Optional;
-
 public class DeleteWarpCommand implements CommandExecutor {
 
-	private static final String ERROR_DELETE_WARP_MSG = BLWarps.PREFIX + " There was an error deleting the warp: ";
-	private static final Text SUCCESS_DELETE_WARP_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX
-			+ " You successfully deleted the warp: ");
+    private static final String ERROR_DELETE_WARP_MSG = BLWarps.PREFIX + " There was an error deleting the warp: ";
+    private static final Text SUCCESS_DELETE_WARP_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX + " You successfully deleted the warp: ");
 
-	@Override
-	public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
-		String warpName = (String) args.getOne("name").orNull();
+    @Override
+    public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
+        String warpName = (String) args.getOne("name").orNull();
 
-		Optional<String> optError = WarpManager.deleteWarp(warpName);
+        Optional<String> optError = WarpManager.deleteWarp(warpName);
 
-		if (optError.isPresent()) {
-			source.sendMessage(Texts.builder(ERROR_DELETE_WARP_MSG + optError.get()).color(TextColors.RED).build());
-			return CommandResult.empty();
-		}
+        if (optError.isPresent()) {
+            source.sendMessage(Texts.builder(ERROR_DELETE_WARP_MSG + optError.get()).color(TextColors.RED).build());
+            return CommandResult.empty();
+        }
 
-		source.sendMessage(SUCCESS_DELETE_WARP_MSG.builder().append(Texts.of(TextColors.GOLD, warpName)).build());
-		return CommandResult.success();
-	}
+        source.sendMessage(SUCCESS_DELETE_WARP_MSG.builder().append(Texts.of(TextColors.GOLD, warpName)).build());
+        return CommandResult.success();
+    }
 
 }
