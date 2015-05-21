@@ -31,6 +31,10 @@ public class RestManager extends StorageManager {
 		webTarget = client.target(BLWarps.config.getRestConfig().getRESTURI());
 	}
 
+	/**
+	 * Send a GET request to the REST API
+	 * Attempt to map the received entity to a List<Warp>
+	 */
 	@Override
 	public void loadWarps() {
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
@@ -44,6 +48,9 @@ public class RestManager extends StorageManager {
 		});
 	}
 
+	/**
+	 * Send a POST request to the REST API with a new Warp to save
+	 */
 	@Override
 	void saveNewWarp(Warp warp) {
 		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(
@@ -56,6 +63,9 @@ public class RestManager extends StorageManager {
 		}
 	}
 
+	/**
+	 * Send a DELETE request to the REST API with the name of the warp to delete in the path
+	 */
 	@Override
 	void deleteWarp(Warp warp) {
 		Response response = webTarget.path(warp.getName()).request(MediaType.APPLICATION_JSON_TYPE).delete();
@@ -65,6 +75,22 @@ public class RestManager extends StorageManager {
 					BLWarps.config.getStorageType(), response.getStatus());
 			failedSaveNewWarp(warp);
 		}
+	}
+	
+	/**
+	 * Send a PUT request to the REST API with the warp to replace the existing one with the same name
+	 */
+	@Override
+	void updateWarp(Warp warp) {
+		Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).put(
+				Entity.entity(warp, MediaType.APPLICATION_JSON_TYPE));
+
+		if (response.getStatus() != 200) {
+			plugin.getLogger().warn("There was an error saving the warps to the {} storage. Error code: {}",
+					BLWarps.config.getStorageType(), response.getStatus());
+			failedSaveNewWarp(warp);
+		}
+		
 	}
 
 }

@@ -4,9 +4,9 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 
 public abstract class StorageManager {
-	
+
 	protected BLWarps plugin;
-	
+
 	public StorageManager(BLWarps plugin) {
 		this.plugin = plugin;
 	}
@@ -44,13 +44,27 @@ public abstract class StorageManager {
 	/**
 	 * Saves an individual newly added warp
 	 * 
+	 * @param warp
+	 *            the warp to save
+	 * 
 	 */
 	abstract void saveNewWarp(Warp warp);
 
 	/**
 	 * Deletes an individual warp
 	 * 
+	 * @param warp
+	 *            the warp to delete
+	 * 
 	 */
 	abstract void deleteWarp(Warp warp);
+
+	/**
+	 * Replaces a warp with the same name
+	 * 
+	 * @param warp
+	 *            the new warp
+	 */
+	abstract void updateWarp(Warp warp);
 
 }

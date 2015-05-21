@@ -2,8 +2,6 @@ package com.blocklaunch.blwarps;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,12 +23,14 @@ import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.args.GenericArguments;
 import org.spongepowered.api.util.command.spec.CommandSpec;
 
-import com.blocklaunch.blwarps.PomData;
 import com.blocklaunch.blwarps.commands.DeleteWarpCommand;
+import com.blocklaunch.blwarps.commands.GroupOperation;
 import com.blocklaunch.blwarps.commands.ListWarpsCommand;
 import com.blocklaunch.blwarps.commands.SetWarpCommand;
 import com.blocklaunch.blwarps.commands.WarpCommand;
 import com.blocklaunch.blwarps.commands.WarpCommandElement;
+import com.blocklaunch.blwarps.commands.WarpGroupCommand;
+import com.blocklaunch.blwarps.commands.WarpGroupCommandElement;
 import com.blocklaunch.blwarps.manager.FlatFileManager;
 import com.blocklaunch.blwarps.manager.RestManager;
 import com.blocklaunch.blwarps.manager.SqlManager;
@@ -115,7 +115,7 @@ public class BLWarps {
 		CommandSpec deleteWarpSubCommand = CommandSpec.builder()
 				.permission("blwarps.delete")
 				.description(Texts.of("Delete a warp"))
-				.description(Texts.of("Deletes the warp with the specified name"))
+				.extendedDescription(Texts.of("Deletes the warp with the specified name"))
 				.executor(new DeleteWarpCommand())
 				.arguments(GenericArguments.string(Texts.of("name")))
 				.build();
@@ -124,17 +124,31 @@ public class BLWarps {
 		CommandSpec listWarpSubCommand = CommandSpec.builder()
 				.permission("blwarps.list")
 				.description(Texts.of("List warps"))
-				.description(Texts.of("Lists all warps, split up into pages. Optionally, specify a page number"))
+				.extendedDescription(Texts.of("Lists all warps, split up into pages. Optionally, specify a page number"))
 				.executor(new ListWarpsCommand())
 				.arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page"))))
 				.build();
 		subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand);
 		
-		CommandSpec mainWarpCommand = CommandSpec
+		CommandSpec groupSubCommand = CommandSpec
 				.builder()
+				.permission("blwarps.group")
+				.description(Texts.of("Manage warp groups"))
+				.extendedDescription(Texts.of("Create and add warps to groups"))
+				.executor(new WarpGroupCommand())
+				.arguments(
+						GenericArguments.enumValue(Texts.of("operation"),
+								GroupOperation.class),
+						GenericArguments.optional(GenericArguments
+								.firstParsing(new WarpCommandElement(Texts
+										.of("warp")))),
+						new WarpGroupCommandElement(Texts.of("group"))).build();
+		subCommands.put(Arrays.asList("group"), groupSubCommand);
+		
+		CommandSpec mainWarpCommand = CommandSpec.builder()
 				.permission("blwarps.warp")
 				.description(Texts.of("Teleport to a warp location"))
-				.description(Texts.of("Teleports you to the location of the specified warp."))
+				.extendedDescription(Texts.of("Teleports you to the location of the specified warp."))
 				.executor(new WarpCommand())
 				.arguments(GenericArguments.firstParsing(new WarpCommandElement(Texts.of("warp"))))
 				.children(subCommands)

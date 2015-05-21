@@ -41,7 +41,6 @@ public class FlatFileManager extends StorageManager {
 	 * 
 	 * @param warp
 	 *            the new warp to save
-	 * @return the success of the saving operation
 	 */
 	@Override
 	void saveNewWarp(Warp warp) {
@@ -62,17 +61,15 @@ public class FlatFileManager extends StorageManager {
 	 * 
 	 * @param warp
 	 *            the warp to remove
-	 * @return the success of the deletion operation
 	 */
 	@Override
 	void deleteWarp(Warp warp) {
 		Optional<List<Warp>> warpsOpt = readInWarps();
-		List<Warp> warps;
-		if (warpsOpt.isPresent()) {
-			warps = warpsOpt.get();
-		} else {
+		
+		if (!warpsOpt.isPresent()) {
 			return;
 		}
+		List<Warp> warps = warpsOpt.get();
 
 		// Temporary warp for avoiding ConcurrentModificationException
 		Warp warpToRemove = null;		
@@ -85,6 +82,38 @@ public class FlatFileManager extends StorageManager {
 			warps.remove(warpToRemove);
 
 		writeOutWarps(warps);
+	}
+	
+	/**
+	 * Find the saved warp with the same name
+	 * Remove the saved warp
+	 * Add the new, updated warp
+	 * 
+	 * @param warp
+	 *            the warp to update
+	 */
+	@Override
+	void updateWarp(Warp warp) {
+		Optional<List<Warp>> warpsOpt = readInWarps();
+		
+		if (!warpsOpt.isPresent()) {
+			return;
+		}
+		List<Warp> warps = warpsOpt.get();
+
+		// Temporary warp for avoiding ConcurrentModificationException
+		Warp warpToUpdate = null;		
+		for (Warp w : warps) {
+			if (w.getName().equalsIgnoreCase(warp.getName())) {
+				warpToUpdate = w;
+			}
+		}
+		if (warpToUpdate != null) {
+			warps.remove(warpToUpdate);
+			warps.add(warp);
+		}
+		writeOutWarps(warps);
+		
 	}
 
 	/**

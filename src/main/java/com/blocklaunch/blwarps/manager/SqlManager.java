@@ -61,4 +61,9 @@ public class SqlManager extends StorageManager {
 		warpDAO.deleteWarp(warp);
 	}
 
+	@Override
+	void updateWarp(Warp warp) {
+		warpDAO.updateWarp(warp);
+	}
+
 }
