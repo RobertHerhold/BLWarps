@@ -18,6 +18,12 @@ Note: In the following commands, square brackets (`[]`) indicate optional argume
 * `warp group removeall <group name>`
  * Remove all warps from the group with name `group name`
 
+##Permissions
+Permissions can be required for either individual warps, or warp groups. For example, a player could use the warp `spawn`, which belonged to the warp group `sector_a` (just a bogus example), if he/she hadd any of the following permissions:
+ * `blwarps.warp.spawn`
+ * `blwarps.warp.group.sector_a`
+ * `blwarps.warp.*` (wildcard --> warp to anywhere)
+
 ##Storage
 Regardless of the storage solution, each warp has 5 properties:
 * name - the name of the warp
