@@ -27,7 +27,6 @@ import org.spongepowered.api.event.state.PreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.config.DefaultConfig;
-import org.spongepowered.api.service.scheduler.SynchronousScheduler;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.args.GenericArguments;
 import org.spongepowered.api.util.command.spec.CommandSpec;
@@ -45,14 +44,9 @@ public class BLWarps {
      * Prefix to display at the beginning of messages to player, console outputs, etc.
      */
     public static final String PREFIX = "[BLWarps]";
-    public static Game game;
-    public static PluginContainer plugin;
-    public static SynchronousScheduler scheduler;
-    public static File configFolder;
-    public static BLWarpsConfiguration config;
-
-    public static File warpsFile;
-
+    private Game game;
+    private PluginContainer plugin;
+    private BLWarpsConfiguration config;
 
     private WarpManager warpManager = new WarpManager(this);
     private StorageManager storageManager;
@@ -60,7 +54,7 @@ public class BLWarps {
      * Fallback flat file manager to save/load warps in case any of the other storage methods fail
      * to load or save warps
      */
-    private FlatFileManager fallbackManager = new FlatFileManager(this);
+    private FlatFileManager fallbackManager;
 
     @Inject
     private Logger logger;
@@ -76,11 +70,7 @@ public class BLWarps {
     @Subscribe
     public void preInit(PreInitializationEvent event) {
         game = event.getGame();
-        scheduler = game.getSyncScheduler();
         plugin = game.getPluginManager().getPlugin(PomData.ARTIFACT_ID).get();
-
-        configFolder = configFile.getParentFile();
-        warpsFile = new File(BLWarps.configFolder, "warps.json");
 
         // Create default config if it doesn't exist
         if (!configFile.exists()) {
@@ -207,9 +197,10 @@ public class BLWarps {
     }
 
     private void setupStorageManager() {
+        File warpsFile = new File(configFile.getParentFile(), "warps.json");
         switch (config.getStorageType()) {
             case FLATFILE:
-                storageManager = new FlatFileManager(this);
+                storageManager = new FlatFileManager(warpsFile, this);
                 break;
             case REST:
                 storageManager = new RestManager(this);
@@ -218,9 +209,11 @@ public class BLWarps {
                 storageManager = new SqlManager(this);
                 break;
             default:
-                storageManager = new FlatFileManager(this);
+                storageManager = new FlatFileManager(warpsFile, this);
                 break;
         }
+        
+        fallbackManager = new FlatFileManager(warpsFile, this);
 
     }
 
@@ -239,4 +232,13 @@ public class BLWarps {
     public StorageManager getFallBackManager() {
         return fallbackManager;
     }
+    
+    public BLWarpsConfiguration getConfig() {
+        return config;
+    }
+    
+    public Game getGame() {
+        return game;
+    }
+    
 }

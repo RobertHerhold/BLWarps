@@ -24,11 +24,11 @@ public class SqlManager extends StorageManager {
 
         mapper = new ObjectMapper();
 
-        SqlService sql = BLWarps.game.getServiceManager().provide(SqlService.class).get();
+        SqlService sql = plugin.getGame().getServiceManager().provide(SqlService.class).get();
 
         DataSource dataSource = null;
         try {
-            dataSource = sql.getDataSource(BLWarps.config.getSqlConfig().getConnectionUrl());
+            dataSource = sql.getDataSource(plugin.getConfig().getSqlConfig().getConnectionUrl());
         } catch (SQLException e) {
             e.printStackTrace();
         }

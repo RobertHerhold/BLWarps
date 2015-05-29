@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Optional;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,12 @@ public class FlatFileManager extends StorageManager {
 
     private static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
     private static final String ERROR_FILE_READ = "There was an error reading the warps file!";
+    
+    private File warpsFile;
 
-    public FlatFileManager(BLWarps plugin) {
+    public FlatFileManager(File warpsFile, BLWarps plugin) {
         super(plugin);
+        this.warpsFile = warpsFile;
     }
 
     /**
@@ -117,12 +121,12 @@ public class FlatFileManager extends StorageManager {
      * @return An Optional containing the List<Warp>, or Optional.absent() otherwise
      */
     private Optional<List<Warp>> readInWarps() {
-        if (!BLWarps.warpsFile.exists()) {
+        if (!warpsFile.exists()) {
             return Optional.absent();
         }
 
         try {
-            List<Warp> warps = mapper.readValue(BLWarps.warpsFile, new TypeReference<List<Warp>>() {});
+            List<Warp> warps = mapper.readValue(warpsFile, new TypeReference<List<Warp>>() {});
             return Optional.of(warps);
         } catch (IOException e) {
             plugin.getLogger().warn(ERROR_FILE_READ);
@@ -140,10 +144,9 @@ public class FlatFileManager extends StorageManager {
      */
     private void writeOutWarps(List<Warp> warps) {
         try {
-            // Only creates the file if it doesn't already exist.
-            BLWarps.warpsFile.createNewFile();
+            warpsFile.createNewFile(); // Only creates the file if it doesn't already exist.
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            mapper.writeValue(BLWarps.warpsFile, warps);
+            mapper.writeValue(warpsFile, warps);
         } catch (IOException e) {
             plugin.getLogger().warn(ERROR_FILE_WRITE);
             e.printStackTrace();
