@@ -1,8 +1,8 @@
-package com.blocklaunch.blwarps.manager;
+package com.blocklaunch.blwarps.managers;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.runnable.WarpPlayerRunnable;
+import com.blocklaunch.blwarps.runnables.WarpPlayerRunnable;
 import com.google.common.base.Optional;
 
 import org.spongepowered.api.entity.player.Player;

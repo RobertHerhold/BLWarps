@@ -1,4 +1,4 @@
-package com.blocklaunch.blwarps.manager;
+package com.blocklaunch.blwarps.managers;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;

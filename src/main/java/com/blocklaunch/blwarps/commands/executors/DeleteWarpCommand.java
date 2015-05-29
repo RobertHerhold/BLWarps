@@ -1,4 +1,4 @@
-package com.blocklaunch.blwarps.commands;
+package com.blocklaunch.blwarps.commands.executors;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.google.common.base.Optional;

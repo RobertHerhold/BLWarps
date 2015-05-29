@@ -1,18 +1,18 @@
 package com.blocklaunch.blwarps;
 
-import com.blocklaunch.blwarps.commands.DeleteWarpCommand;
 import com.blocklaunch.blwarps.commands.GroupOperation;
-import com.blocklaunch.blwarps.commands.ListWarpsCommand;
-import com.blocklaunch.blwarps.commands.SetWarpCommand;
-import com.blocklaunch.blwarps.commands.WarpCommand;
-import com.blocklaunch.blwarps.commands.WarpCommandElement;
-import com.blocklaunch.blwarps.commands.WarpGroupCommand;
-import com.blocklaunch.blwarps.commands.WarpGroupCommandElement;
-import com.blocklaunch.blwarps.manager.FlatFileManager;
-import com.blocklaunch.blwarps.manager.RestManager;
-import com.blocklaunch.blwarps.manager.SqlManager;
-import com.blocklaunch.blwarps.manager.StorageManager;
-import com.blocklaunch.blwarps.manager.WarpManager;
+import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
+import com.blocklaunch.blwarps.commands.elements.WarpGroupCommandElement;
+import com.blocklaunch.blwarps.commands.executors.DeleteWarpCommand;
+import com.blocklaunch.blwarps.commands.executors.ListWarpsCommand;
+import com.blocklaunch.blwarps.commands.executors.SetWarpCommand;
+import com.blocklaunch.blwarps.commands.executors.WarpCommand;
+import com.blocklaunch.blwarps.commands.executors.WarpGroupCommand;
+import com.blocklaunch.blwarps.managers.FlatFileManager;
+import com.blocklaunch.blwarps.managers.RestManager;
+import com.blocklaunch.blwarps.managers.SqlManager;
+import com.blocklaunch.blwarps.managers.StorageManager;
+import com.blocklaunch.blwarps.managers.WarpManager;
 import com.google.inject.Inject;
 
 import ninja.leaping.configurate.ConfigurationNode;

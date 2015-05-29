@@ -1,7 +1,7 @@
-package com.blocklaunch.blwarps.commands;
+package com.blocklaunch.blwarps.commands.elements;
 
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.manager.WarpManager;
+import com.blocklaunch.blwarps.managers.WarpManager;
 
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.command.CommandSource;
