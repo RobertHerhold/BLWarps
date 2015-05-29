@@ -5,6 +5,7 @@ import com.blocklaunch.blwarps.Warp;
 
 public abstract class StorageManager {
 
+    // protected so that all extending classes can access it
     protected BLWarps plugin;
 
     public StorageManager(BLWarps plugin) {
@@ -36,7 +37,7 @@ public abstract class StorageManager {
      * Loads all saved warps
      * 
      */
-    abstract void loadWarps();
+    public abstract void loadWarps();
 
     /**
      * Saves an individual newly added warp
@@ -44,7 +45,7 @@ public abstract class StorageManager {
      * @param warp the warp to save
      * 
      */
-    abstract void saveNewWarp(Warp warp);
+    public abstract void saveNewWarp(Warp warp);
 
     /**
      * Deletes an individual warp
@@ -52,13 +53,13 @@ public abstract class StorageManager {
      * @param warp the warp to delete
      * 
      */
-    abstract void deleteWarp(Warp warp);
+    public abstract void deleteWarp(Warp warp);
 
     /**
      * Replaces a warp with the same name
      * 
      * @param warp the new warp
      */
-    abstract void updateWarp(Warp warp);
+    public abstract void updateWarp(Warp warp);
 
 }

@@ -42,7 +42,7 @@ public class FlatFileManager extends StorageManager {
      * @param warp The new warp to save
      */
     @Override
-    void saveNewWarp(Warp warp) {
+    public void saveNewWarp(Warp warp) {
         Optional<List<Warp>> warpsOpt = readInWarps();
 
         List<Warp> currentlySavedWarps = new ArrayList<Warp>();
@@ -61,7 +61,7 @@ public class FlatFileManager extends StorageManager {
      * @param warp The warp to remove
      */
     @Override
-    void deleteWarp(Warp warp) {
+    public void deleteWarp(Warp warp) {
         Optional<List<Warp>> warpsOpt = readInWarps();
 
         if (!warpsOpt.isPresent()) {
@@ -88,7 +88,7 @@ public class FlatFileManager extends StorageManager {
      * @param warp The warp to update
      */
     @Override
-    void updateWarp(Warp warp) {
+    public void updateWarp(Warp warp) {
         Optional<List<Warp>> warpsOpt = readInWarps();
 
         if (!warpsOpt.isPresent()) {

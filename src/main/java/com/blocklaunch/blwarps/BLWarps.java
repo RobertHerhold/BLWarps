@@ -52,7 +52,10 @@ public class BLWarps {
     public static BLWarpsConfiguration config;
 
     public static File warpsFile;
-    public static StorageManager storageManager;
+
+
+    private WarpManager warpManager = new WarpManager(this);
+    private StorageManager storageManager;
     /**
      * Fallback flat file manager to save/load warps in case any of the other storage methods fail
      * to load or save warps
@@ -88,7 +91,7 @@ public class BLWarps {
 
         setupStorageManager();
 
-        WarpManager.loadWarps();
+        storageManager.loadWarps();
 
         // Register commands
         registerCommands();
@@ -106,7 +109,7 @@ public class BLWarps {
                         .permission("blwarps.create")
                         .description(Texts.of("Set a warp"))
                         .extendedDescription(Texts.of("Sets a warp at your location, or at the specified coordinates"))
-                        .executor(new SetWarpCommand())
+                        .executor(new SetWarpCommand(this))
                         .arguments(
                                 GenericArguments.seq(GenericArguments.string(Texts.of("name")),
                                         GenericArguments.optional(GenericArguments.vector3d(Texts.of("position"))))).build();
@@ -114,7 +117,7 @@ public class BLWarps {
 
         CommandSpec deleteWarpSubCommand =
                 CommandSpec.builder().permission("blwarps.delete").description(Texts.of("Delete a warp"))
-                        .extendedDescription(Texts.of("Deletes the warp with the specified name")).executor(new DeleteWarpCommand())
+                        .extendedDescription(Texts.of("Deletes the warp with the specified name")).executor(new DeleteWarpCommand(this))
                         .arguments(GenericArguments.string(Texts.of("name"))).build();
         subCommands.put(Arrays.asList("delete", "del"), deleteWarpSubCommand);
 
@@ -130,16 +133,16 @@ public class BLWarps {
                         .permission("blwarps.group")
                         .description(Texts.of("Manage warp groups"))
                         .extendedDescription(Texts.of("Create and add warps to groups"))
-                        .executor(new WarpGroupCommand())
+                        .executor(new WarpGroupCommand(this))
                         .arguments(GenericArguments.enumValue(Texts.of("operation"), GroupOperation.class),
-                                GenericArguments.optional(GenericArguments.firstParsing(new WarpCommandElement(Texts.of("warp")))),
+                                GenericArguments.optional(GenericArguments.firstParsing(new WarpCommandElement(this, Texts.of("warp")))),
                                 new WarpGroupCommandElement(Texts.of("group"))).build();
         subCommands.put(Arrays.asList("group"), groupSubCommand);
 
         CommandSpec mainWarpCommand =
                 CommandSpec.builder().permission("blwarps.warp").description(Texts.of("Teleport to a warp location"))
-                        .extendedDescription(Texts.of("Teleports you to the location of the specified warp.")).executor(new WarpCommand())
-                        .arguments(GenericArguments.firstParsing(new WarpCommandElement(Texts.of("warp")))).children(subCommands).build();
+                        .extendedDescription(Texts.of("Teleports you to the location of the specified warp.")).executor(new WarpCommand(this))
+                        .arguments(GenericArguments.firstParsing(new WarpCommandElement(this, Texts.of("warp")))).children(subCommands).build();
 
         game.getCommandDispatcher().register(plugin, mainWarpCommand, "warp");
     }
@@ -177,7 +180,7 @@ public class BLWarps {
      * 
      * @return true if default config was successfully created, false if the file was not created
      */
-    public void saveDefaultConfig() {
+    private void saveDefaultConfig() {
         try {
             if (!configFile.exists()) {
                 logger.info("Generating config file...");
@@ -223,6 +226,14 @@ public class BLWarps {
 
     public Logger getLogger() {
         return logger;
+    }
+
+    public WarpManager getWarpManager() {
+        return warpManager;
+    }
+
+    public StorageManager getStorageManager() {
+        return storageManager;
     }
 
     public StorageManager getFallBackManager() {

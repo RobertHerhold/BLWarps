@@ -2,7 +2,6 @@ package com.blocklaunch.blwarps.commands;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.manager.WarpManager;
 import com.google.common.base.Optional;
 
 import org.spongepowered.api.entity.player.Player;
@@ -22,6 +21,12 @@ public class WarpCommand implements CommandExecutor {
     private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX + " That warp does not exist!");
     private static final String ERROR_WARPING_MSG = BLWarps.PREFIX + " There was an error scheduling your warp: ";
     private static final Text NO_PERMISSION = Texts.of(TextColors.RED, BLWarps.PREFIX + " You do not have permission to use that warp!");
+
+    private BLWarps plugin;
+
+    public WarpCommand(BLWarps plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
@@ -44,7 +49,7 @@ public class WarpCommand implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        Optional<String> optError = WarpManager.scheduleWarp(player, warp);
+        Optional<String> optError = plugin.getWarpManager().scheduleWarp(player, warp);
 
         if (optError.isPresent()) {
             player.sendMessage(Texts.of(TextColors.RED, ERROR_WARPING_MSG + optError.get()));

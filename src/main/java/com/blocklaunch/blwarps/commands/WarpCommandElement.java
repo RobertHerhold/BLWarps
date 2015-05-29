@@ -18,14 +18,17 @@ import java.util.List;
 
 public class WarpCommandElement extends CommandElement {
 
-    public WarpCommandElement(Text key) {
+    private BLWarps plugin;
+
+    public WarpCommandElement(BLWarps plugin, Text key) {
         super(key);
+        this.plugin = plugin;
     }
 
     @Override
     protected Warp parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
         String warpName = args.next();
-        Optional<Warp> optWarp = WarpManager.getWarp(warpName);
+        Optional<Warp> optWarp = plugin.getWarpManager().getWarp(warpName);
         if (!optWarp.isPresent()) {
             throw new ArgumentParseException(Texts.of(BLWarps.PREFIX + " A warp with that name could not be found!"), warpName, 0);
         }

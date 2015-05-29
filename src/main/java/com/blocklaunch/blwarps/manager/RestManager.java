@@ -51,7 +51,7 @@ public class RestManager extends StorageManager {
      * Send a POST request to the REST API with a new Warp to save
      */
     @Override
-    void saveNewWarp(Warp warp) {
+    public void saveNewWarp(Warp warp) {
         Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(warp, MediaType.APPLICATION_JSON_TYPE));
 
         if (response.getStatus() != 201) {
@@ -65,7 +65,7 @@ public class RestManager extends StorageManager {
      * Send a DELETE request to the REST API with the name of the warp to delete in the path
      */
     @Override
-    void deleteWarp(Warp warp) {
+    public void deleteWarp(Warp warp) {
         Response response = webTarget.path(warp.getName()).request(MediaType.APPLICATION_JSON_TYPE).delete();
 
         if (response.getStatus() != 200) {
@@ -80,7 +80,7 @@ public class RestManager extends StorageManager {
      * name
      */
     @Override
-    void updateWarp(Warp warp) {
+    public void updateWarp(Warp warp) {
         Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(warp, MediaType.APPLICATION_JSON_TYPE));
 
         if (response.getStatus() != 200) {

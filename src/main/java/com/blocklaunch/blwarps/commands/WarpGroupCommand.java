@@ -23,6 +23,12 @@ public class WarpGroupCommand implements CommandExecutor {
     private static final Text NO_WARPS_AFFECTED = Texts.of(TextColors.RED, BLWarps.PREFIX + " No warps were affected!");
     private static final Text NO_PERMISSION = Texts.of(TextColors.RED, BLWarps.PREFIX + " You do not have permission!");
 
+    private BLWarps plugin;
+
+    public WarpGroupCommand(BLWarps plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         Optional<GroupOperation> optOperation = args.getOne("operation");
@@ -76,7 +82,7 @@ public class WarpGroupCommand implements CommandExecutor {
             int affectedCounter = 0;
             for (Warp w : WarpManager.warps) {
                 if (w.getGroups().contains(group)) {
-                    WarpManager.removeWarpFromGroup(w, group);
+                    plugin.getWarpManager().removeWarpFromGroup(w, group);
                     affectedCounter++;
                 }
             }
@@ -118,7 +124,7 @@ public class WarpGroupCommand implements CommandExecutor {
             Warp warp = optWarp.get();
             String group = optGroup.get();
 
-            WarpManager.addWarpToGroup(warp, group);
+            plugin.getWarpManager().addWarpToGroup(warp, group);
 
             source.sendMessage(Texts.of(TextColors.GREEN, BLWarps.PREFIX + " You successfully added ", TextColors.GOLD, warp.getName(),
                     TextColors.GREEN, " to ", TextColors.GOLD, group, TextColors.GREEN, "."));
@@ -158,7 +164,7 @@ public class WarpGroupCommand implements CommandExecutor {
                 return CommandResult.empty();
             }
 
-            WarpManager.removeWarpFromGroup(warp, group);
+            plugin.getWarpManager().removeWarpFromGroup(warp, group);
 
             source.sendMessage(Texts.of(TextColors.GREEN, BLWarps.PREFIX + " You have successfully removed ", TextColors.GOLD, warp.getName(),
                     TextColors.GREEN, " from ", TextColors.GOLD, group, TextColors.GREEN, "."));

@@ -2,7 +2,6 @@ package com.blocklaunch.blwarps.commands;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.manager.WarpManager;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 
@@ -23,6 +22,12 @@ public class SetWarpCommand implements CommandExecutor {
     private static final Text SUCCESSFULLY_CREATED_WARP_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX + " You have successfully created a warp: ");
     private static final String ERROR_CREATING_WARP_MSG = BLWarps.PREFIX + " There was an error creating the warp: ";
 
+    private BLWarps plugin;
+
+    public SetWarpCommand(BLWarps plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         if (!(source instanceof Player)) {
@@ -40,7 +45,7 @@ public class SetWarpCommand implements CommandExecutor {
 
         Warp newWarp = new Warp(warpName, worldName, position);
 
-        Optional<String> error = WarpManager.addWarp(newWarp);
+        Optional<String> error = plugin.getWarpManager().addWarp(newWarp);
         if (error.isPresent()) {
             source.sendMessage(Texts.builder(ERROR_CREATING_WARP_MSG + error.get()).color(TextColors.RED).build());
             return CommandResult.empty();

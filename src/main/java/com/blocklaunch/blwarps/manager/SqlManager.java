@@ -41,22 +41,22 @@ public class SqlManager extends StorageManager {
     }
 
     @Override
-    void loadWarps() {
+    public void loadWarps() {
         WarpManager.warps = warpDAO.getWarps();
     }
 
     @Override
-    void saveNewWarp(Warp warp) {
+    public void saveNewWarp(Warp warp) {
         warpDAO.insertWarp(warp, serializeGroupList(warp.getGroups()));
     }
 
     @Override
-    void deleteWarp(Warp warp) {
+    public void deleteWarp(Warp warp) {
         warpDAO.deleteWarp(warp);
     }
 
     @Override
-    void updateWarp(Warp warp) {
+    public void updateWarp(Warp warp) {
         warpDAO.updateWarp(warp, serializeGroupList(warp.getGroups()));
     }
 
