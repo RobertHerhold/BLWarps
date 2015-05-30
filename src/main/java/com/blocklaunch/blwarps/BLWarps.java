@@ -1,11 +1,13 @@
 package com.blocklaunch.blwarps;
 
 import com.blocklaunch.blwarps.commands.GroupOperation;
+import com.blocklaunch.blwarps.commands.WarpRegionOperation;
 import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
 import com.blocklaunch.blwarps.commands.elements.WarpGroupCommandElement;
 import com.blocklaunch.blwarps.commands.executors.DeleteWarpCommand;
 import com.blocklaunch.blwarps.commands.executors.ListWarpsCommand;
 import com.blocklaunch.blwarps.commands.executors.SetWarpCommand;
+import com.blocklaunch.blwarps.commands.executors.WarpRegionCommand;
 import com.blocklaunch.blwarps.commands.executors.WarpCommand;
 import com.blocklaunch.blwarps.commands.executors.WarpGroupCommand;
 import com.blocklaunch.blwarps.managers.FlatFileManager;
@@ -96,7 +98,7 @@ public class BLWarps {
         CommandSpec createWarpSubCommand =
                 CommandSpec
                         .builder()
-                        .permission("blwarps.create")
+                        .permission("blwarps.warp.create")
                         .description(Texts.of("Set a warp"))
                         .extendedDescription(Texts.of("Sets a warp at your location, or at the specified coordinates"))
                         .executor(new SetWarpCommand(this))
@@ -106,7 +108,7 @@ public class BLWarps {
         subCommands.put(Arrays.asList("set", "add"), createWarpSubCommand);
 
         CommandSpec deleteWarpSubCommand =
-                CommandSpec.builder().permission("blwarps.delete").description(Texts.of("Delete a warp"))
+                CommandSpec.builder().permission("blwarps.warp.delete").description(Texts.of("Delete a warp"))
                         .extendedDescription(Texts.of("Deletes the warp with the specified name")).executor(new DeleteWarpCommand(this))
                         .arguments(GenericArguments.string(Texts.of("name"))).build();
         subCommands.put(Arrays.asList("delete", "del"), deleteWarpSubCommand);
@@ -128,6 +130,13 @@ public class BLWarps {
                                 GenericArguments.optional(GenericArguments.firstParsing(new WarpCommandElement(this, Texts.of("warp")))),
                                 new WarpGroupCommandElement(Texts.of("group"))).build();
         subCommands.put(Arrays.asList("group"), groupSubCommand);
+
+        CommandSpec warpRegionSubCommand =
+                CommandSpec.builder().permission("blwarps.region.create").description(Texts.of("Manage warp regions"))
+                        .extendedDescription(Texts.of("Manage regions in which a player will be warped upon entering"))
+                        .executor(new WarpRegionCommand())
+                        .arguments(GenericArguments.enumValue(Texts.of("operation"), WarpRegionOperation.class)).build();
+        subCommands.put(Arrays.asList("region"), warpRegionSubCommand);
 
         CommandSpec mainWarpCommand =
                 CommandSpec.builder().permission("blwarps.warp").description(Texts.of("Teleport to a warp location"))
@@ -212,7 +221,7 @@ public class BLWarps {
                 storageManager = new FlatFileManager(warpsFile, this);
                 break;
         }
-        
+
         fallbackManager = new FlatFileManager(warpsFile, this);
 
     }
@@ -232,13 +241,13 @@ public class BLWarps {
     public StorageManager getFallBackManager() {
         return fallbackManager;
     }
-    
+
     public BLWarpsConfiguration getConfig() {
         return config;
     }
-    
+
     public Game getGame() {
         return game;
     }
-    
+
 }
