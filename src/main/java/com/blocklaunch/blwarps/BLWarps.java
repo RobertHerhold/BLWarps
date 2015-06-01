@@ -114,7 +114,7 @@ public class BLWarps {
         CommandSpec listWarpSubCommand =
                 CommandSpec.builder().permission("blwarps.list").description(Texts.of("List warps"))
                         .extendedDescription(Texts.of("Lists all warps, split up into pages. Optionally, specify a page number"))
-                        .executor(new ListWarpsCommand()).arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page")))).build();
+                        .executor(new ListWarpsCommand(this)).arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page")))).build();
         subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand);
 
         CommandSpec groupSubCommand =
