@@ -47,7 +47,9 @@ public class ListWarpsCommand implements CommandExecutor {
         List<Text> warpNames = new ArrayList<Text>();
         
         for (Warp w : plugin.getWarpManager().getWarps()) {
-            warpNames.add(Util.formattedTextWarp(w.getName()));
+            if(Util.hasPermission(source, w)) {
+                warpNames.add(Util.formattedTextWarp(w.getName()));
+            }
         }
 
         PaginationService paginationService = plugin.getGame().getServiceManager().provide(PaginationService.class).get();
