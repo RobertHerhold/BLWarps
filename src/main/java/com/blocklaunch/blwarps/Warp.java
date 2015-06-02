@@ -9,6 +9,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.Size;
+
 /**
  * Bean for representing a warp with name and location. Meant for easy (de)serialization with
  * Jackson
@@ -19,6 +21,8 @@ public class Warp {
 
     private Vector3d position;
 
+    // Max of 15 chars b/c a sign only fits 15 chars on a line
+    @Size(min = 1, max = 15)
     private String name;
     private String world;
     private double x;
