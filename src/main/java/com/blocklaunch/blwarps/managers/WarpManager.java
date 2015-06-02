@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.service.scheduler.Task;
@@ -27,9 +32,11 @@ public class WarpManager {
     private static final String ERROR_SCHEDULING_WARP_MSG = "There was an error scheduling your warp. Please try again.";
 
     private BLWarps plugin;
+    private Validator validator;
 
     public WarpManager(BLWarps plugin) {
         this.plugin = plugin;
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     /**
@@ -49,6 +56,10 @@ public class WarpManager {
             if (warp.locationIsSame(newWarp)) {
                 return Optional.of(WARP_LOCATION_EXISTS_MSG);
             }
+        }
+        Set<ConstraintViolation<Warp>> violations = validator.validate(newWarp);
+        if(!violations.isEmpty()) {
+        	return Optional.of(violations.iterator().next().getMessage());
         }
 
         warps.add(newWarp);
