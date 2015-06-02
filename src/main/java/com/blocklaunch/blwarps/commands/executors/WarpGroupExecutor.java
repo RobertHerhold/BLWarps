@@ -14,7 +14,7 @@ import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.commands.GroupOperation;
 import com.google.common.base.Optional;
 
-public class WarpGroupCommand implements CommandExecutor {
+public class WarpGroupExecutor implements CommandExecutor {
 
     private static final Text NO_OPERATION_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
             + " You need to specify an operation: ADD, REMOVE, REMOVEALL");
@@ -25,7 +25,7 @@ public class WarpGroupCommand implements CommandExecutor {
 
     private BLWarps plugin;
 
-    public WarpGroupCommand(BLWarps plugin) {
+    public WarpGroupExecutor(BLWarps plugin) {
         this.plugin = plugin;
     }
 

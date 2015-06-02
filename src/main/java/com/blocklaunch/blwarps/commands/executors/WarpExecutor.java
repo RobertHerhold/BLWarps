@@ -13,19 +13,19 @@ import org.spongepowered.api.util.command.spec.CommandExecutor;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
-import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 
-public class SetWarpCommand implements CommandExecutor {
+public class WarpExecutor implements CommandExecutor {
 
     private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
             + " You must be a player to send that command (not console)");
-    private static final Text SUCCESSFULLY_CREATED_WARP_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX + " You have successfully created a warp: ");
-    private static final String ERROR_CREATING_WARP_MSG = BLWarps.PREFIX + " There was an error creating the warp: ";
+    private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX + " That warp does not exist!");
+    private static final String ERROR_WARPING_MSG = BLWarps.PREFIX + " There was an error scheduling your warp: ";
+    private static final Text NO_PERMISSION = Texts.of(TextColors.RED, BLWarps.PREFIX + " You do not have permission to use that warp!");
 
     private BLWarps plugin;
 
-    public SetWarpCommand(BLWarps plugin) {
+    public WarpExecutor(BLWarps plugin) {
         this.plugin = plugin;
     }
 
@@ -35,25 +35,29 @@ public class SetWarpCommand implements CommandExecutor {
             source.sendMessage(MUST_BE_PLAYER_MSG);
             return CommandResult.empty();
         }
-        // Make sure the source is a player before attempting to get their
-        // location
         Player player = (Player) source;
 
-        String warpName = (String) args.getOne("name").or("warp");
-        Vector3d position = (Vector3d) args.getOne("position").or(player.getLocation().getPosition());
-
-        String worldName = player.getWorld().getName();
-
-        Warp newWarp = new Warp(warpName, worldName, position);
-
-        Optional<String> error = plugin.getWarpManager().addWarp(newWarp);
-        if (error.isPresent()) {
-            source.sendMessage(Texts.builder(ERROR_CREATING_WARP_MSG + error.get()).color(TextColors.RED).build());
+        Optional<Warp> optWarp = args.getOne("warp");
+        if (!optWarp.isPresent()) {
+            source.sendMessage(WARP_NOT_EXIST_MSG);
             return CommandResult.empty();
-        } else {
-            source.sendMessage(SUCCESSFULLY_CREATED_WARP_MSG.builder().append(Util.formattedTextWarp(newWarp.getName())).build());
-            return CommandResult.success();
         }
+
+        Warp warp = optWarp.get();
+
+        if (Util.hasPermission(player, warp) == false) {
+            player.sendMessage(NO_PERMISSION);
+            return CommandResult.empty();
+        }
+
+        Optional<String> optError = plugin.getWarpManager().scheduleWarp(player, warp);
+
+        if (optError.isPresent()) {
+            player.sendMessage(Texts.of(TextColors.RED, ERROR_WARPING_MSG + optError.get()));
+            return CommandResult.empty();
+        }
+
+        return CommandResult.success();
     }
 
 }

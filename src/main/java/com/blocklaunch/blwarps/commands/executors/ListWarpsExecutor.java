@@ -17,13 +17,13 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 
-public class ListWarpsCommand implements CommandExecutor {
+public class ListWarpsExecutor implements CommandExecutor {
 
     private static final Text NO_WARPS_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX + " There were no warps to display.");
 
     private BLWarps plugin;
 
-    public ListWarpsCommand(BLWarps plugin) {
+    public ListWarpsExecutor(BLWarps plugin) {
         this.plugin = plugin;
     }
 

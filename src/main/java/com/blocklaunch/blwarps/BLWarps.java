@@ -29,11 +29,11 @@ import org.spongepowered.api.util.command.spec.CommandSpec;
 import com.blocklaunch.blwarps.commands.GroupOperation;
 import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
 import com.blocklaunch.blwarps.commands.elements.WarpGroupCommandElement;
-import com.blocklaunch.blwarps.commands.executors.DeleteWarpCommand;
-import com.blocklaunch.blwarps.commands.executors.ListWarpsCommand;
-import com.blocklaunch.blwarps.commands.executors.SetWarpCommand;
-import com.blocklaunch.blwarps.commands.executors.WarpCommand;
-import com.blocklaunch.blwarps.commands.executors.WarpGroupCommand;
+import com.blocklaunch.blwarps.commands.executors.DeleteWarpExecutor;
+import com.blocklaunch.blwarps.commands.executors.ListWarpsExecutor;
+import com.blocklaunch.blwarps.commands.executors.SetWarpExecutor;
+import com.blocklaunch.blwarps.commands.executors.WarpExecutor;
+import com.blocklaunch.blwarps.commands.executors.WarpGroupExecutor;
 import com.blocklaunch.blwarps.eventhandlers.MessageEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.SignChangeEventHandler;
@@ -107,7 +107,7 @@ public class BLWarps {
                         .permission("blwarps.create")
                         .description(Texts.of("Set a warp"))
                         .extendedDescription(Texts.of("Sets a warp at your location, or at the specified coordinates"))
-                        .executor(new SetWarpCommand(this))
+                        .executor(new SetWarpExecutor(this))
                         .arguments(
                                 GenericArguments.seq(GenericArguments.string(Texts.of("name")),
                                         GenericArguments.optional(GenericArguments.vector3d(Texts.of("position"))))).build();
@@ -115,14 +115,14 @@ public class BLWarps {
 
         CommandSpec deleteWarpSubCommand =
                 CommandSpec.builder().permission("blwarps.delete").description(Texts.of("Delete a warp"))
-                        .extendedDescription(Texts.of("Deletes the warp with the specified name")).executor(new DeleteWarpCommand(this))
+                        .extendedDescription(Texts.of("Deletes the warp with the specified name")).executor(new DeleteWarpExecutor(this))
                         .arguments(GenericArguments.string(Texts.of("name"))).build();
         subCommands.put(Arrays.asList("delete", "del"), deleteWarpSubCommand);
 
         CommandSpec listWarpSubCommand =
                 CommandSpec.builder().permission("blwarps.list").description(Texts.of("List warps"))
                         .extendedDescription(Texts.of("Lists all warps, split up into pages. Optionally, specify a page number"))
-                        .executor(new ListWarpsCommand(this)).arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page"))))
+                        .executor(new ListWarpsExecutor(this)).arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page"))))
                         .build();
         subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand);
 
@@ -132,7 +132,7 @@ public class BLWarps {
                         .permission("blwarps.group")
                         .description(Texts.of("Manage warp groups"))
                         .extendedDescription(Texts.of("Create and add warps to groups"))
-                        .executor(new WarpGroupCommand(this))
+                        .executor(new WarpGroupExecutor(this))
                         .arguments(GenericArguments.enumValue(Texts.of("operation"), GroupOperation.class),
                                 GenericArguments.optional(GenericArguments.firstParsing(new WarpCommandElement(this, Texts.of("warp")))),
                                 new WarpGroupCommandElement(this, Texts.of("group"))).build();
@@ -140,7 +140,7 @@ public class BLWarps {
 
         CommandSpec mainWarpCommand =
                 CommandSpec.builder().permission("blwarps.warp").description(Texts.of("Teleport to a warp location"))
-                        .extendedDescription(Texts.of("Teleports you to the location of the specified warp.")).executor(new WarpCommand(this))
+                        .extendedDescription(Texts.of("Teleports you to the location of the specified warp.")).executor(new WarpExecutor(this))
                         .arguments(GenericArguments.firstParsing(new WarpCommandElement(this, Texts.of("warp")))).children(subCommands).build();
 
         game.getCommandDispatcher().register(plugin, mainWarpCommand, "warp");

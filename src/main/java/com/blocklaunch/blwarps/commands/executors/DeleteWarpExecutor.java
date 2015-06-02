@@ -12,14 +12,14 @@ import org.spongepowered.api.util.command.spec.CommandExecutor;
 import com.blocklaunch.blwarps.BLWarps;
 import com.google.common.base.Optional;
 
-public class DeleteWarpCommand implements CommandExecutor {
+public class DeleteWarpExecutor implements CommandExecutor {
 
     private static final String ERROR_DELETE_WARP_MSG = BLWarps.PREFIX + " There was an error deleting the warp: ";
     private static final Text SUCCESS_DELETE_WARP_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX + " You successfully deleted the warp: ");
 
     private BLWarps plugin;
 
-    public DeleteWarpCommand(BLWarps plugin) {
+    public DeleteWarpExecutor(BLWarps plugin) {
         this.plugin = plugin;
     }
 
