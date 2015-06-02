@@ -1,15 +1,15 @@
 package com.blocklaunch.blwarps;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.flowpowered.math.vector.Vector3d;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.flowpowered.math.vector.Vector3d;
 
 /**
  * Bean for representing a warp with name and location. Meant for easy (de)serialization with

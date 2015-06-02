@@ -1,5 +1,10 @@
 package com.blocklaunch.blwarps.managers;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -7,18 +12,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Optional;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 public class FlatFileManager extends StorageManager {
 
     private ObjectMapper mapper = new ObjectMapper();
 
     private static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
     private static final String ERROR_FILE_READ = "There was an error reading the warps file!";
-    
+
     private File warpsFile;
 
     public FlatFileManager(File warpsFile, BLWarps plugin) {

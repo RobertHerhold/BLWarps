@@ -1,18 +1,18 @@
 package com.blocklaunch.blwarps.managers;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.skife.jdbi.v2.DBI;
+import org.spongepowered.api.service.sql.SqlService;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.sql.WarpDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.skife.jdbi.v2.DBI;
-import org.spongepowered.api.service.sql.SqlService;
-
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.sql.DataSource;
 
 public class SqlManager extends StorageManager {
 

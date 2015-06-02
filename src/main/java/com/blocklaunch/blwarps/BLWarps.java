@@ -91,7 +91,7 @@ public class BLWarps {
         storageManager.loadWarps();
 
         registerCommands();
-        
+
         registerEventHandlers();
 
     }
@@ -122,7 +122,8 @@ public class BLWarps {
         CommandSpec listWarpSubCommand =
                 CommandSpec.builder().permission("blwarps.list").description(Texts.of("List warps"))
                         .extendedDescription(Texts.of("Lists all warps, split up into pages. Optionally, specify a page number"))
-                        .executor(new ListWarpsCommand(this)).arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page")))).build();
+                        .executor(new ListWarpsCommand(this)).arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page"))))
+                        .build();
         subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand);
 
         CommandSpec groupSubCommand =
@@ -220,19 +221,19 @@ public class BLWarps {
                 storageManager = new FlatFileManager(warpsFile, this);
                 break;
         }
-        
+
         fallbackManager = new FlatFileManager(warpsFile, this);
 
     }
-    
+
     private void registerEventHandlers() {
-    	EventManager eventManager = game.getEventManager();
-    	// Filter chat & replace warp names in chat w/ clickable links
-    	eventManager.register(this, MessageEvent.class, new MessageEventHandler(this));
-    	// Watch for players right-clicking warp signs
-    	eventManager.register(this, PlayerInteractBlockEvent.class, new PlayerInteractBlockEventHandler(this));
-    	// Watch for warp signs being created
-    	eventManager.register(this, SignChangeEvent.class, new SignChangeEventHandler(this));
+        EventManager eventManager = game.getEventManager();
+        // Filter chat & replace warp names in chat w/ clickable links
+        eventManager.register(this, MessageEvent.class, new MessageEventHandler(this));
+        // Watch for players right-clicking warp signs
+        eventManager.register(this, PlayerInteractBlockEvent.class, new PlayerInteractBlockEventHandler(this));
+        // Watch for warp signs being created
+        eventManager.register(this, SignChangeEvent.class, new SignChangeEventHandler(this));
     }
 
     public Logger getLogger() {
@@ -250,13 +251,13 @@ public class BLWarps {
     public StorageManager getFallBackManager() {
         return fallbackManager;
     }
-    
+
     public BLWarpsConfiguration getConfig() {
         return config;
     }
-    
+
     public Game getGame() {
         return game;
     }
-    
+
 }

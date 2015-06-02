@@ -58,8 +58,8 @@ public class WarpManager {
             }
         }
         Set<ConstraintViolation<Warp>> violations = validator.validate(newWarp);
-        if(!violations.isEmpty()) {
-        	return Optional.of(violations.iterator().next().getMessage());
+        if (!violations.isEmpty()) {
+            return Optional.of(violations.iterator().next().getMessage());
         }
 
         warps.add(newWarp);
@@ -158,9 +158,9 @@ public class WarpManager {
 
         return Optional.absent();
     }
-    
+
     public List<String> getWarpNames() {
-		return warpNames;
+        return warpNames;
     }
 
     /**

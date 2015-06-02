@@ -1,7 +1,7 @@
 package com.blocklaunch.blwarps.commands.elements;
 
-import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.managers.WarpManager;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.command.CommandSource;
@@ -10,8 +10,8 @@ import org.spongepowered.api.util.command.args.CommandArgs;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.args.CommandElement;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.managers.WarpManager;
 
 public class WarpGroupCommandElement extends CommandElement {
 

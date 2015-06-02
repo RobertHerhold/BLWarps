@@ -1,11 +1,5 @@
 package com.blocklaunch.blwarps.managers;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Warp;
-
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.glassfish.jersey.jackson.JacksonFeature;
-
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -15,6 +9,12 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.glassfish.jersey.jackson.JacksonFeature;
+
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
 
 public class RestManager extends StorageManager {
 
@@ -26,7 +26,8 @@ public class RestManager extends StorageManager {
         Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
         HttpAuthenticationFeature auth =
                 HttpAuthenticationFeature.basicBuilder().nonPreemptive()
-                        .credentials(plugin.getConfig().getRestConfig().getRESTUsername(), plugin.getConfig().getRestConfig().getRESTPassword()).build();
+                        .credentials(plugin.getConfig().getRestConfig().getRESTUsername(), plugin.getConfig().getRestConfig().getRESTPassword())
+                        .build();
 
         client.register(auth);
         webTarget = client.target(plugin.getConfig().getRestConfig().getRESTURI());

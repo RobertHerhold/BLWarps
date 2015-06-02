@@ -1,11 +1,5 @@
 package com.blocklaunch.blwarps.commands.executors;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.commands.GroupOperation;
-import com.blocklaunch.blwarps.managers.WarpManager;
-import com.google.common.base.Optional;
-
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -14,6 +8,12 @@ import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
+
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.commands.GroupOperation;
+import com.blocklaunch.blwarps.managers.WarpManager;
+import com.google.common.base.Optional;
 
 public class WarpGroupCommand implements CommandExecutor {
 

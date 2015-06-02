@@ -1,11 +1,11 @@
 package com.blocklaunch.blwarps;
 
+import java.net.URI;
+
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-
-import java.net.URI;
 
 /**
  * Class that contains all the configurable options for the plugin
@@ -87,7 +87,7 @@ public class BLWarpsConfiguration {
 
     @ConfigSerializable
     public static class SqlConfiguration {
-        
+
         /**
          * The JDBC connection url to access the SQL database with
          */
