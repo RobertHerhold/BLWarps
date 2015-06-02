@@ -32,7 +32,7 @@ public class Warp {
     }
 
     public Warp(String name, String world, Vector3d position) {
-        this.name = name;
+        this.name = name.toLowerCase();
         this.world = world;
         this.position = position;
 

@@ -1,21 +1,22 @@
 package com.blocklaunch.blwarps.managers;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.runnables.WarpPlayerRunnable;
-import com.google.common.base.Optional;
-
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.service.scheduler.Task;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.service.scheduler.Task;
+
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.runnables.WarpPlayerRunnable;
+import com.google.common.base.Optional;
+
 public class WarpManager {
 
     public static List<Warp> warps = new ArrayList<Warp>();
+    private List<String> warpNames = new ArrayList<String>();
     private Map<Player, Task> warpsInProgress = new HashMap<Player, Task>();
 
     private static final int TICKS_PER_SECOND = 20;
@@ -51,6 +52,7 @@ public class WarpManager {
         }
 
         warps.add(newWarp);
+        warpNames.add(newWarp.getName());
 
         // Save warps after putting a new one in rather than saving when server
         // shuts down to prevent loss of data if the server crashed
@@ -86,6 +88,7 @@ public class WarpManager {
         for (Warp warp : warps) {
             if (warp.getName().equalsIgnoreCase(warpName)) {
                 warps.remove(warp);
+                warpNames.remove(warp.getName());
                 plugin.getStorageManager().deleteWarp(warp);
                 return Optional.absent();
             }
@@ -143,6 +146,10 @@ public class WarpManager {
         warpsInProgress.put(player, optTask.get());
 
         return Optional.absent();
+    }
+    
+    public List<String> getWarpNames() {
+		return warpNames;
     }
 
     /**

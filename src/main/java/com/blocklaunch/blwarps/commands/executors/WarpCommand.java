@@ -2,6 +2,7 @@ package com.blocklaunch.blwarps.commands.executors;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.managers.PermissionUtil;
 import com.google.common.base.Optional;
 
 import org.spongepowered.api.entity.player.Player;
@@ -44,7 +45,7 @@ public class WarpCommand implements CommandExecutor {
 
         Warp warp = optWarp.get();
 
-        if (checkPermission(player, warp) == false) {
+        if (PermissionUtil.hasPermission(player, warp) == false) {
             player.sendMessage(NO_PERMISSION);
             return CommandResult.empty();
         }
@@ -57,34 +58,6 @@ public class WarpCommand implements CommandExecutor {
         }
 
         return CommandResult.success();
-    }
-
-    /**
-     * @param player The player to check permissions on
-     * @param warp The warp the player wants to warp to
-     * @return true if the player is allowed to warp, false if not
-     */
-    public boolean checkPermission(Player player, Warp warp) {
-        String warpPermission = "blwarps.warp." + warp.getName();
-        String groupPermissionBase = "blwarps.warp.group.";
-        String wildCardPermission = "blwarps.warp.*";
-
-        boolean playerIsValid = false;
-
-        // Check permission for individual warp or wildcard
-        if (player.hasPermission(warpPermission) || player.hasPermission(wildCardPermission)) {
-            playerIsValid = true;
-        }
-
-        // Check permission for warp groups
-        for (String groupName : warp.getGroups()) {
-            String permission = groupPermissionBase + groupName;
-            if (player.hasPermission(permission)) {
-                playerIsValid = true;
-            }
-        }
-
-        return playerIsValid;
     }
 
 }
