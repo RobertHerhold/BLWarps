@@ -24,6 +24,15 @@ Permissions can be required for either individual warps, or warp groups. For exa
  * `blwarps.warp.group.sector_a`
  * `blwarps.warp.*` (wildcard --> warp to anywhere)
 
+##Warp Signs
+Warp signs can be created for any previously established warp. To do this, simply place a sign anywhere in the world, and write the following text on each line:
+1. [Warp]
+2. `<warp name>`
+3. Doesn't matter
+4. Doesn't matter
+
+If you have correctly placed the sign, the text on the sign will be colored and reformatted. To use the sign to warp, simply right click on the sign.
+
 ##Storage
 Regardless of the storage solution, each warp has 5 properties:
 * name - the name of the warp
