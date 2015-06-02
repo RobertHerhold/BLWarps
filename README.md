@@ -26,6 +26,7 @@ Permissions can be required for either individual warps, or warp groups. For exa
 
 ##Warp Signs
 Warp signs can be created for any previously established warp. To do this, simply place a sign anywhere in the world, and write the following text on each line:
+
 1. [Warp]
 2. `<warp name>`
 3. Doesn't matter
