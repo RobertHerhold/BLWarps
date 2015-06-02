@@ -1,19 +1,10 @@
 package com.blocklaunch.blwarps;
 
-import com.blocklaunch.blwarps.commands.GroupOperation;
-import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
-import com.blocklaunch.blwarps.commands.elements.WarpGroupCommandElement;
-import com.blocklaunch.blwarps.commands.executors.DeleteWarpCommand;
-import com.blocklaunch.blwarps.commands.executors.ListWarpsCommand;
-import com.blocklaunch.blwarps.commands.executors.SetWarpCommand;
-import com.blocklaunch.blwarps.commands.executors.WarpCommand;
-import com.blocklaunch.blwarps.commands.executors.WarpGroupCommand;
-import com.blocklaunch.blwarps.managers.FlatFileManager;
-import com.blocklaunch.blwarps.managers.RestManager;
-import com.blocklaunch.blwarps.managers.SqlManager;
-import com.blocklaunch.blwarps.managers.StorageManager;
-import com.blocklaunch.blwarps.managers.WarpManager;
-import com.google.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -23,19 +14,31 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.event.Subscribe;
+import org.spongepowered.api.event.message.MessageEvent;
 import org.spongepowered.api.event.state.PreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.config.DefaultConfig;
+import org.spongepowered.api.service.event.EventManager;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.args.GenericArguments;
 import org.spongepowered.api.util.command.spec.CommandSpec;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import com.blocklaunch.blwarps.commands.GroupOperation;
+import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
+import com.blocklaunch.blwarps.commands.elements.WarpGroupCommandElement;
+import com.blocklaunch.blwarps.commands.executors.DeleteWarpCommand;
+import com.blocklaunch.blwarps.commands.executors.ListWarpsCommand;
+import com.blocklaunch.blwarps.commands.executors.SetWarpCommand;
+import com.blocklaunch.blwarps.commands.executors.WarpCommand;
+import com.blocklaunch.blwarps.commands.executors.WarpGroupCommand;
+import com.blocklaunch.blwarps.eventhandlers.MessageEventHandler;
+import com.blocklaunch.blwarps.managers.FlatFileManager;
+import com.blocklaunch.blwarps.managers.RestManager;
+import com.blocklaunch.blwarps.managers.SqlManager;
+import com.blocklaunch.blwarps.managers.StorageManager;
+import com.blocklaunch.blwarps.managers.WarpManager;
+import com.google.inject.Inject;
 
 @Plugin(id = PomData.ARTIFACT_ID, name = PomData.NAME, version = PomData.VERSION)
 public class BLWarps {
@@ -83,8 +86,9 @@ public class BLWarps {
 
         storageManager.loadWarps();
 
-        // Register commands
         registerCommands();
+        
+        registerEventHandlers();
 
     }
 
@@ -215,6 +219,11 @@ public class BLWarps {
         
         fallbackManager = new FlatFileManager(warpsFile, this);
 
+    }
+    
+    private void registerEventHandlers() {
+    	EventManager eventManager = game.getEventManager();
+    	eventManager.register(this, MessageEvent.class, new MessageEventHandler(this));
     }
 
     public Logger getLogger() {
