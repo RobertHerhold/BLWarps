@@ -11,8 +11,8 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.managers.PermissionUtil;
 import com.google.common.base.Optional;
 
 public class WarpCommand implements CommandExecutor {
@@ -45,7 +45,7 @@ public class WarpCommand implements CommandExecutor {
 
         Warp warp = optWarp.get();
 
-        if (PermissionUtil.hasPermission(player, warp) == false) {
+        if (Util.hasPermission(player, warp) == false) {
             player.sendMessage(NO_PERMISSION);
             return CommandResult.empty();
         }

@@ -45,7 +45,7 @@ public class RestManager extends StorageManager {
             failedLoadWarps();
             return;
         }
-        WarpManager.warps = response.readEntity(new GenericType<List<Warp>>() {});
+        plugin.getWarpManager().setWarps(response.readEntity(new GenericType<List<Warp>>() {}));
     }
 
     /**

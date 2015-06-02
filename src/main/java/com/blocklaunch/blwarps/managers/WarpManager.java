@@ -20,7 +20,7 @@ import com.google.common.base.Optional;
 
 public class WarpManager {
 
-    public static List<Warp> warps = new ArrayList<Warp>();
+    private List<Warp> warps = new ArrayList<Warp>();
     private List<String> warpNames = new ArrayList<String>();
     private Map<Player, Task> warpsInProgress = new HashMap<Player, Task>();
 
@@ -157,6 +157,14 @@ public class WarpManager {
         warpsInProgress.put(player, optTask.get());
 
         return Optional.absent();
+    }
+    
+    public List<Warp> getWarps() {
+        return warps;
+    }
+    
+    public void setWarps(List<Warp> warps) {
+        this.warps = warps;
     }
 
     public List<String> getWarpNames() {

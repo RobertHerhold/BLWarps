@@ -14,9 +14,8 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.managers.WarpManager;
-import com.blocklaunch.blwarps.managers.WarpUtil;
 
 public class ListWarpsCommand implements CommandExecutor {
 
@@ -40,14 +39,15 @@ public class ListWarpsCommand implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
-        if (WarpManager.warps.isEmpty()) {
+        if (plugin.getWarpManager().getWarps().isEmpty()) {
             source.sendMessage(NO_WARPS_MSG);
             return CommandResult.success();
         }
 
         List<Text> warpNames = new ArrayList<Text>();
-        for (Warp w : WarpManager.warps) {
-            warpNames.add(WarpUtil.formattedTextWarp(w));
+        
+        for (Warp w : plugin.getWarpManager().getWarps()) {
+            warpNames.add(Util.formattedTextWarp(w.getName()));
         }
 
         PaginationService paginationService = plugin.getGame().getServiceManager().provide(PaginationService.class).get();

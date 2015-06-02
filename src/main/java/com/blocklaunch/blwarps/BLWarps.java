@@ -54,7 +54,7 @@ public class BLWarps {
     private Game game;
     private PluginContainer plugin;
     private BLWarpsConfiguration config;
-
+    
     private WarpManager warpManager = new WarpManager(this);
     private StorageManager storageManager;
     /**
@@ -135,7 +135,7 @@ public class BLWarps {
                         .executor(new WarpGroupCommand(this))
                         .arguments(GenericArguments.enumValue(Texts.of("operation"), GroupOperation.class),
                                 GenericArguments.optional(GenericArguments.firstParsing(new WarpCommandElement(this, Texts.of("warp")))),
-                                new WarpGroupCommandElement(Texts.of("group"))).build();
+                                new WarpGroupCommandElement(this, Texts.of("group"))).build();
         subCommands.put(Arrays.asList("group"), groupSubCommand);
 
         CommandSpec mainWarpCommand =
@@ -251,7 +251,7 @@ public class BLWarps {
     public StorageManager getFallBackManager() {
         return fallbackManager;
     }
-
+    
     public BLWarpsConfiguration getConfig() {
         return config;
     }

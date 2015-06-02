@@ -11,8 +11,8 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.managers.WarpUtil;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 
@@ -51,7 +51,7 @@ public class SetWarpCommand implements CommandExecutor {
             source.sendMessage(Texts.builder(ERROR_CREATING_WARP_MSG + error.get()).color(TextColors.RED).build());
             return CommandResult.empty();
         } else {
-            source.sendMessage(SUCCESSFULLY_CREATED_WARP_MSG.builder().append(WarpUtil.formattedTextWarp(newWarp)).build());
+            source.sendMessage(SUCCESSFULLY_CREATED_WARP_MSG.builder().append(Util.formattedTextWarp(newWarp.getName())).build());
             return CommandResult.success();
         }
     }

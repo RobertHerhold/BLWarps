@@ -7,9 +7,8 @@ import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandSource;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.managers.PermissionUtil;
-import com.blocklaunch.blwarps.managers.WarpUtil;
 import com.google.common.base.Optional;
 
 /**
@@ -43,11 +42,11 @@ public class MessageEventHandler implements EventHandler<MessageEvent> {
 
                 Warp warp = optWarp.get();
                 CommandSource source = event.getSource();
-                if (!PermissionUtil.hasPermission(source, warp)) {
+                if (!Util.hasPermission(source, warp)) {
                     continue;
                 }
 
-                Text text = WarpUtil.formattedTextWarp(warp);
+                Text text = Util.formattedTextWarp(warp.getName());
                 // TODO Replace the original text's word representing the warp with this one ^
             }
         }

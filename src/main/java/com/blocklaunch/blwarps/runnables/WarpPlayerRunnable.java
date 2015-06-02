@@ -6,8 +6,8 @@ import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.managers.WarpUtil;
 
 public class WarpPlayerRunnable implements Runnable {
 
@@ -30,7 +30,7 @@ public class WarpPlayerRunnable implements Runnable {
         if (!player.transferToWorld(warp.getWorld(), warp.getPosition())) {
             player.sendMessage(WORLD_NOT_FOUND_MSG);
         } else {
-            player.sendMessage(Texts.builder(WARP_SUCCESS_MSG).color(TextColors.GREEN).append(WarpUtil.formattedTextWarp(warp)).build());
+            player.sendMessage(Texts.builder(WARP_SUCCESS_MSG).color(TextColors.GREEN).append(Util.formattedTextWarp(warp.getName())).build());
 
         }
 

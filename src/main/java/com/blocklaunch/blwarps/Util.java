@@ -1,10 +1,20 @@
-package com.blocklaunch.blwarps.managers;
+package com.blocklaunch.blwarps;
 
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.action.TextActions;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
 
-import com.blocklaunch.blwarps.Warp;
+public class Util {
 
-public class PermissionUtil {
+    public static Text formattedTextWarp(String warpName) {
+        Text text =
+                Texts.builder().color(TextColors.GOLD).onClick(TextActions.runCommand("/warp " + warpName))
+                        .onHover(TextActions.showText(Texts.of("Warp to ", TextColors.GOLD, warpName))).build();
+
+        return text;
+    }
 
     public static boolean hasPermission(CommandSource source, Warp warp) {
         String warpPermission = "blwarps.warp." + warp.getName();

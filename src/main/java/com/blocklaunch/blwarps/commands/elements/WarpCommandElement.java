@@ -13,7 +13,6 @@ import org.spongepowered.api.util.command.args.CommandElement;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.managers.WarpManager;
 import com.google.common.base.Optional;
 
 public class WarpCommandElement extends CommandElement {
@@ -38,7 +37,7 @@ public class WarpCommandElement extends CommandElement {
     @Override
     public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
         List<String> warpNames = new ArrayList<String>();
-        for (Warp w : WarpManager.warps) {
+        for (Warp w : plugin.getWarpManager().getWarps()) {
             warpNames.add(w.getName());
         }
 

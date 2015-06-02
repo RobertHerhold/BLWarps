@@ -42,7 +42,7 @@ public class SqlManager extends StorageManager {
 
     @Override
     public void loadWarps() {
-        WarpManager.warps = warpDAO.getWarps();
+        plugin.getWarpManager().setWarps(warpDAO.getWarps());
     }
 
     @Override

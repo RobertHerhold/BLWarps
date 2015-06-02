@@ -12,7 +12,6 @@ import org.spongepowered.api.util.command.spec.CommandExecutor;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.commands.GroupOperation;
-import com.blocklaunch.blwarps.managers.WarpManager;
 import com.google.common.base.Optional;
 
 public class WarpGroupCommand implements CommandExecutor {
@@ -81,7 +80,7 @@ public class WarpGroupCommand implements CommandExecutor {
             String group = optGroup.get();
 
             int affectedCounter = 0;
-            for (Warp w : WarpManager.warps) {
+            for (Warp w : plugin.getWarpManager().getWarps()) {
                 if (w.getGroups().contains(group)) {
                     plugin.getWarpManager().removeWarpFromGroup(w, group);
                     affectedCounter++;

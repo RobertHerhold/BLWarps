@@ -36,7 +36,7 @@ public class FlatFileManager extends StorageManager {
             return;
         }
 
-        WarpManager.warps = optWarps.get();
+        plugin.getWarpManager().setWarps(optWarps.get());
     }
 
     /**

@@ -10,13 +10,16 @@ import org.spongepowered.api.util.command.args.CommandArgs;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.args.CommandElement;
 
+import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.managers.WarpManager;
 
 public class WarpGroupCommandElement extends CommandElement {
 
-    public WarpGroupCommandElement(Text key) {
+    private BLWarps plugin;
+    
+    public WarpGroupCommandElement(BLWarps plugin, Text key) {
         super(key);
+        this.plugin = plugin;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class WarpGroupCommandElement extends CommandElement {
     @Override
     public List<String> complete(CommandSource source, CommandArgs args, CommandContext context) {
         List<String> groupNames = new ArrayList<String>();
-        for (Warp w : WarpManager.warps) {
+        for (Warp w : plugin.getWarpManager().getWarps()) {
             for (String group : w.getGroups()) {
                 if (!groupNames.contains(group)) {
                     groupNames.add(group);
