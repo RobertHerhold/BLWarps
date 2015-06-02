@@ -10,7 +10,7 @@ public class Util {
 
     public static Text formattedTextWarp(String warpName) {
         Text text =
-                Texts.builder().color(TextColors.GOLD).onClick(TextActions.runCommand("/warp " + warpName))
+                Texts.builder(warpName).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp " + warpName))
                         .onHover(TextActions.showText(Texts.of("Warp to ", TextColors.GOLD, warpName))).build();
 
         return text;
