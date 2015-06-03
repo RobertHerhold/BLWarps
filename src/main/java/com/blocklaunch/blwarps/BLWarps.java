@@ -16,6 +16,7 @@ import org.spongepowered.api.Game;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.block.tileentity.SignChangeEvent;
 import org.spongepowered.api.event.entity.player.PlayerInteractBlockEvent;
+import org.spongepowered.api.event.entity.player.PlayerMoveEvent;
 import org.spongepowered.api.event.message.MessageEvent;
 import org.spongepowered.api.event.state.PreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
@@ -38,6 +39,7 @@ import com.blocklaunch.blwarps.commands.executors.WarpGroupExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpRegionCommand;
 import com.blocklaunch.blwarps.eventhandlers.MessageEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
+import com.blocklaunch.blwarps.eventhandlers.PlayerMoveEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.SignChangeEventHandler;
 import com.blocklaunch.blwarps.managers.FlatFileManager;
 import com.blocklaunch.blwarps.managers.RestManager;
@@ -243,6 +245,8 @@ public class BLWarps {
         eventManager.register(this, PlayerInteractBlockEvent.class, new PlayerInteractBlockEventHandler(this));
         // Watch for warp signs being created
         eventManager.register(this, SignChangeEvent.class, new SignChangeEventHandler(this));
+        // Watch for player movement (warp regions, cancelling warps)
+        eventManager.register(this, PlayerMoveEvent.class, new PlayerMoveEventHandler(this));
     }
 
     public Logger getLogger() {
