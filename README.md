@@ -9,8 +9,9 @@ Note: In the following commands, square brackets (`[]`) indicate optional argume
  * Warp to the warp with name `warp name`.
 * `/warp delete <warp name>`
  * Delete the warp with name `warp name`.
-* `/warp list [page number]`
+* `/warp list`
  * List all of the currently saved warps. Optionally, specify a `page number`.
+ * Only the warps that the `CommandSource` has permission to use will be displayed to them
 * `/warp group add <warp name> <group name>`
  * Add the warp with name `warp name` to the group `group name`.
 * `/warp group remove <warp name> <group name>`
