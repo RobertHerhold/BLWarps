@@ -36,6 +36,7 @@ import com.blocklaunch.blwarps.commands.executors.ListWarpsExecutor;
 import com.blocklaunch.blwarps.commands.executors.SetWarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpGroupExecutor;
+import com.blocklaunch.blwarps.commands.executors.WarpInfoExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpRegionExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpSignExecutor;
 import com.blocklaunch.blwarps.eventhandlers.PlayerChatEventHandler;
@@ -124,10 +125,14 @@ public class BLWarps {
 
         CommandSpec listWarpSubCommand =
                 CommandSpec.builder().permission("blwarps.list").description(Texts.of("List warps"))
-                        .extendedDescription(Texts.of("Lists all warps, split up into pages. Optionally, specify a page number"))
-                        .executor(new ListWarpsExecutor(this)).arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page"))))
-                        .build();
+                        .extendedDescription(Texts.of("Lists all warps, split up into pages.")).executor(new ListWarpsExecutor(this))
+                        .arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page")))).build();
         subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand);
+
+        CommandSpec warpInfoSubCommand =
+                CommandSpec.builder().permission("blwarps.info").description(Texts.of("Display information about a warp"))
+                        .executor(new WarpInfoExecutor(this)).arguments(new WarpCommandElement(this, Texts.of("warp"))).build();
+        subCommands.put(Arrays.asList("info"), warpInfoSubCommand);
 
         CommandSpec groupSubCommand =
                 CommandSpec
@@ -276,7 +281,7 @@ public class BLWarps {
     public Game getGame() {
         return game;
     }
-    
+
     public Util getUtil() {
         return util;
     }

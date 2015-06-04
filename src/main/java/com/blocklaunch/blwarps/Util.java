@@ -11,20 +11,23 @@ import org.spongepowered.api.util.command.CommandSource;
 import com.google.common.base.Optional;
 
 public class Util {
-    
+
     private BLWarps plugin;
     public static final String WARP_SIGN_PREFIX = "[Warp]";
-    
+
     public Util(BLWarps plugin) {
         this.plugin = plugin;
     }
 
-    public Text formattedTextWarp(String warpName) {
-        Text text =
-                Texts.builder(warpName).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp " + warpName))
-                        .onHover(TextActions.showText(Texts.of("Warp to ", TextColors.GOLD, warpName))).build();
+    public Text generateWarpText(Warp warp) {
+        return Texts.builder(warp.getName()).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp " + warp.getName()))
+                .onHover(TextActions.showText(Texts.of("Warp to ", TextColors.GOLD, warp.getName()))).build();
 
-        return text;
+    }
+
+    public Text generateWarpGroupInfoText(String groupName) {
+        return Texts.builder(groupName).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp group info " + groupName))
+                .onHover(TextActions.showText(Texts.of("Show ", TextColors.GOLD, groupName, TextColors.WHITE, " info."))).build();
     }
 
     public boolean hasPermission(CommandSource source, Warp warp) {
@@ -49,7 +52,7 @@ public class Util {
 
         return playerIsValid;
     }
-    
+
     /**
      * @param warp the warp to represent on the SignData
      * @return the formatted SignData indicating a valid warp sign

@@ -29,7 +29,7 @@ public class WarpPlayerRunnable implements Runnable {
         if (!player.transferToWorld(warp.getWorld(), warp.getPosition())) {
             player.sendMessage(WORLD_NOT_FOUND_MSG);
         } else {
-            player.sendMessage(Texts.builder(WARP_SUCCESS_MSG).color(TextColors.GREEN).append(plugin.getUtil().formattedTextWarp(warp.getName()))
+            player.sendMessage(Texts.builder(WARP_SUCCESS_MSG).color(TextColors.GREEN).append(plugin.getUtil().generateWarpText(warp))
                     .build());
 
         }

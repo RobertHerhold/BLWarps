@@ -45,7 +45,7 @@ public class PlayerChatEventHandler implements EventHandler<PlayerChatEvent> {
                     continue;
                 }
 
-                Text text = plugin.getUtil().formattedTextWarp(warp.getName());
+                Text text = plugin.getUtil().generateWarpText(warp);
                 // TODO Replace the original text's word representing the warp with this one ^
             }
         }

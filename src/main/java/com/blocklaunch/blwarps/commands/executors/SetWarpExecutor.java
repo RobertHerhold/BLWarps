@@ -50,7 +50,7 @@ public class SetWarpExecutor implements CommandExecutor {
             source.sendMessage(Texts.builder(ERROR_CREATING_WARP_MSG + error.get()).color(TextColors.RED).build());
             return CommandResult.empty();
         } else {
-            source.sendMessage(SUCCESSFULLY_CREATED_WARP_MSG.builder().append(plugin.getUtil().formattedTextWarp(newWarp.getName())).build());
+            source.sendMessage(SUCCESSFULLY_CREATED_WARP_MSG.builder().append(plugin.getUtil().generateWarpText(newWarp)).build());
             return CommandResult.success();
         }
     }
