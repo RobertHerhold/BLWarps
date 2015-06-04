@@ -2,9 +2,6 @@ package com.blocklaunch.blwarps;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -23,22 +20,8 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.service.event.EventManager;
-import org.spongepowered.api.text.Texts;
-import org.spongepowered.api.util.command.args.GenericArguments;
-import org.spongepowered.api.util.command.spec.CommandSpec;
 
-import com.blocklaunch.blwarps.commands.GroupOperation;
-import com.blocklaunch.blwarps.commands.WarpRegionOperation;
-import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
-import com.blocklaunch.blwarps.commands.elements.WarpGroupCommandElement;
-import com.blocklaunch.blwarps.commands.executors.DeleteWarpExecutor;
-import com.blocklaunch.blwarps.commands.executors.ListWarpsExecutor;
-import com.blocklaunch.blwarps.commands.executors.SetWarpExecutor;
-import com.blocklaunch.blwarps.commands.executors.WarpExecutor;
-import com.blocklaunch.blwarps.commands.executors.WarpGroupExecutor;
-import com.blocklaunch.blwarps.commands.executors.WarpInfoExecutor;
-import com.blocklaunch.blwarps.commands.executors.WarpRegionExecutor;
-import com.blocklaunch.blwarps.commands.executors.WarpSignExecutor;
+import com.blocklaunch.blwarps.commands.WarpCommandBuilder;
 import com.blocklaunch.blwarps.eventhandlers.PlayerChatEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerMoveEventHandler;
@@ -102,68 +85,7 @@ public class BLWarps {
 
     private void registerCommands() {
         logger.info(PREFIX + " Registering commands");
-
-        HashMap<List<String>, CommandSpec> subCommands = new HashMap<>();
-
-        CommandSpec createWarpSubCommand =
-                CommandSpec
-                        .builder()
-                        .permission("blwarps.warp.create")
-                        .description(Texts.of("Set a warp"))
-                        .extendedDescription(Texts.of("Sets a warp at your location, or at the specified coordinates"))
-                        .executor(new SetWarpExecutor(this))
-                        .arguments(
-                                GenericArguments.seq(GenericArguments.string(Texts.of("name")),
-                                        GenericArguments.optional(GenericArguments.vector3d(Texts.of("position"))))).build();
-        subCommands.put(Arrays.asList("set", "add"), createWarpSubCommand);
-
-        CommandSpec deleteWarpSubCommand =
-                CommandSpec.builder().permission("blwarps.delete").description(Texts.of("Delete a warp"))
-                        .extendedDescription(Texts.of("Deletes the warp with the specified name")).executor(new DeleteWarpExecutor(this))
-                        .arguments(new WarpCommandElement(this, Texts.of("warp"))).build();
-        subCommands.put(Arrays.asList("delete", "del"), deleteWarpSubCommand);
-
-        CommandSpec listWarpSubCommand =
-                CommandSpec.builder().permission("blwarps.list").description(Texts.of("List warps"))
-                        .extendedDescription(Texts.of("Lists all warps, split up into pages.")).executor(new ListWarpsExecutor(this))
-                        .arguments(GenericArguments.optional(GenericArguments.integer(Texts.of("page")))).build();
-        subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand);
-
-        CommandSpec warpInfoSubCommand =
-                CommandSpec.builder().permission("blwarps.info").description(Texts.of("Display information about a warp"))
-                        .executor(new WarpInfoExecutor(this)).arguments(new WarpCommandElement(this, Texts.of("warp"))).build();
-        subCommands.put(Arrays.asList("info"), warpInfoSubCommand);
-
-        CommandSpec groupSubCommand =
-                CommandSpec
-                        .builder()
-                        .permission("blwarps.group")
-                        .description(Texts.of("Manage warp groups"))
-                        .extendedDescription(Texts.of("Create and add warps to groups"))
-                        .executor(new WarpGroupExecutor(this))
-                        .arguments(GenericArguments.enumValue(Texts.of("operation"), GroupOperation.class),
-                                GenericArguments.optional(GenericArguments.firstParsing(new WarpCommandElement(this, Texts.of("warp")))),
-                                new WarpGroupCommandElement(this, Texts.of("group"))).build();
-        subCommands.put(Arrays.asList("group"), groupSubCommand);
-
-        CommandSpec warpRegionSubCommand =
-                CommandSpec.builder().permission("blwarps.region.create").description(Texts.of("Manage warp regions"))
-                        .extendedDescription(Texts.of("Manage regions in which a player will be warped upon entering"))
-                        .executor(new WarpRegionExecutor()).arguments(GenericArguments.enumValue(Texts.of("operation"), WarpRegionOperation.class))
-                        .build();
-        subCommands.put(Arrays.asList("region"), warpRegionSubCommand);
-
-        CommandSpec warpSignSubCommand =
-                CommandSpec.builder().permission("blwarps.sign").description(Texts.of("Create warp signs")).executor(new WarpSignExecutor(this))
-                        .arguments(new WarpCommandElement(this, Texts.of("warp"))).build();
-        subCommands.put(Arrays.asList("sign"), warpSignSubCommand);
-
-        CommandSpec mainWarpCommand =
-                CommandSpec.builder().permission("blwarps.warp").description(Texts.of("Teleport to a warp location"))
-                        .extendedDescription(Texts.of("Teleports you to the location of the specified warp.")).executor(new WarpExecutor(this))
-                        .arguments(GenericArguments.firstParsing(new WarpCommandElement(this, Texts.of("warp")))).children(subCommands).build();
-
-        game.getCommandDispatcher().register(plugin, mainWarpCommand, "warp");
+        game.getCommandDispatcher().register(plugin, new WarpCommandBuilder(this).mainWarpCommand(), "warp");
     }
 
     /**
