@@ -10,12 +10,13 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
 import com.google.common.base.Optional;
 
 public class DeleteWarpExecutor implements CommandExecutor {
 
-    private static final String ERROR_DELETE_WARP_MSG = BLWarps.PREFIX + " There was an error deleting the warp: ";
     private static final Text SUCCESS_DELETE_WARP_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX + " You successfully deleted the warp: ");
+    private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX + " You must specify a valid warp!");
 
     private BLWarps plugin;
 
@@ -25,16 +26,17 @@ public class DeleteWarpExecutor implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
-        String warpName = (String) args.getOne("name").orNull();
-
-        Optional<String> optError = plugin.getWarpManager().deleteWarp(warpName);
-
-        if (optError.isPresent()) {
-            source.sendMessage(Texts.builder(ERROR_DELETE_WARP_MSG + optError.get()).color(TextColors.RED).build());
+        Optional<Warp> optWarp = args.getOne("warp");
+        if (!optWarp.isPresent()) {
+            source.sendMessage(WARP_NOT_EXIST_MSG);
             return CommandResult.empty();
         }
+        
+        Warp warp = optWarp.get();
 
-        source.sendMessage(SUCCESS_DELETE_WARP_MSG.builder().append(Texts.of(TextColors.GOLD, warpName)).build());
+        plugin.getWarpManager().deleteWarp(warp);
+
+        source.sendMessage(SUCCESS_DELETE_WARP_MSG.builder().append(Texts.of(TextColors.GOLD, warp.getName())).build());
         return CommandResult.success();
     }
 

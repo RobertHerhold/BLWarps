@@ -120,7 +120,7 @@ public class BLWarps {
         CommandSpec deleteWarpSubCommand =
                 CommandSpec.builder().permission("blwarps.delete").description(Texts.of("Delete a warp"))
                         .extendedDescription(Texts.of("Deletes the warp with the specified name")).executor(new DeleteWarpExecutor(this))
-                        .arguments(GenericArguments.string(Texts.of("name"))).build();
+                        .arguments(new WarpCommandElement(this, Texts.of("warp"))).build();
         subCommands.put(Arrays.asList("delete", "del"), deleteWarpSubCommand);
 
         CommandSpec listWarpSubCommand =

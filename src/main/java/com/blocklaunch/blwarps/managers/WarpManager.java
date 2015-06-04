@@ -28,7 +28,6 @@ public class WarpManager {
 
     private static final String WARP_NAME_EXISTS_MSG = "A warp with that name already exists!";
     private static final String WARP_LOCATION_EXISTS_MSG = "A warp at that location already exists!";
-    private static final String WARP_NOT_EXIST = "That warp does not exist!";
     private static final String ERROR_SCHEDULING_WARP_MSG = "There was an error scheduling your warp. Please try again.";
 
     private BLWarps plugin;
@@ -92,19 +91,10 @@ public class WarpManager {
     /**
      * Deletes the warp with the provided name
      * 
-     * @param warpName The name of the warp to delete
-     * @return An Optional containing a potential error
+     * @param warp The name of the warp to delete
      */
-    public Optional<String> deleteWarp(String warpName) {
-        for (Warp warp : warps) {
-            if (warp.getName().equalsIgnoreCase(warpName)) {
-                warps.remove(warp);
-                warpNames.remove(warp.getName());
-                plugin.getStorageManager().deleteWarp(warp);
-                return Optional.absent();
-            }
-        }
-        return Optional.of(WARP_NOT_EXIST);
+    public void deleteWarp(Warp warp) {
+        warps.remove(warp);
     }
 
     /**
