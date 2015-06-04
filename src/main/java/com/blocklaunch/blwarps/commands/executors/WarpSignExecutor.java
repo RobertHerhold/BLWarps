@@ -1,6 +1,8 @@
 package com.blocklaunch.blwarps.commands.executors;
 
 import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -14,17 +16,17 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.google.common.base.Optional;
 
-public class WarpExecutor implements CommandExecutor {
+public class WarpSignExecutor implements CommandExecutor {
 
     private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
             + " You must be a player to send that command (not console)");
     private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX + " You must specify a valid warp!");
-    private static final String ERROR_WARPING_MSG = BLWarps.PREFIX + " There was an error scheduling your warp: ";
     private static final Text NO_PERMISSION = Texts.of(TextColors.RED, BLWarps.PREFIX + " You do not have permission to use that warp!");
+    private static final Text INVENTORY_FULL = Texts.of(TextColors.RED, BLWarps.PREFIX + " Your inventory is full! Please clear a slot and try again.");
 
     private BLWarps plugin;
 
-    public WarpExecutor(BLWarps plugin) {
+    public WarpSignExecutor(BLWarps plugin) {
         this.plugin = plugin;
     }
 
@@ -49,10 +51,12 @@ public class WarpExecutor implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        Optional<String> optError = plugin.getWarpManager().scheduleWarp(player, warp);
-
-        if (optError.isPresent()) {
-            player.sendMessage(Texts.of(TextColors.RED, ERROR_WARPING_MSG + optError.get()));
+        ItemStack warpSign =
+                plugin.getGame().getRegistry().getItemBuilder().itemType(ItemTypes.SIGN).quantity(1)
+                        .itemData(plugin.getUtil().generateWarpSignData(warp)).build();
+        
+        if(player.getInventory().offer(warpSign) == false) {
+            player.sendMessage(INVENTORY_FULL);
             return CommandResult.empty();
         }
 

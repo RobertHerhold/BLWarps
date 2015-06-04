@@ -7,7 +7,6 @@ import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandSource;
 
 import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.google.common.base.Optional;
 
@@ -42,11 +41,11 @@ public class PlayerChatEventHandler implements EventHandler<PlayerChatEvent> {
 
                 Warp warp = optWarp.get();
                 CommandSource source = event.getSource();
-                if (!Util.hasPermission(source, warp)) {
+                if (!plugin.getUtil().hasPermission(source, warp)) {
                     continue;
                 }
 
-                Text text = Util.formattedTextWarp(warp.getName());
+                Text text = plugin.getUtil().formattedTextWarp(warp.getName());
                 // TODO Replace the original text's word representing the warp with this one ^
             }
         }

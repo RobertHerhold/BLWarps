@@ -14,7 +14,6 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 
 public class ListWarpsExecutor implements CommandExecutor {
@@ -47,8 +46,8 @@ public class ListWarpsExecutor implements CommandExecutor {
         List<Text> warpNames = new ArrayList<Text>();
         
         for (Warp w : plugin.getWarpManager().getWarps()) {
-            if(Util.hasPermission(source, w)) {
-                warpNames.add(Util.formattedTextWarp(w.getName()));
+            if(plugin.getUtil().hasPermission(source, w)) {
+                warpNames.add(plugin.getUtil().formattedTextWarp(w.getName()));
             }
         }
 

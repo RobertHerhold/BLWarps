@@ -13,7 +13,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
-public class WarpRegionCommand implements CommandExecutor {
+public class WarpRegionExecutor implements CommandExecutor {
 
     private static final Text NO_OPERATION_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX + " You need to specify an operation: CREATE");
     private static final Text NO_PERMISSION = Texts.of(TextColors.RED, BLWarps.PREFIX + " You do not have permission!");

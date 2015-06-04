@@ -36,7 +36,8 @@ import com.blocklaunch.blwarps.commands.executors.ListWarpsExecutor;
 import com.blocklaunch.blwarps.commands.executors.SetWarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpGroupExecutor;
-import com.blocklaunch.blwarps.commands.executors.WarpRegionCommand;
+import com.blocklaunch.blwarps.commands.executors.WarpRegionExecutor;
+import com.blocklaunch.blwarps.commands.executors.WarpSignExecutor;
 import com.blocklaunch.blwarps.eventhandlers.PlayerChatEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerMoveEventHandler;
@@ -58,7 +59,8 @@ public class BLWarps {
     private Game game;
     private PluginContainer plugin;
     private BLWarpsConfiguration config;
-    
+
+    private Util util = new Util(this);
     private WarpManager warpManager = new WarpManager(this);
     private StorageManager storageManager;
     /**
@@ -91,11 +93,8 @@ public class BLWarps {
         }
 
         setupStorageManager();
-
         storageManager.loadWarps();
-
         registerCommands();
-
         registerEventHandlers();
 
     }
@@ -145,9 +144,14 @@ public class BLWarps {
         CommandSpec warpRegionSubCommand =
                 CommandSpec.builder().permission("blwarps.region.create").description(Texts.of("Manage warp regions"))
                         .extendedDescription(Texts.of("Manage regions in which a player will be warped upon entering"))
-                        .executor(new WarpRegionCommand())
-                        .arguments(GenericArguments.enumValue(Texts.of("operation"), WarpRegionOperation.class)).build();
+                        .executor(new WarpRegionExecutor()).arguments(GenericArguments.enumValue(Texts.of("operation"), WarpRegionOperation.class))
+                        .build();
         subCommands.put(Arrays.asList("region"), warpRegionSubCommand);
+
+        CommandSpec warpSignSubCommand =
+                CommandSpec.builder().permission("blwarps.sign").description(Texts.of("Create warp signs")).executor(new WarpSignExecutor(this))
+                        .arguments(new WarpCommandElement(this, Texts.of("warp"))).build();
+        subCommands.put(Arrays.asList("sign"), warpSignSubCommand);
 
         CommandSpec mainWarpCommand =
                 CommandSpec.builder().permission("blwarps.warp").description(Texts.of("Teleport to a warp location"))
@@ -271,6 +275,10 @@ public class BLWarps {
 
     public Game getGame() {
         return game;
+    }
+    
+    public Util getUtil() {
+        return util;
     }
 
 }

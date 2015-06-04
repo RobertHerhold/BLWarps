@@ -2,13 +2,10 @@ package com.blocklaunch.blwarps.eventhandlers;
 
 import java.util.List;
 
-import org.spongepowered.api.data.DataManipulatorBuilder;
-import org.spongepowered.api.data.manipulator.tileentity.SignData;
 import org.spongepowered.api.event.EventHandler;
 import org.spongepowered.api.event.block.tileentity.SignChangeEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
-import org.spongepowered.api.text.format.TextColors;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
@@ -35,25 +32,8 @@ public class SignChangeEventHandler implements EventHandler<SignChangeEvent> {
             if (!optWarp.isPresent()) {
                 return;
             }
-            event.setNewData(generateWarpSignData(optWarp.get()));
+            event.setNewData(plugin.getUtil().generateWarpSignData(optWarp.get()));
         }
-
-    }
-
-    /**
-     * @param warp the warp to represent on the SignData
-     * @return the formatted SignData indicating a valid warp sign
-     */
-    private SignData generateWarpSignData(Warp warp) {
-        Optional<DataManipulatorBuilder<SignData>> builder = plugin.getGame().getRegistry().getManipulatorRegistry().getBuilder(SignData.class);
-        SignData signData = builder.get().create();
-
-        signData.setLine(0, Texts.of());
-        signData.setLine(1, Texts.of(TextColors.DARK_BLUE, WARP_SIGN_PREFIX));
-        signData.setLine(2, Texts.of(TextColors.GOLD, warp.getName()));
-        signData.setLine(3, Texts.of());
-
-        return signData;
 
     }
 
