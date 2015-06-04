@@ -52,10 +52,6 @@
 			<url>http://repo.spongepowered.org/maven/</url>
 		</repository>
 		<repository>
-			<id>jitpack.io</id>
-			<url>http://jitpack.io</url>
-		</repository>
-		<repository>
 			<id>prtree</id>
 			<url>http://maven.sk89q.com/repo/</url>
 		</repository>
