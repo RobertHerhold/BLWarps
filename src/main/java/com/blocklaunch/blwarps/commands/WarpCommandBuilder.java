@@ -20,6 +20,7 @@ import com.blocklaunch.blwarps.commands.executors.WarpRegionExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpSignExecutor;
 import com.blocklaunch.blwarps.commands.executors.group.AddWarpToGroupExecutor;
 import com.blocklaunch.blwarps.commands.executors.group.DeleteGroupExecutor;
+import com.blocklaunch.blwarps.commands.executors.group.GroupInfoExecutor;
 import com.blocklaunch.blwarps.commands.executors.group.RemoveWarpFromGroupExecutor;
 
 public class WarpCommandBuilder {
@@ -98,7 +99,7 @@ public class WarpCommandBuilder {
     }
 
     /**
-     * Command: "/warp group add:remove:removeall
+     * Command: "/warp group add:remove:delete:info
      * 
      * @return
      */
@@ -108,6 +109,7 @@ public class WarpCommandBuilder {
         groupSubCommands.put(Arrays.asList("add"), addWarpToGroupSubCommand());
         groupSubCommands.put(Arrays.asList("remove"), removeWarpFromGroupSubCommand());
         groupSubCommands.put(Arrays.asList("removeall", "delete"), deleteGroupSubCommand());
+        groupSubCommands.put(Arrays.asList("info"), groupInfoSubCommand());
 
         return CommandSpec.builder().permission("blwarps.group").description(Texts.of("Manage warp groups")).children(groupSubCommands).build();
     }
@@ -142,6 +144,16 @@ public class WarpCommandBuilder {
     private CommandSpec deleteGroupSubCommand() {
         return CommandSpec.builder().permission("blwarps.group.delete").description(Texts.of("Delete a warp group"))
                 .executor(new DeleteGroupExecutor(plugin)).arguments(new WarpGroupCommandElement(plugin, Texts.of("group"))).build();
+    }
+
+    /**
+     * Command: "/warp group info <group name>
+     * 
+     * @return
+     */
+    private CommandSpec groupInfoSubCommand() {
+        return CommandSpec.builder().permission("blwarps.group.info").description(Texts.of("Display information about a warp group"))
+                .executor(new GroupInfoExecutor(plugin)).arguments(new WarpGroupCommandElement(plugin, Texts.of("group"))).build();
     }
 
     /**
