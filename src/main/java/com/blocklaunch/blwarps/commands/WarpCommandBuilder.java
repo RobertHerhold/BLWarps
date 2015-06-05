@@ -13,7 +13,7 @@ import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
 import com.blocklaunch.blwarps.commands.elements.WarpGroupCommandElement;
 import com.blocklaunch.blwarps.commands.executors.DeleteWarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.ListWarpsExecutor;
-import com.blocklaunch.blwarps.commands.executors.SetWarpExecutor;
+import com.blocklaunch.blwarps.commands.executors.CreateWarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpInfoExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpSignExecutor;
@@ -60,7 +60,7 @@ public class WarpCommandBuilder {
                 .permission("blwarps.warp.create")
                 .description(Texts.of("Set a warp"))
                 .extendedDescription(Texts.of("Sets a warp at your location, or at the specified coordinates"))
-                .executor(new SetWarpExecutor(plugin))
+                .executor(new CreateWarpExecutor(plugin))
                 .arguments(
                         GenericArguments.seq(GenericArguments.string(Texts.of("name")),
                                 GenericArguments.optional(GenericArguments.vector3d(Texts.of("position"))))).build();

@@ -15,10 +15,10 @@ import com.blocklaunch.blwarps.Warp;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 
-public class SetWarpExecutor implements CommandExecutor {
+public class CreateWarpExecutor implements CommandExecutor {
     private BLWarps plugin;
 
-    public SetWarpExecutor(BLWarps plugin) {
+    public CreateWarpExecutor(BLWarps plugin) {
         this.plugin = plugin;
     }
 
