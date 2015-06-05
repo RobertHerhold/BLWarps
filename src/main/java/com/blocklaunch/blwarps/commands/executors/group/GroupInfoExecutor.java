@@ -14,14 +14,12 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 public class GroupInfoExecutor implements CommandExecutor {
-
-    private static final Text SPECIFY_GROUP_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX + " You must specify a group!");
-
     private BLWarps plugin;
 
     public GroupInfoExecutor(BLWarps plugin) {
@@ -33,7 +31,7 @@ public class GroupInfoExecutor implements CommandExecutor {
         Optional<String> optGroup = args.getOne("group");
 
         if (!optGroup.isPresent()) {
-            source.sendMessage(SPECIFY_GROUP_MSG);
+            source.sendMessage(Constants.SPECIFY_GROUP_MSG);
             return CommandResult.empty();
         }
 
@@ -41,7 +39,7 @@ public class GroupInfoExecutor implements CommandExecutor {
 
         Optional<Text> optWarpsInGroup = generateWarpList(groupName);
         if (!optWarpsInGroup.isPresent()) {
-            source.sendMessage(Texts.of(TextColors.RED, BLWarps.PREFIX, " That group does not exist!"));
+            source.sendMessage(Constants.GROUP_NOT_FOUND_MSG);
             return CommandResult.empty();
         }
 

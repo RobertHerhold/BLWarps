@@ -14,11 +14,10 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
 
 public class ListWarpsExecutor implements CommandExecutor {
-
-    private static final Text NO_WARPS_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX + " There were no warps to display.");
 
     private BLWarps plugin;
 
@@ -39,7 +38,7 @@ public class ListWarpsExecutor implements CommandExecutor {
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
         if (plugin.getWarpManager().getWarps().isEmpty()) {
-            source.sendMessage(NO_WARPS_MSG);
+            source.sendMessage(Constants.NO_WARPS_MSG);
             return CommandResult.success();
         }
 

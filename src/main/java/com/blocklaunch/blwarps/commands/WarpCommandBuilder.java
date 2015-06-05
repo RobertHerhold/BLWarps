@@ -16,12 +16,12 @@ import com.blocklaunch.blwarps.commands.executors.ListWarpsExecutor;
 import com.blocklaunch.blwarps.commands.executors.SetWarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpInfoExecutor;
-import com.blocklaunch.blwarps.commands.executors.WarpRegionExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpSignExecutor;
 import com.blocklaunch.blwarps.commands.executors.group.AddWarpToGroupExecutor;
 import com.blocklaunch.blwarps.commands.executors.group.DeleteGroupExecutor;
 import com.blocklaunch.blwarps.commands.executors.group.GroupInfoExecutor;
 import com.blocklaunch.blwarps.commands.executors.group.RemoveWarpFromGroupExecutor;
+import com.blocklaunch.blwarps.commands.executors.region.CreateWarpRegionExecutor;
 
 public class WarpCommandBuilder {
 
@@ -39,7 +39,7 @@ public class WarpCommandBuilder {
         subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand());
         subCommands.put(Arrays.asList("info"), warpInfoSubCommand());
         subCommands.put(Arrays.asList("group"), groupSubCommand());
-        subCommands.put(Arrays.asList("region"), warpRegionSubCommand());
+        subCommands.put(Arrays.asList("region"), regionSubCommand());
         subCommands.put(Arrays.asList("sign"), warpSignSubCommand());
 
         CommandSpec mainWarpCommand =
@@ -157,14 +157,35 @@ public class WarpCommandBuilder {
     }
 
     /**
+     * Command: "/warp region create:delete:info"
+     * 
+     * @return
+     */
+    private CommandSpec regionSubCommand() {
+        HashMap<List<String>, CommandSpec> groupSubCommands = new HashMap<>();
+
+        groupSubCommands.put(Arrays.asList("set", "add", "create"), createWarpRegionSubCommand());
+
+        return CommandSpec.builder().permission("blwarps.region").description(Texts.of("Manage warp regions"))
+                .extendedDescription(Texts.of("Manage regions in which a player will be warped upon entering")).children(groupSubCommands).build();
+
+
+    }
+
+    /**
      * Command: "/warp region create"
      * 
      * @return
      */
-    private CommandSpec warpRegionSubCommand() {
-        return CommandSpec.builder().permission("blwarps.region.create").description(Texts.of("Manage warp regions"))
-                .extendedDescription(Texts.of("Manage regions in which a player will be warped upon entering")).executor(new WarpRegionExecutor())
-                .arguments(GenericArguments.enumValue(Texts.of("operation"), WarpRegionOperation.class)).build();
+    private CommandSpec createWarpRegionSubCommand() {
+        return CommandSpec
+                .builder()
+                .permission("blwarps.region.create")
+                .description(Texts.of("Create a warp region"))
+                .extendedDescription(Texts.of("Create a region in which a player will be warped upon entering"))
+                .executor(new CreateWarpRegionExecutor())
+                .arguments(GenericArguments.string(Texts.of("name")), new WarpCommandElement(plugin, Texts.of("warp")),
+                        GenericArguments.vector3d(Texts.of("corner1")), GenericArguments.vector3d(Texts.of("corner2"))).build();
     }
 
     /**

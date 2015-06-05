@@ -13,13 +13,12 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 public class WarpInfoExecutor implements CommandExecutor {
-    private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX + " You must specify a valid warp!");
-    private static final Text NO_PERMISSION = Texts.of(TextColors.RED, BLWarps.PREFIX + " You do not have permission to use that warp!");
 
     private BLWarps plugin;
 
@@ -32,14 +31,14 @@ public class WarpInfoExecutor implements CommandExecutor {
 
         Optional<Warp> optWarp = args.getOne("warp");
         if (!optWarp.isPresent()) {
-            source.sendMessage(WARP_NOT_EXIST_MSG);
+            source.sendMessage(Constants.WARP_NOT_FOUND_MSG);
             return CommandResult.empty();
         }
 
         Warp warp = optWarp.get();
 
         if (plugin.getUtil().hasPermission(source, warp) == false) {
-            source.sendMessage(NO_PERMISSION);
+            source.sendMessage(Constants.NO_PERMISSION_MSG);
             return CommandResult.empty();
         }
 

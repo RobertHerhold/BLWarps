@@ -39,7 +39,6 @@ public class BLWarps {
     /**
      * Prefix to display at the beginning of messages to player, console outputs, etc.
      */
-    public static final String PREFIX = "[BLWarps]";
     private Game game;
     private PluginContainer plugin;
     private BLWarpsConfiguration config;
@@ -84,7 +83,7 @@ public class BLWarps {
     }
 
     private void registerCommands() {
-        logger.info(PREFIX + " Registering commands");
+        logger.info("Registering commands");
         game.getCommandDispatcher().register(plugin, new WarpCommandBuilder(this).mainWarpCommand(), "warp");
     }
 
@@ -112,7 +111,7 @@ public class BLWarps {
             }
             logger.warn("The specified storage type could not be found. Reverting to flatfile storage. Try: " + sb.toString());
         } catch (ObjectMappingException e) {
-            logger.warn(PREFIX + " There was an loading the configuration." + e.getStackTrace());
+            logger.warn("There was an loading the configuration." + e.getStackTrace());
         }
     }
 
@@ -138,7 +137,7 @@ public class BLWarps {
                 }
 
                 configLoader.save(rawConfig);
-                logger.info(PREFIX + " Config file successfully generated.");
+                logger.info("Config file successfully generated.");
             } else {
                 return;
             }

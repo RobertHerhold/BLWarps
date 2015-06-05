@@ -1,7 +1,6 @@
 package com.blocklaunch.blwarps.commands.executors;
 
 import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandException;
@@ -11,17 +10,11 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
 import com.google.common.base.Optional;
 
 public class WarpExecutor implements CommandExecutor {
-
-    private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
-            + " You must be a player to send that command (not console)");
-    private static final Text WARP_NOT_EXIST_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX + " You must specify a valid warp!");
-    private static final String ERROR_WARPING_MSG = BLWarps.PREFIX + " There was an error scheduling your warp: ";
-    private static final Text NO_PERMISSION = Texts.of(TextColors.RED, BLWarps.PREFIX + " You do not have permission to use that warp!");
-
     private BLWarps plugin;
 
     public WarpExecutor(BLWarps plugin) {
@@ -31,28 +24,28 @@ public class WarpExecutor implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         if (!(source instanceof Player)) {
-            source.sendMessage(MUST_BE_PLAYER_MSG);
+            source.sendMessage(Constants.MUST_BE_PLAYER_MSG);
             return CommandResult.empty();
         }
         Player player = (Player) source;
 
         Optional<Warp> optWarp = args.getOne("warp");
         if (!optWarp.isPresent()) {
-            source.sendMessage(WARP_NOT_EXIST_MSG);
+            source.sendMessage(Constants.WARP_NOT_FOUND_MSG);
             return CommandResult.empty();
         }
 
         Warp warp = optWarp.get();
 
         if (plugin.getUtil().hasPermission(player, warp) == false) {
-            player.sendMessage(NO_PERMISSION);
+            player.sendMessage(Constants.NO_PERMISSION_MSG);
             return CommandResult.empty();
         }
 
         Optional<String> optError = plugin.getWarpManager().scheduleWarp(player, warp);
 
         if (optError.isPresent()) {
-            player.sendMessage(Texts.of(TextColors.RED, ERROR_WARPING_MSG + optError.get()));
+            player.sendMessage(Texts.of(TextColors.RED, Constants.ERROR_WARPING_MSG + optError.get()));
             return CommandResult.empty();
         }
 

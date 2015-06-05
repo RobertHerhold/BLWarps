@@ -1,7 +1,6 @@
 package com.blocklaunch.blwarps.commands.executors;
 
 import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandException;
@@ -11,17 +10,12 @@ import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 
 public class SetWarpExecutor implements CommandExecutor {
-
-    private static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, BLWarps.PREFIX
-            + " You must be a player to send that command (not console)");
-    private static final Text SUCCESSFULLY_CREATED_WARP_MSG = Texts.of(TextColors.GREEN, BLWarps.PREFIX + " You have successfully created a warp: ");
-    private static final String ERROR_CREATING_WARP_MSG = BLWarps.PREFIX + " There was an error creating the warp: ";
-
     private BLWarps plugin;
 
     public SetWarpExecutor(BLWarps plugin) {
@@ -31,7 +25,7 @@ public class SetWarpExecutor implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         if (!(source instanceof Player)) {
-            source.sendMessage(MUST_BE_PLAYER_MSG);
+            source.sendMessage(Constants.MUST_BE_PLAYER_MSG);
             return CommandResult.empty();
         }
         // Make sure the source is a player before attempting to get their
@@ -47,10 +41,10 @@ public class SetWarpExecutor implements CommandExecutor {
 
         Optional<String> error = plugin.getWarpManager().addWarp(newWarp);
         if (error.isPresent()) {
-            source.sendMessage(Texts.builder(ERROR_CREATING_WARP_MSG + error.get()).color(TextColors.RED).build());
+            source.sendMessage(Texts.builder(Constants.ERROR_CREATE_WARP_MSG + error.get()).color(TextColors.RED).build());
             return CommandResult.empty();
         } else {
-            source.sendMessage(SUCCESSFULLY_CREATED_WARP_MSG.builder().append(plugin.getUtil().generateWarpText(newWarp)).build());
+            source.sendMessage(Constants.SUCCESS_DELETE_WARP_MSG.builder().append(plugin.getUtil().generateWarpText(newWarp)).build());
             return CommandResult.success();
         }
     }
