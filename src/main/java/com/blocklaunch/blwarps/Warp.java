@@ -4,8 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -17,14 +15,10 @@ import com.flowpowered.math.vector.Vector3d;
  *
  */
 @JsonInclude(Include.NON_EMPTY)
-public class Warp {
+public class Warp extends WarpBase {
 
-    private Vector3d position;
+    private Vector3d position; // no getter/setter for this, don't want it to be serialized
 
-    // Max of 15 chars b/c a sign only fits 15 chars on a line
-    @Size(min = 1, max = 15)
-    private String name;
-    private String world;
     private double x;
     private double y;
     private double z;
@@ -36,8 +30,7 @@ public class Warp {
     }
 
     public Warp(String name, String world, Vector3d position) {
-        this.name = name.toLowerCase();
-        this.world = world;
+        super(name, world);
         this.position = position;
 
         DecimalFormat f = new DecimalFormat("##.00");
@@ -70,22 +63,6 @@ public class Warp {
             position = new Vector3d(this.x, this.y, this.z);
         }
         return position;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getWorld() {
-        return world;
-    }
-
-    public void setWorld(String world) {
-        this.world = world;
     }
 
     public double getX() {
