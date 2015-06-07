@@ -6,149 +6,121 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.Constants;
+import com.blocklaunch.blwarps.WarpBase;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Optional;
 
-public class FlatFileManager extends StorageManager {
+public class FlatFileManager<T extends WarpBase> extends StorageManager<T> {
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private BLWarps plugin;
+    private File file;
+    private ObjectMapper mapper;
+    private Class<T> type;
 
-    private static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
-    private static final String ERROR_FILE_READ = "There was an error reading the warps file!";
-
-    private File warpsFile;
-
-    public FlatFileManager(File warpsFile, BLWarps plugin) {
+    public FlatFileManager(Class<T> type, BLWarps plugin, File file) {
         super(plugin);
-        this.warpsFile = warpsFile;
+        this.type = type;
+        this.plugin = plugin;
+        this.file = file;
+        this.mapper = new ObjectMapper();
     }
 
-    /**
-     * Reads in warps file, and de-serializes it to a List<Warp>
-     */
     @Override
-    public void loadWarps() {
-        Optional<List<Warp>> optWarps = readInWarps();
-        if (!optWarps.isPresent()) {
+    public void load() {
+        Optional<List<T>> objectsOpt = readIn();
+        if (!objectsOpt.isPresent()) {
             return;
         }
 
-        plugin.getWarpManager().setWarps(optWarps.get());
+        plugin.getWarpBaseManager(type).setPayLoad(objectsOpt.get());
+
     }
 
-    /**
-     * Read in warp file and deserialize to List<Warp> Insert new warp to List Serialize to JSON and
-     * write to file
-     * 
-     * @param warp The new warp to save
-     */
     @Override
-    public void saveNewWarp(Warp warp) {
-        Optional<List<Warp>> warpsOpt = readInWarps();
+    public void saveNew(T t) {
+        Optional<List<T>> objectsOpt = readIn();
 
-        List<Warp> currentlySavedWarps = new ArrayList<Warp>();
-        if (warpsOpt.isPresent()) {
-            currentlySavedWarps = warpsOpt.get();
+        List<T> currentlySavedObjects = new ArrayList<T>();
+        if (objectsOpt.isPresent()) {
+            currentlySavedObjects = objectsOpt.get();
         }
-        currentlySavedWarps.add(warp);
+        currentlySavedObjects.add(t);
 
-        writeOutWarps(currentlySavedWarps);
+        writeOut(currentlySavedObjects);
+
     }
 
-    /**
-     * Read in warp file and deserialize to List<Warp>. Remove the warp from the list Serialize to
-     * JSON and write to file
-     * 
-     * @param warp The warp to remove
-     */
     @Override
-    public void deleteWarp(Warp warp) {
-        Optional<List<Warp>> warpsOpt = readInWarps();
+    public void delete(T t) {
+        Optional<List<T>> objectsOpt = readIn();
 
-        if (!warpsOpt.isPresent()) {
+        if (!objectsOpt.isPresent()) {
             return;
         }
-        List<Warp> warps = warpsOpt.get();
+        List<T> objects = objectsOpt.get();
 
         // Temporary warp for avoiding ConcurrentModificationException
-        Warp warpToRemove = null;
-        for (Warp w : warps) {
-            if (w.getName().equalsIgnoreCase(warp.getName())) {
-                warpToRemove = w;
+        T objectToRemove = null;
+        for (T object : objects) {
+            if (object.getName().equalsIgnoreCase(t.getName())) {
+                objectToRemove = object;
             }
         }
-        if (warpToRemove != null)
-            warps.remove(warpToRemove);
+        if (objectToRemove != null)
+            objects.remove(objectToRemove);
 
-        writeOutWarps(warps);
+        writeOut(objects);
+
     }
 
-    /**
-     * Find the saved warp with the same name Remove the saved warp Add the new, updated warp
-     * 
-     * @param warp The warp to update
-     */
     @Override
-    public void updateWarp(Warp warp) {
-        Optional<List<Warp>> warpsOpt = readInWarps();
+    public void update(T updatedObject) {
+        Optional<List<T>> objectsOpt = readIn();
 
-        if (!warpsOpt.isPresent()) {
+        if (!objectsOpt.isPresent()) {
             return;
         }
-        List<Warp> warps = warpsOpt.get();
+        List<T> objects = objectsOpt.get();
 
         // Temporary warp for avoiding ConcurrentModificationException
-        Warp warpToUpdate = null;
-        for (Warp w : warps) {
-            if (w.getName().equalsIgnoreCase(warp.getName())) {
-                warpToUpdate = w;
+        T objectToUpdate = null;
+        for (T t : objects) {
+            if (t.getName().equalsIgnoreCase(updatedObject.getName())) {
+                objectToUpdate = t;
             }
         }
-        if (warpToUpdate != null) {
-            warps.remove(warpToUpdate);
-            warps.add(warp);
+        if (objectToUpdate != null) {
+            objects.remove(objectToUpdate);
+            objects.add(updatedObject);
         }
-        writeOutWarps(warps);
-
+        writeOut(objects);
     }
 
-    /**
-     * Read in warp file (if it exists) and serialize to a List<Warp> (if possible)
-     * 
-     * @return An Optional containing the List<Warp>, or Optional.absent() otherwise
-     */
-    private Optional<List<Warp>> readInWarps() {
-        if (!warpsFile.exists()) {
+    private Optional<List<T>> readIn() {
+        if (!file.exists()) {
             return Optional.absent();
         }
 
         try {
-            List<Warp> warps = mapper.readValue(warpsFile, new TypeReference<List<Warp>>() {});
-            return Optional.of(warps);
+            List<T> objects = mapper.readValue(file, new TypeReference<List<T>>() {});
+            return Optional.of(objects);
         } catch (IOException e) {
-            plugin.getLogger().warn(ERROR_FILE_READ);
+            plugin.getLogger().warn(Constants.ERROR_FILE_READ);
             e.printStackTrace();
             return Optional.absent();
         }
-
     }
 
-    /**
-     * Serializes a List<Warp> and saves it to the file.
-     * 
-     * @param warps The warps to save to the file
-     * @return The success of the saving operation
-     */
-    private void writeOutWarps(List<Warp> warps) {
+    private void writeOut(List<T> objects) {
         try {
-            warpsFile.createNewFile(); // Only creates the file if it doesn't already exist.
+            file.createNewFile(); // Only creates the file if it doesn't already exist.
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            mapper.writeValue(warpsFile, warps);
+            mapper.writeValue(file, objects);
         } catch (IOException e) {
-            plugin.getLogger().warn(ERROR_FILE_WRITE);
+            plugin.getLogger().warn(Constants.ERROR_FILE_WRITE);
             e.printStackTrace();
         }
     }

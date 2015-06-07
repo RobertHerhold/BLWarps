@@ -10,7 +10,7 @@ import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 
 import com.blocklaunch.blwarps.Warp;
 
-public interface WarpDAO {
+public interface WarpRegionDAO {
 
     @SqlUpdate("CREATE TABLE IF NOT EXISTS warps (name VARCHAR(45) NOT NULL, world VARCHAR(45) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, groups VARCHAR(45), PRIMARY KEY (name))")
     void createTable();

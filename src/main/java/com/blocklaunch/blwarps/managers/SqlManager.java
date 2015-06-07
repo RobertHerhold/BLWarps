@@ -10,17 +10,24 @@ import org.spongepowered.api.service.sql.SqlService;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.WarpBase;
+import com.blocklaunch.blwarps.region.WarpRegion;
+import com.blocklaunch.blwarps.sql.WarpBaseDAO;
 import com.blocklaunch.blwarps.sql.WarpDAO;
+import com.blocklaunch.blwarps.sql.WarpRegionDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class SqlManager extends StorageManager {
+public class SqlManager<T extends WarpBase> extends StorageManager<T> {
 
-    WarpDAO warpDAO;
+    private Class<T> type;
+    WarpBaseDAO dao;
     ObjectMapper mapper;
 
-    public SqlManager(BLWarps plugin) {
+    public SqlManager(Class<T> type, BLWarps plugin) {
         super(plugin);
+        
+        this.type = type;
 
         mapper = new ObjectMapper();
 
@@ -35,28 +42,32 @@ public class SqlManager extends StorageManager {
 
         DBI dbi = new DBI(dataSource);
         // Use on demand so we don't have to bother closing connections
-        warpDAO = dbi.onDemand(WarpDAO.class);
-
-        warpDAO.createWarpTable();
+        if(type == Warp.class) {
+            dao = dbi.onDemand(WarpDAO.class);
+        } else if(type == WarpRegion.class) {
+            dao = dbi.onDemand(WarpRegionDAO.class);
+        }
+                
+        dao.createTable();
     }
 
     @Override
-    public void loadWarps() {
-        plugin.getWarpManager().setWarps(warpDAO.getWarps());
+    public void load() {
+        plugin.getWarpBaseManager(type).setPayload(dao.getAll());
     }
 
     @Override
-    public void saveNewWarp(Warp warp) {
-        warpDAO.insertWarp(warp, serializeGroupList(warp.getGroups()));
+    public void saveNew(T object) {
+        warpDAO.insertWarp(object, serializeGroupList(object.getGroups()));
     }
 
     @Override
-    public void deleteWarp(Warp warp) {
+    public void delete(T object) {
         warpDAO.deleteWarp(warp);
     }
 
     @Override
-    public void updateWarp(Warp warp) {
+    public void update(T object) {
         warpDAO.updateWarp(warp, serializeGroupList(warp.getGroups()));
     }
 

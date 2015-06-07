@@ -1,65 +1,38 @@
 package com.blocklaunch.blwarps.managers;
 
 import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.WarpBase;
 
-public abstract class StorageManager {
+public abstract class StorageManager<T extends WarpBase> {
 
-    // protected so that all extending classes can access it
-    protected BLWarps plugin;
+    public BLWarps plugin;
 
     public StorageManager(BLWarps plugin) {
         this.plugin = plugin;
     }
 
-    /**
-     * To be called when loading the warps from a storage solution like REST, MySQL, etc. fails
-     */
-    public void failedLoadWarps() {
-        plugin.getFallBackManager().loadWarps();
+    public void failedLoad(Class<? extends WarpBase> clazz) {
+        plugin.getFallBackManager(clazz).load();
     }
 
-    /**
-     * To be called when saving the warps to a storage solution like REST, MySQL, etc. fails
-     */
-    public void failedSaveNewWarp(Warp warp) {
-        plugin.getFallBackManager().saveNewWarp(warp);
+    public void failedSaveNew(T t) {
+        plugin.getFallBackManager(t.getClass()).saveNew(t);
     }
 
-    /**
-     * To be called when deleting a warp with a storage solution like REST, MySQL, etc. fails
-     */
-    public void failedDeleteWarp(Warp warp) {
-        plugin.getFallBackManager().deleteWarp(warp);
+    public void failedDelete(T t) {
+        plugin.getFallBackManager(t.getClass()).delete(t);
+    }
+    
+    public void failedUpdate(T t) {
+        plugin.getFallBackManager(t.getClass()).update(t);
     }
 
-    /**
-     * Loads all saved warps
-     * 
-     */
-    public abstract void loadWarps();
+    public abstract void load();
 
-    /**
-     * Saves an individual newly added warp
-     * 
-     * @param warp the warp to save
-     * 
-     */
-    public abstract void saveNewWarp(Warp warp);
+    public abstract void saveNew(T t);
 
-    /**
-     * Deletes an individual warp
-     * 
-     * @param warp the warp to delete
-     * 
-     */
-    public abstract void deleteWarp(Warp warp);
+    public abstract void delete(T t);
 
-    /**
-     * Replaces a warp with the same name
-     * 
-     * @param warp the new warp
-     */
-    public abstract void updateWarp(Warp warp);
+    public abstract void update(T t);
 
 }
