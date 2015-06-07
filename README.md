@@ -12,12 +12,16 @@ Note: In the following commands, square brackets (`[]`) indicate optional argume
 * `/warp list`
  * List all of the currently saved warps. Optionally, specify a `page number`.
  * Only the warps that the `CommandSource` has permission to use will be displayed to them
+* `/warp info <warp name>`
+ * Displays information about the specified warp
 * `/warp group add <warp name> <group name>`
  * Add the warp with name `warp name` to the group `group name`.
 * `/warp group remove <warp name> <group name>`
  * Remove the warp with name `warp name` from the group `group name`
-* `warp group removeall <group name>`
+* `/warp group removeall <group name>`
  * Remove all warps from the group with name `group name`
+* `/warp group info <group name>`
+ * Displays information about the specified warp group
 
 ##Permissions
 Permissions can be required for either individual warps, or warp groups. For example, a player could use the warp `spawn`, which belonged to the warp group `sector_a` (just a bogus example), if he/she hadd any of the following permissions:
