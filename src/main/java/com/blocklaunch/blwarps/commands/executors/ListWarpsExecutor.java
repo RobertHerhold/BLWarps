@@ -44,14 +44,7 @@ public class ListWarpsExecutor implements CommandExecutor {
 
         List<Text> warpNames = new ArrayList<Text>();
         
-        System.out.println(plugin.getWarpManager().getPayload());
-        
-        for (Object o : plugin.getWarpManager().getPayload()) {
-            System.out.println(o);
-            System.out.println(o.getClass());
-            Warp w = (Warp) o;
-            System.out.println(o);
-            System.out.println(o.getClass());
+        for (Warp w : plugin.getWarpManager().getPayload()) {
             if(plugin.getUtil().hasPermission(source, w)) {
                 warpNames.add(plugin.getUtil().generateWarpText(w));
             }
