@@ -31,7 +31,7 @@ public class DeleteWarpExecutor implements CommandExecutor {
         
         Warp warp = optWarp.get();
 
-        plugin.getWarpManager().deleteWarp(warp);
+        plugin.getWarpManager().deleteOne(warp);
 
         source.sendMessage(Constants.SUCCESS_DELETE_WARP_MSG.builder().append(Texts.of(TextColors.GOLD, warp.getName())).build());
         return CommandResult.success();

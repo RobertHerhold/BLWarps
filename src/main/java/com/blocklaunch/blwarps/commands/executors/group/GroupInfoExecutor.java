@@ -64,7 +64,7 @@ public class GroupInfoExecutor implements CommandExecutor {
      */
     private Optional<Text> generateWarpList(String groupName) {
 
-        List<Warp> warps = plugin.getWarpManager().getWarps();
+        List<Warp> warps = plugin.getWarpManager().getPayload();
         List<Warp> warpsInGroup = new ArrayList<Warp>();
 
         for (Warp warp : warps) {

@@ -32,7 +32,7 @@ public class DeleteGroupExecutor implements CommandExecutor {
         String group = optGroup.get();
 
         int affectedCounter = 0;
-        for (Warp w : plugin.getWarpManager().getWarps()) {
+        for (Warp w : plugin.getWarpManager().getPayload()) {
             if (w.getGroups().contains(group)) {
                 plugin.getWarpManager().removeWarpFromGroup(w, group);
                 affectedCounter++;

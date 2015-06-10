@@ -2,6 +2,8 @@ package com.blocklaunch.blwarps;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -26,11 +28,15 @@ import com.blocklaunch.blwarps.eventhandlers.PlayerChatEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerMoveEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.SignChangeEventHandler;
-import com.blocklaunch.blwarps.managers.FlatFileManager;
-import com.blocklaunch.blwarps.managers.RestManager;
-import com.blocklaunch.blwarps.managers.SqlManager;
-import com.blocklaunch.blwarps.managers.StorageManager;
+import com.blocklaunch.blwarps.managers.WarpBaseManager;
 import com.blocklaunch.blwarps.managers.WarpManager;
+import com.blocklaunch.blwarps.managers.WarpRegionManager;
+import com.blocklaunch.blwarps.managers.storage.FlatFileManager;
+import com.blocklaunch.blwarps.managers.storage.RestManager;
+import com.blocklaunch.blwarps.managers.storage.StorageManager;
+import com.blocklaunch.blwarps.managers.storage.sql.warp.SqlWarpManager;
+import com.blocklaunch.blwarps.managers.storage.sql.warpregion.SqlWarpRegionManager;
+import com.blocklaunch.blwarps.region.WarpRegion;
 import com.google.inject.Inject;
 
 @Plugin(id = PomData.ARTIFACT_ID, name = PomData.NAME, version = PomData.VERSION)
@@ -44,13 +50,9 @@ public class BLWarps {
     private BLWarpsConfiguration config;
 
     private Util util = new Util(this);
-    private WarpManager warpManager = new WarpManager(this);
-    private StorageManager storageManager;
-    /**
-     * Fallback flat file manager to save/load warps in case any of the other storage methods fail
-     * to load or save warps
-     */
-    private FlatFileManager fallbackManager;
+
+    private Map<Class<? extends WarpBase>, WarpBaseManager<? extends WarpBase>> warpBaseManagers =
+            new HashMap<Class<? extends WarpBase>, WarpBaseManager<? extends WarpBase>>();
 
     @Inject
     private Logger logger;
@@ -75,8 +77,11 @@ public class BLWarps {
             loadConfig();
         }
 
-        setupStorageManager();
-        storageManager.loadWarps();
+        setupManagers();
+
+        warpBaseManagers.get(Warp.class).load();
+        warpBaseManagers.get(WarpRegion.class).load();
+
         registerCommands();
         registerEventHandlers();
 
@@ -146,24 +151,34 @@ public class BLWarps {
         }
     }
 
-    private void setupStorageManager() {
+    private void setupManagers() {
         File warpsFile = new File(configFile.getParentFile(), "warps.json");
+        File warpRegionFile = new File(configFile.getParentFile(), "warp-regions.json");
+        
+        StorageManager<Warp> warpStorage;
+        StorageManager<WarpRegion> warpRegionStorage;
+
         switch (config.getStorageType()) {
             case FLATFILE:
-                storageManager = new FlatFileManager(warpsFile, this);
+                warpStorage = new FlatFileManager<Warp>(Warp.class, this, warpsFile);
+                warpRegionStorage = new FlatFileManager<WarpRegion>(WarpRegion.class, this, warpRegionFile);
                 break;
             case REST:
-                storageManager = new RestManager(this);
+                warpStorage = new RestManager<Warp>(Warp.class, this);
+                warpRegionStorage = new RestManager<WarpRegion>(WarpRegion.class, this);
                 break;
             case SQL:
-                storageManager = new SqlManager(this);
+                warpStorage = new SqlWarpManager(this);
+                warpRegionStorage = new SqlWarpRegionManager(this);
                 break;
             default:
-                storageManager = new FlatFileManager(warpsFile, this);
+                warpStorage = new FlatFileManager<Warp>(Warp.class, this, warpsFile);
+                warpRegionStorage = new FlatFileManager<WarpRegion>(WarpRegion.class, this, warpRegionFile);
                 break;
         }
-
-        fallbackManager = new FlatFileManager(warpsFile, this);
+        
+        warpBaseManagers.put(Warp.class, new WarpManager(this, warpStorage));
+        warpBaseManagers.put(WarpRegion.class, new WarpRegionManager(this, warpRegionStorage));
 
     }
 
@@ -184,15 +199,11 @@ public class BLWarps {
     }
 
     public WarpManager getWarpManager() {
-        return warpManager;
+        return (WarpManager) warpBaseManagers.get(Warp.class);
     }
-
-    public StorageManager getStorageManager() {
-        return storageManager;
-    }
-
-    public StorageManager getFallBackManager() {
-        return fallbackManager;
+    
+    public WarpRegionManager getWarpRegionManager() {
+        return (WarpRegionManager) warpBaseManagers.get(WarpRegion.class);
     }
 
     public BLWarpsConfiguration getConfig() {

@@ -37,14 +37,14 @@ public class ListWarpsExecutor implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
-        if (plugin.getWarpManager().getWarps().isEmpty()) {
+        if (plugin.getWarpManager().getPayload().isEmpty()) {
             source.sendMessage(Constants.NO_WARPS_MSG);
             return CommandResult.success();
         }
 
         List<Text> warpNames = new ArrayList<Text>();
         
-        for (Warp w : plugin.getWarpManager().getWarps()) {
+        for (Warp w : plugin.getWarpManager().getPayload()) {
             if(plugin.getUtil().hasPermission(source, w)) {
                 warpNames.add(plugin.getUtil().generateWarpText(w));
             }

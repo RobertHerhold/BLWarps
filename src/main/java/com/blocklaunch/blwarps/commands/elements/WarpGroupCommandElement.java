@@ -39,7 +39,7 @@ public class WarpGroupCommandElement extends CommandElement {
     @Override
     public List<String> complete(CommandSource source, CommandArgs args, CommandContext context) {
         List<String> groupNames = new ArrayList<String>();
-        for (Warp w : plugin.getWarpManager().getWarps()) {
+        for (Warp w : plugin.getWarpManager().getPayload()) {
             for (String group : w.getGroups()) {
                 if (!groupNames.contains(group)) {
                     groupNames.add(group);
