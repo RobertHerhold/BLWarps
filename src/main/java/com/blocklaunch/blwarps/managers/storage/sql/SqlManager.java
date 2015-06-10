@@ -13,8 +13,11 @@ import com.blocklaunch.blwarps.WarpBase;
 public abstract class SqlManager<T extends WarpBase> {
     
     public DBI dbi;
+    public BLWarps plugin;
     
     public SqlManager(BLWarps plugin) {
+        this.plugin = plugin;
+        
         SqlService sql = plugin.getGame().getServiceManager().provide(SqlService.class).get();
 
         DataSource dataSource = null;

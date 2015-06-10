@@ -17,7 +17,7 @@ import com.flowpowered.math.vector.Vector3d;
 @JsonInclude(Include.NON_EMPTY)
 public class Warp extends WarpBase {
 
-    private Vector3d position; // no getter/setter for this, don't want it to be serialized
+    private Vector3d position; // serialize the double x,y,z rather than the Vector3d
 
     private double x;
     private double y;
@@ -33,11 +33,9 @@ public class Warp extends WarpBase {
         super(name, world);
         this.position = position;
 
-        DecimalFormat f = new DecimalFormat("##.00");
-
-        this.x = Double.valueOf(f.format(position.getX()));
-        this.y = Double.valueOf(f.format(position.getY()));
-        this.z = Double.valueOf(f.format(position.getZ()));
+        this.x = formatDouble(position.getX());
+        this.y = formatDouble(position.getY());
+        this.z = formatDouble(position.getZ());
 
     }
 
@@ -64,6 +62,12 @@ public class Warp extends WarpBase {
         }
         return position;
     }
+    
+    private double formatDouble(double d) {
+        DecimalFormat f = new DecimalFormat("##.00");
+        return Double.valueOf(f.format(d));
+    }
+    
 
     public double getX() {
         return x;
