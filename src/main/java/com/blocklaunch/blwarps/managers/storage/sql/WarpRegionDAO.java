@@ -1,4 +1,4 @@
-package com.blocklaunch.blwarps.sql;
+package com.blocklaunch.blwarps.managers.storage.sql;
 
 import java.util.List;
 

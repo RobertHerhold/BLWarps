@@ -1,4 +1,4 @@
-package com.blocklaunch.blwarps.managers;
+package com.blocklaunch.blwarps.managers.storage;
 
 import java.util.List;
 
@@ -15,15 +15,15 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.WarpBase;
+import com.google.common.collect.Lists;
 
-public class RestManager<T extends WarpBase> extends StorageManager<T> {
+public class RestManager<T extends WarpBase> implements StorageManager<T> {
 
-    private Class<T> type;
+    private BLWarps plugin;
     WebTarget webTarget;
 
-    public RestManager(Class<T> type, BLWarps plugin) {
-        super(plugin);
-        this.type = type;
+    public RestManager(BLWarps plugin) {
+        this.plugin = plugin;
 
         Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
         HttpAuthenticationFeature auth =
@@ -39,15 +39,14 @@ public class RestManager<T extends WarpBase> extends StorageManager<T> {
      * Send a GET request to the REST API Attempt to map the received entity to a List<Warp>
      */
     @Override
-    public void load() {
+    public List<T> load() {
         Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
         if (response.getStatus() != 200) {
-            plugin.getLogger().warn("There was an error loading from the {} storage. Error code: {}", plugin.getConfig().getStorageType(),
+            plugin.getLogger().error("There was an error loading from the {} storage. Error code: {}", plugin.getConfig().getStorageType(),
                     response.getStatus());
-            failedLoad(type);
-            return;
+            return Lists.newArrayList();
         }
-        plugin.getWarpBaseManager(type).setPayLoad(response.readEntity(new GenericType<List<T>>() {}));
+        return response.readEntity(new GenericType<List<T>>() {});
     }
 
     /**
@@ -58,9 +57,8 @@ public class RestManager<T extends WarpBase> extends StorageManager<T> {
         Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(t, MediaType.APPLICATION_JSON_TYPE));
 
         if (response.getStatus() != 201) {
-            plugin.getLogger().warn("There was an error saving the warps to the {} storage. Error code: {}", plugin.getConfig().getStorageType(),
+            plugin.getLogger().error("There was an error saving the warps to the {} storage. Error code: {}", plugin.getConfig().getStorageType(),
                     response.getStatus());
-            failedSaveNew(t);
         }
     }
 
@@ -72,9 +70,8 @@ public class RestManager<T extends WarpBase> extends StorageManager<T> {
         Response response = webTarget.path(t.getName()).request(MediaType.APPLICATION_JSON_TYPE).delete();
 
         if (response.getStatus() != 200) {
-            plugin.getLogger().warn("There was an error saving the warps to the {} storage. Error code: {}", plugin.getConfig().getStorageType(),
+            plugin.getLogger().error("There was an error saving the warps to the {} storage. Error code: {}", plugin.getConfig().getStorageType(),
                     response.getStatus());
-            failedDelete(t);
         }
     }
 
@@ -87,9 +84,8 @@ public class RestManager<T extends WarpBase> extends StorageManager<T> {
         Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(t, MediaType.APPLICATION_JSON_TYPE));
 
         if (response.getStatus() != 200) {
-            plugin.getLogger().warn("There was an error saving the warps to the {} storage. Error code: {}", plugin.getConfig().getStorageType(),
+            plugin.getLogger().error("There was an error saving the warps to the {} storage. Error code: {}", plugin.getConfig().getStorageType(),
                     response.getStatus());
-            failedUpdate(t);
         }
 
     }

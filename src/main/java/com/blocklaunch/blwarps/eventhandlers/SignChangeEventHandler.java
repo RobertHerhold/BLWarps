@@ -28,7 +28,7 @@ public class SignChangeEventHandler implements EventHandler<SignChangeEvent> {
         if (Texts.toPlain(lines.get(0)).equalsIgnoreCase(WARP_SIGN_PREFIX)) {
             // Second line has to be the name of the warp
             String warpName = Texts.toPlain(lines.get(1));
-            Optional<Warp> optWarp = plugin.getWarpManager().getWarp(warpName);
+            Optional<Warp> optWarp = plugin.getWarpManager().getOne(warpName);
             if (!optWarp.isPresent()) {
                 return;
             }

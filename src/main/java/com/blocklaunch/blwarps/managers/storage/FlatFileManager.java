@@ -1,27 +1,28 @@
-package com.blocklaunch.blwarps.managers;
+package com.blocklaunch.blwarps.managers.storage;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import jersey.repackaged.com.google.common.collect.Lists;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.WarpBase;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Optional;
 
-public class FlatFileManager<T extends WarpBase> extends StorageManager<T> {
+public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
 
+    private Class<T> type;
     private BLWarps plugin;
     private File file;
     private ObjectMapper mapper;
-    private Class<T> type;
 
     public FlatFileManager(Class<T> type, BLWarps plugin, File file) {
-        super(plugin);
         this.type = type;
         this.plugin = plugin;
         this.file = file;
@@ -29,14 +30,13 @@ public class FlatFileManager<T extends WarpBase> extends StorageManager<T> {
     }
 
     @Override
-    public void load() {
+    public List<T> load() {
         Optional<List<T>> objectsOpt = readIn();
         if (!objectsOpt.isPresent()) {
-            return;
+            return Lists.newArrayList();
         }
 
-        plugin.getWarpBaseManager(type).setPayLoad(objectsOpt.get());
-
+        return objectsOpt.get();
     }
 
     @Override
@@ -103,9 +103,10 @@ public class FlatFileManager<T extends WarpBase> extends StorageManager<T> {
         if (!file.exists()) {
             return Optional.absent();
         }
-
+        
         try {
-            List<T> objects = mapper.readValue(file, new TypeReference<List<T>>() {});
+            JavaType type = mapper.getTypeFactory().constructParametricType(List.class, this.type);
+            List<T> objects = mapper.readValue(file, type);
             return Optional.of(objects);
         } catch (IOException e) {
             plugin.getLogger().warn(Constants.ERROR_FILE_READ);

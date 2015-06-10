@@ -39,7 +39,7 @@ public class CreateWarpExecutor implements CommandExecutor {
 
         Warp newWarp = new Warp(warpName, worldName, position);
 
-        Optional<String> error = plugin.getWarpManager().addWarp(newWarp);
+        Optional<String> error = plugin.getWarpManager().addNew(newWarp);
         if (error.isPresent()) {
             source.sendMessage(Texts.builder(Constants.ERROR_CREATE_WARP_MSG + error.get()).color(TextColors.RED).build());
             return CommandResult.empty();

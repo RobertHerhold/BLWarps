@@ -4,9 +4,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flowpowered.math.vector.Vector3d;
 
 /**
@@ -38,6 +40,16 @@ public class Warp extends WarpBase {
         this.x = Double.valueOf(f.format(position.getX()));
         this.y = Double.valueOf(f.format(position.getY()));
         this.z = Double.valueOf(f.format(position.getZ()));
+
+    }
+
+    @JsonCreator
+    public Warp(@JsonProperty("name") String name, @JsonProperty("world") String world, @JsonProperty("x") double x, @JsonProperty("y") double y,
+            @JsonProperty("z") double z) {
+        super(name, world);
+        this.x = x;
+        this.y = y;
+        this.z = z;
 
     }
 

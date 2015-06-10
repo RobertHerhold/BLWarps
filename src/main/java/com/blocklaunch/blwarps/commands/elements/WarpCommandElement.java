@@ -27,7 +27,7 @@ public class WarpCommandElement extends CommandElement {
     @Override
     protected Warp parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
         String warpName = args.next();
-        Optional<Warp> optWarp = plugin.getWarpManager().getWarp(warpName);
+        Optional<Warp> optWarp = plugin.getWarpManager().getOne(warpName);
         if (!optWarp.isPresent()) {
             throw new ArgumentParseException(Constants.WARP_NOT_FOUND_MSG, warpName, 0);
         }
@@ -37,7 +37,7 @@ public class WarpCommandElement extends CommandElement {
     @Override
     public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
         List<String> warpNames = new ArrayList<String>();
-        for (Warp w : plugin.getWarpManager().getWarps()) {
+        for (Warp w : plugin.getWarpManager().getPayload()) {
             warpNames.add(w.getName());
         }
 

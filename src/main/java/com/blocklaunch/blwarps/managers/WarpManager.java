@@ -16,20 +16,19 @@ import org.spongepowered.api.service.scheduler.Task;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.managers.storage.StorageManager;
 import com.blocklaunch.blwarps.runnables.WarpPlayerRunnable;
 import com.google.common.base.Optional;
 
 public class WarpManager extends WarpBaseManager<Warp> {
 
-    private List<Warp> warps = new ArrayList<Warp>();
     private List<String> warpNames = new ArrayList<String>();
     private Map<Player, Task> warpsInProgress = new HashMap<Player, Task>();
 
-    private BLWarps plugin;
     private Validator validator;
 
-    public WarpManager(BLWarps plugin) {
-        this.plugin = plugin;
+    public WarpManager(BLWarps plugin, StorageManager<Warp> storage) {
+        super(plugin, storage);
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
@@ -43,7 +42,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
     @Override
     public Optional<String> addNew(Warp newWarp) {
 
-        for (Warp warp : warps) {
+        for (Warp warp : payload) {
             if (warp.getName().equalsIgnoreCase(newWarp.getName())) {
                 // A warp with that name already exists
                 return Optional.of(Constants.WARP_NAME_EXISTS);
@@ -57,44 +56,18 @@ public class WarpManager extends WarpBaseManager<Warp> {
             return Optional.of(violations.iterator().next().getMessage());
         }
 
-        warps.add(newWarp);
+        payload.add(newWarp);
         warpNames.add(newWarp.getName());
 
         // Save warps after putting a new one in rather than saving when server
         // shuts down to prevent loss of data if the server crashed
-        plugin.getStorageManager(Warp.class).saveNew(newWarp);
+        storage.saveNew(newWarp);
 
         // No errors, return an absent optional
         return Optional.absent();
 
     }
 
-    /**
-     * Gets the warp with the given name
-     * 
-     * @param warpName The name of the warp to fetch
-     * @return The corresponding warp if it exists, Optional.absent() otherwise
-     */
-    @Override
-    public Optional<Warp> getOne(String warpName) {
-        for (Warp warp : warps) {
-            if (warp.getName().equalsIgnoreCase(warpName)) {
-                return Optional.of(warp);
-            }
-        }
-        return Optional.absent();
-    }
-
-    /**
-     * Deletes the warp with the provided name
-     * 
-     * @param warp The name of the warp to delete
-     */
-    @Override
-    public void deleteOne(Warp warp) {
-        warps.remove(warp);
-    }
-    
     /**
      * Adds the warp to the specified group (puts the group's name in the list of the warp's groups)
      * 
@@ -106,7 +79,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
             return;
         }
         warp.getGroups().add(group);
-        plugin.getStorageManager(Warp.class).update(warp);
+        storage.update(warp);
     }
 
     /**
@@ -121,7 +94,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
             return;
         }
         warp.getGroups().remove(group);
-        plugin.getStorageManager().updateWarp(warp);
+        storage.update(warp);
     }
 
     /**
@@ -169,5 +142,5 @@ public class WarpManager extends WarpBaseManager<Warp> {
     public boolean isWarping(Player player) {
         return warpsInProgress.containsKey(player);
     }
-
+    
 }
