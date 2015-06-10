@@ -1,19 +1,29 @@
 package com.blocklaunch.blwarps.commands.executors.region;
 
 import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandException;
 import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
+import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
+import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.region.WarpRegion;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 
 public class CreateWarpRegionExecutor implements CommandExecutor {
+
+    private BLWarps plugin;
+
+    public CreateWarpRegionExecutor(BLWarps plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
         if (!(source instanceof Player)) {
@@ -40,8 +50,15 @@ public class CreateWarpRegionExecutor implements CommandExecutor {
             source.sendMessage(Constants.SPECIFY_2_CORNERS_MSG);
         }
 
-        WarpRegion region = new WarpRegion(linkedWarpOpt.get(), regionNameOpt.get(), player.getWorld().getName(), corner1Opt.get(), corner2Opt.get());
+        WarpRegion region = new WarpRegion(linkedWarpOpt.get().getName(), regionNameOpt.get(), player.getWorld().getName(), corner1Opt.get(), corner2Opt.get());
 
-        return null;
+        Optional<String> optError = plugin.getWarpRegionManager().addNew(region);
+        if (optError.isPresent()) {
+            source.sendMessage(Texts.of(Constants.ERROR_CREATE_WARP_REGION_MSG, optError.get()));
+            return CommandResult.empty();
+        }
+
+        source.sendMessage(Texts.of(Constants.SUCCESS_CREATE_WARP_REGION_MSG, Util.generateWarpRegionInfoText(region)));
+        return CommandResult.success();
     }
 }

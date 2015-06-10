@@ -8,6 +8,7 @@ import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
 
+import com.blocklaunch.blwarps.region.WarpRegion;
 import com.google.common.base.Optional;
 
 public class Util {
@@ -19,15 +20,20 @@ public class Util {
         this.plugin = plugin;
     }
 
-    public Text generateWarpText(Warp warp) {
+    public static Text generateWarpText(Warp warp) {
         return Texts.builder(warp.getName()).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp " + warp.getName()))
                 .onHover(TextActions.showText(Texts.of("Warp to ", TextColors.GOLD, warp.getName()))).build();
 
     }
 
-    public Text generateWarpGroupInfoText(String groupName) {
+    public static Text generateWarpGroupInfoText(String groupName) {
         return Texts.builder(groupName).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp group info " + groupName))
                 .onHover(TextActions.showText(Texts.of("Show ", TextColors.GOLD, groupName, TextColors.WHITE, " info."))).build();
+    }
+
+    public static Text generateWarpRegionInfoText(WarpRegion region) {
+        return Texts.builder(region.getName()).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp region info " + region.getName()))
+                .onHover(TextActions.showText(Texts.of("Show ", TextColors.GOLD, region.getName(), TextColors.WHITE, " info."))).build();
     }
 
     public boolean hasPermission(CommandSource source, Warp warp) {

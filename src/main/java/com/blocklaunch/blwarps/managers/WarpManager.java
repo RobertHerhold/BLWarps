@@ -22,7 +22,6 @@ import com.google.common.base.Optional;
 
 public class WarpManager extends WarpBaseManager<Warp> {
 
-    private List<String> warpNames = new ArrayList<String>();
     private Map<Player, Task> warpsInProgress = new HashMap<Player, Task>();
 
     private Validator validator;
@@ -57,7 +56,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
         }
 
         payload.add(newWarp);
-        warpNames.add(newWarp.getName());
+        names.add(newWarp.getName());
 
         // Save warps after putting a new one in rather than saving when server
         // shuts down to prevent loss of data if the server crashed
@@ -120,10 +119,6 @@ public class WarpManager extends WarpBaseManager<Warp> {
         return Optional.absent();
     }
     
-    public List<String> getWarpNames() {
-        return warpNames;
-    }
-
     /**
      * Removes the specified player from the map of players who are waiting to be warped
      * 

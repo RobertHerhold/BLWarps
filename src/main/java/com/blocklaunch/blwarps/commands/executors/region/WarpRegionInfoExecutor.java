@@ -1,4 +1,4 @@
-package com.blocklaunch.blwarps.commands.executors;
+package com.blocklaunch.blwarps.commands.executors.region;
 
 import java.util.List;
 
@@ -16,44 +16,49 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.region.WarpRegion;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
-public class WarpInfoExecutor implements CommandExecutor {
+public class WarpRegionInfoExecutor implements CommandExecutor {
 
     private BLWarps plugin;
 
-    public WarpInfoExecutor(BLWarps plugin) {
+    public WarpRegionInfoExecutor(BLWarps plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
-        Optional<Warp> optWarp = args.getOne("warp");
-        if (!optWarp.isPresent()) {
+        Optional<WarpRegion> optRegion = args.getOne("region");
+        if (!optRegion.isPresent()) {
             source.sendMessage(Constants.WARP_NOT_FOUND_MSG);
             return CommandResult.empty();
         }
 
-        Warp warp = optWarp.get();
-
-        if (plugin.getUtil().hasPermission(source, warp) == false) {
-            source.sendMessage(Constants.NO_PERMISSION_MSG);
-            return CommandResult.empty();
+        WarpRegion region = optRegion.get();
+        
+        Optional<Warp> linkedWarpOpt = plugin.getWarpManager().getOne(region.getLinkedWarpName());
+        Text warpName = Texts.of(region.getLinkedWarpName());
+        if(linkedWarpOpt.isPresent()) {
+            if (plugin.getUtil().hasPermission(source, linkedWarpOpt.get()) == false) {
+                source.sendMessage(Constants.NO_PERMISSION_MSG);
+                return CommandResult.empty();
+            }
+            warpName = Util.generateWarpText(linkedWarpOpt.get());
         }
 
-        Text warpName = Util.generateWarpText(warp);
+        List<Text> regionInfo = Lists.newArrayList();
 
-        List<Text> warpInfo = Lists.newArrayList();
+        regionInfo.add(Texts.of(TextColors.BLUE, "---------------", region.getName(), "---------------"));
+        regionInfo.add(Texts.of(TextColors.BLUE, "Name: ", TextColors.WHITE, region.getName()));
+        regionInfo.add(Texts.of(TextColors.BLUE, "World: ", TextColors.WHITE, region.getWorld()));
+        regionInfo.add(Texts.of(TextColors.BLUE, "Linked Warp: ", warpName));
+        regionInfo.add(Texts.of(TextColors.BLUE, "Bounds: ", TextColors.WHITE, region.getMinLoc(), TextColors.BLUE, " to ", TextColors.WHITE,
+                region.getMaxLoc()));
 
-        warpInfo.add(Texts.of(TextColors.BLUE, "---------------", warpName, "---------------"));
-        warpInfo.add(Texts.of(TextColors.BLUE, "Name: ", warpName));
-        warpInfo.add(Texts.of(TextColors.BLUE, "World: ", TextColors.WHITE, warp.getWorld()));
-        warpInfo.add(Texts.of(TextColors.BLUE, "Location: ", TextColors.WHITE, warp.getPosition()));
-        warpInfo.add(Texts.of(TextColors.BLUE, "Groups: ", generateGroupList(warp)));
-
-        for (Text infoLine : warpInfo) {
+        for (Text infoLine : regionInfo) {
             source.sendMessage(infoLine);
         }
 

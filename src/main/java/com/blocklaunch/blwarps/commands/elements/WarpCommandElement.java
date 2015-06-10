@@ -1,6 +1,5 @@
 package com.blocklaunch.blwarps.commands.elements;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.spongepowered.api.text.Text;
@@ -36,12 +35,7 @@ public class WarpCommandElement extends CommandElement {
 
     @Override
     public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
-        List<String> warpNames = new ArrayList<String>();
-        for (Warp w : plugin.getWarpManager().getPayload()) {
-            warpNames.add(w.getName());
-        }
-
-        return warpNames;
+        return plugin.getWarpManager().getNames();
     }
 
 }

@@ -2,15 +2,13 @@ package com.blocklaunch.blwarps.region;
 
 import java.text.DecimalFormat;
 
-import com.blocklaunch.blwarps.Validity;
-import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.WarpBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.flowpowered.math.vector.Vector3d;
 
 public class WarpRegion extends WarpBase {
 
-    private Warp linkedWarp;
+    private String linkedWarpName;
     private double loc1x;
     private double loc1y;
     private double loc1z;
@@ -21,26 +19,24 @@ public class WarpRegion extends WarpBase {
     private Vector3d minLoc;
     private Vector3d maxLoc;
 
-    // The validity of the region
-    // UNKNOWN if the linkedWarp is not know to exist
-    // VALID if the linkedWarp has been checked and does exist
-    // INVALID if the linkedWarp does not exist
-    private Validity validity;
-
     // Empty constructor for Jackson
     public WarpRegion() {
 
     }
 
-    public WarpRegion(Warp linkedWarp, String name, String world, Vector3d loc1, Vector3d loc2) {
+    public WarpRegion(String linkedWarpName, String name, String world, Vector3d loc1, Vector3d loc2) {
         super(name, world);
-        this.linkedWarp = linkedWarp;
+        this.linkedWarpName = linkedWarpName;
         this.minLoc = new Vector3d(Math.min(loc1.getX(), loc2.getX()), Math.min(loc1.getY(), loc2.getY()), Math.min(loc1.getZ(), loc2.getZ()));
-        this.maxLoc = new Vector3d(Math.max(loc1.getX(), loc2.getX()), Math.min(loc1.getY(), loc2.getY()), Math.min(loc1.getZ(), loc2.getZ()));
+        this.maxLoc = new Vector3d(Math.max(loc1.getX(), loc2.getX()), Math.max(loc1.getY(), loc2.getY()), Math.max(loc1.getZ(), loc2.getZ()));
 
         this.loc1x = formatDouble(minLoc.getX());
         this.loc1y = formatDouble(minLoc.getY());
         this.loc1z = formatDouble(minLoc.getZ());
+        
+        this.loc2x = formatDouble(maxLoc.getX());
+        this.loc2y = formatDouble(maxLoc.getY());
+        this.loc2z = formatDouble(maxLoc.getZ());
     }
 
     /**
@@ -64,12 +60,12 @@ public class WarpRegion extends WarpBase {
         return Double.valueOf(f.format(d));
     }
 
-    public Warp getLinkedWarp() {
-        return linkedWarp;
+    public String getLinkedWarpName() {
+        return linkedWarpName;
     }
 
-    public void setLinkedWarp(Warp linkedWarp) {
-        this.linkedWarp = linkedWarp;
+    public void setLinkedWarpName(String linkedWarp) {
+        this.linkedWarpName = linkedWarp;
     }
 
     public double getLoc1x() {
@@ -121,22 +117,18 @@ public class WarpRegion extends WarpBase {
     }
 
     @JsonIgnore
-    public Validity getValidity() {
-        return validity;
-    }
-
-    @JsonIgnore
-    public void setValidity(Validity validity) {
-        this.validity = validity;
-    }
-
-    @JsonIgnore
     public Vector3d getMinLoc() {
+        if(minLoc == null) {
+            minLoc = new Vector3d(Math.min(loc1x, loc2x), Math.min(loc1y, loc2y), Math.min(loc1z, loc2z));
+        }
         return minLoc;
     }
 
     @JsonIgnore
     public Vector3d getMaxLoc() {
+        if(maxLoc == null) {
+            maxLoc = new Vector3d(Math.max(loc1x, loc2x), Math.max(loc1y, loc2y), Math.max(loc1z, loc2z));
+        }
         return maxLoc;
     }
 

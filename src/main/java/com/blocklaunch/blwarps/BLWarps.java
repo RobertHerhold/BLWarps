@@ -23,7 +23,7 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.service.event.EventManager;
 
-import com.blocklaunch.blwarps.commands.WarpCommandBuilder;
+import com.blocklaunch.blwarps.commands.WarpCommandGenerator;
 import com.blocklaunch.blwarps.eventhandlers.PlayerChatEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerMoveEventHandler;
@@ -89,7 +89,7 @@ public class BLWarps {
 
     private void registerCommands() {
         logger.info("Registering commands");
-        game.getCommandDispatcher().register(plugin, new WarpCommandBuilder(this).mainWarpCommand(), "warp");
+        game.getCommandDispatcher().register(plugin, new WarpCommandGenerator(this).mainWarpCommand(), "warp");
     }
 
     /**

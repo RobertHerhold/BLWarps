@@ -33,7 +33,7 @@ public class PlayerChatEventHandler implements EventHandler<PlayerChatEvent> {
         String[] originalMessageWords = originalMessagePlain.split(SPACE);
 
         for (String word : originalMessageWords) {
-            if (plugin.getWarpManager().getWarpNames().contains(word.toLowerCase())) {
+            if (plugin.getWarpManager().getNames().contains(word.toLowerCase())) {
                 Optional<Warp> optWarp = plugin.getWarpManager().getOne(word);
                 if (!optWarp.isPresent()) {
                     continue;

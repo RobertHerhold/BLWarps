@@ -17,29 +17,28 @@ public interface WarpRegionDAO {
     @SqlUpdate("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
             + "name VARCHAR(45) NOT NULL, "
             + "world VARCHAR(45) NOT NULL, "
+            + "linked_warp VARCHAR(45) NOT NULL, "
             + "loc1x INT NOT NULL, "
             + "loc1y INT NOT NULL, "
             + "loc1z INT NOT NULL, "
             + "loc2x INT NOT NULL, "
             + "loc2y INT NOT NULL, "
             + "loc2z INT NOT NULL, "
-            + "linked_warp VARCHAR(45) NOT NULL, "
             + "PRIMARY KEY (name))")
     void createWarpRegionTable();
 
-    @SqlUpdate("INSERT INTO " + TABLE_NAME + " VALUES (:region.name, :region.world, "
+    @SqlUpdate("INSERT INTO " + TABLE_NAME + " VALUES (:region.name, :region.linkedWarp, :region.world, "
             + ":region.loc1x, :region.loc1y, :region.loc1z, "
-            + ":region.loc2x, :region.loc2y, :region.loc2z, "
-            + ":region.linkedWarp.name)")
+            + ":region.loc2x, :region.loc2y, :region.loc2z)")
     void insertWarpRegion(@BindBean("region") WarpRegion warpRegion);
 
     @SqlUpdate("DELETE FROM " + TABLE_NAME + " WHERE name=:name")
     void deleteWarpRegion(@BindBean WarpRegion warp);
 
-    @SqlUpdate("UPDATE "+ TABLE_NAME + " SET world=:region.world, "
+    @SqlUpdate("UPDATE "+ TABLE_NAME + " SET world=:region.world, linkedWarp=:region.linkedWarp, "
             + "loc1x=:region.loc1x, loc1y=:region.loc1y, loc1z=:region.loc1z, "
-            + "loc2x=:region.loc2x, loc2y=:region.loc2y, loc2z=:region.loc2z, "
-            + "linked_warp=:region.linkedWarp.name WHERE name=:region.name")
+            + "loc2x=:region.loc2x, loc2y=:region.loc2y, loc2z=:region.loc2z "
+            + "WHERE name=:region.name")
     void updateWarpRegion(@BindBean("region") WarpRegion region);
 
     @SqlQuery("SELECT * FROM " + TABLE_NAME)

@@ -1,8 +1,5 @@
 package com.blocklaunch.blwarps.managers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
@@ -15,8 +12,6 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
         super(plugin, storage);
     }
     
-    private List<WarpRegion> warpRegions = new ArrayList<WarpRegion>();
-    
     /**
      * @param warpName The name of the warp
      * @param warpLocation The location of the warp
@@ -24,7 +19,7 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
      */
     public Optional<String> addNew(WarpRegion newWarpRegion) {
 
-        for (WarpRegion warpRegion : warpRegions) {
+        for (WarpRegion warpRegion : payload) {
             if (warpRegion.getName().equalsIgnoreCase(newWarpRegion.getName())) {
                 // A warp with that name already exists
                 return Optional.of(Constants.WARP_REGION_NAME_EXISTS);
@@ -34,7 +29,8 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
             }
         }
 
-        warpRegions.add(newWarpRegion);
+        payload.add(newWarpRegion);
+        names.add(newWarpRegion.getName());
 
         // Save warps after putting a new one in rather than saving when server
         // shuts down to prevent loss of data if the server crashed
