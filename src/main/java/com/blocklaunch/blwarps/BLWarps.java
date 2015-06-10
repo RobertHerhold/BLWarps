@@ -164,8 +164,8 @@ public class BLWarps {
                 warpRegionStorage = new FlatFileManager<WarpRegion>(WarpRegion.class, this, warpRegionFile);
                 break;
             case REST:
-                warpStorage = new RestManager<Warp>(this);
-                warpRegionStorage = new RestManager<WarpRegion>(this);
+                warpStorage = new RestManager<Warp>(Warp.class, this);
+                warpRegionStorage = new RestManager<WarpRegion>(WarpRegion.class, this);
                 break;
             case SQL:
                 warpStorage = new SqlWarpManager(this);

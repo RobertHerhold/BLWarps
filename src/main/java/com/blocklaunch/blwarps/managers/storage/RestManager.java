@@ -19,10 +19,12 @@ import com.google.common.collect.Lists;
 
 public class RestManager<T extends WarpBase> implements StorageManager<T> {
 
+    private Class<T> type;
     private BLWarps plugin;
     WebTarget webTarget;
 
-    public RestManager(BLWarps plugin) {
+    public RestManager(Class<T> type, BLWarps plugin) {
+        this.type = type;
         this.plugin = plugin;
 
         Client client = ClientBuilder.newBuilder().register(JacksonFeature.class).build();
@@ -33,6 +35,7 @@ public class RestManager<T extends WarpBase> implements StorageManager<T> {
 
         client.register(auth);
         webTarget = client.target(plugin.getConfig().getRestConfig().getRESTURI());
+        webTarget = webTarget.path(type.getName().toLowerCase());
     }
 
     /**
