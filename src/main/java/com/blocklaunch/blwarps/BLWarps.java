@@ -34,8 +34,8 @@ import com.blocklaunch.blwarps.managers.WarpRegionManager;
 import com.blocklaunch.blwarps.managers.storage.FlatFileManager;
 import com.blocklaunch.blwarps.managers.storage.RestManager;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
-import com.blocklaunch.blwarps.managers.storage.sql.SqlWarpManager;
-import com.blocklaunch.blwarps.managers.storage.sql.SqlWarpRegionManager;
+import com.blocklaunch.blwarps.managers.storage.sql.warp.SqlWarpManager;
+import com.blocklaunch.blwarps.managers.storage.sql.warpregion.SqlWarpRegionManager;
 import com.blocklaunch.blwarps.region.WarpRegion;
 import com.google.inject.Inject;
 

@@ -1,11 +1,11 @@
-package com.blocklaunch.blwarps.managers.storage.sql;
+package com.blocklaunch.blwarps.managers.storage.sql.warpregion;
 
 import java.util.List;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
+import com.blocklaunch.blwarps.managers.storage.sql.SqlManager;
 import com.blocklaunch.blwarps.region.WarpRegion;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SqlWarpRegionManager extends SqlManager<WarpRegion> implements StorageManager<WarpRegion> {
 
