@@ -33,6 +33,12 @@ public class CreateWarpExecutor implements CommandExecutor {
         Player player = (Player) source;
 
         String warpName = (String) args.getOne("name").or("warp");
+        
+        if(Constants.FORBIDDEN_NAMES.contains(warpName.toLowerCase())) {
+            source.sendMessage(Constants.CANNOT_USE_FORBIDDEN_NAME_MSG);
+            return CommandResult.empty();
+        }
+        
         Vector3d position = (Vector3d) args.getOne("position").or(player.getLocation().getPosition());
 
         String worldName = player.getWorld().getName();
