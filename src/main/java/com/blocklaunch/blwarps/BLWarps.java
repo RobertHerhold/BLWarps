@@ -19,7 +19,6 @@ import org.spongepowered.api.event.entity.player.PlayerInteractBlockEvent;
 import org.spongepowered.api.event.entity.player.PlayerMoveEvent;
 import org.spongepowered.api.event.state.PreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.service.config.DefaultConfig;
 import org.spongepowered.api.service.event.EventManager;
 
@@ -46,7 +45,6 @@ public class BLWarps {
      * Prefix to display at the beginning of messages to player, console outputs, etc.
      */
     private Game game;
-    private PluginContainer plugin;
     private BLWarpsConfiguration config;
 
     private Util util = new Util(this);
@@ -68,7 +66,6 @@ public class BLWarps {
     @Subscribe
     public void preInit(PreInitializationEvent event) {
         game = event.getGame();
-        plugin = game.getPluginManager().getPlugin(PomData.ARTIFACT_ID).get();
 
         // Create default config if it doesn't exist
         if (!configFile.exists()) {
@@ -89,7 +86,7 @@ public class BLWarps {
 
     private void registerCommands() {
         logger.info("Registering commands");
-        game.getCommandDispatcher().register(plugin, new WarpCommandGenerator(this).mainWarpCommand(), "warp");
+        game.getCommandDispatcher().register(this, new WarpCommandGenerator(this).mainWarpCommand(), "warp");
     }
 
     /**
