@@ -1,8 +1,10 @@
 package com.blocklaunch.blwarps.commands.executors.group;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Constants;
+import com.blocklaunch.blwarps.Warp;
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TextBuilder;
 import org.spongepowered.api.text.Texts;
@@ -13,13 +15,11 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Constants;
-import com.blocklaunch.blwarps.Warp;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupInfoExecutor implements CommandExecutor {
+
     private BLWarps plugin;
 
     public GroupInfoExecutor(BLWarps plugin) {
@@ -58,13 +58,13 @@ public class GroupInfoExecutor implements CommandExecutor {
 
     /**
      * Iterate through all warps, and check for the specified group
-     * 
+     *
      * @param groupName
      * @return the concatenated list of all warps with the specified group
      */
     private Optional<Text> generateWarpList(String groupName) {
 
-        List<Warp> warps = plugin.getWarpManager().getPayload();
+        List<Warp> warps = this.plugin.getWarpManager().getPayload();
         List<Warp> warpsInGroup = new ArrayList<Warp>();
 
         for (Warp warp : warps) {
@@ -75,7 +75,7 @@ public class GroupInfoExecutor implements CommandExecutor {
 
         TextBuilder builder = Texts.builder();
         for (int index = 0; index < warpsInGroup.size(); index++) {
-            builder.append(plugin.getUtil().generateWarpText(warpsInGroup.get(index)));
+            builder.append(this.plugin.getUtil().generateWarpText(warpsInGroup.get(index)));
             if (warpsInGroup.size() - 1 != index) {
                 // Not the last warp in the list
                 builder.append(Texts.of(", "));

@@ -1,12 +1,11 @@
 package com.blocklaunch.blwarps.runnables;
 
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.text.Texts;
-import org.spongepowered.api.text.format.TextColors;
-
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
+import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.format.TextColors;
 
 public class WarpPlayerRunnable implements Runnable {
 
@@ -22,15 +21,16 @@ public class WarpPlayerRunnable implements Runnable {
 
     @Override
     public void run() {
-        if (!player.transferToWorld(warp.getWorld(), warp.getPosition())) {
-            player.sendMessage(Constants.WORLD_NOT_FOUND_MSG);
+        if (!this.player.transferToWorld(this.warp.getWorld(), this.warp.getPosition())) {
+            this.player.sendMessage(Constants.WORLD_NOT_FOUND_MSG);
         } else {
-            player.sendMessage(Texts.builder(Constants.WARP_SUCCESS_MSG).color(TextColors.GREEN).append(plugin.getUtil().generateWarpText(warp))
+            this.player.sendMessage(Texts.builder(Constants.WARP_SUCCESS_MSG).color(TextColors.GREEN)
+                    .append(this.plugin.getUtil().generateWarpText(this.warp))
                     .build());
 
         }
 
-        plugin.getWarpManager().warpCompleted(player);
+        this.plugin.getWarpManager().warpCompleted(this.player);
 
     }
 

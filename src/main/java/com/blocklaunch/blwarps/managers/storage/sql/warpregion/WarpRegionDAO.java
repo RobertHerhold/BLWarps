@@ -1,17 +1,16 @@
 package com.blocklaunch.blwarps.managers.storage.sql.warpregion;
 
-import java.util.List;
-
+import com.blocklaunch.blwarps.region.WarpRegion;
 import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
-import com.blocklaunch.blwarps.region.WarpRegion;
+import java.util.List;
 
 @RegisterMapper(WarpRegionMapper.class)
 public interface WarpRegionDAO {
-    
+
     static final String TABLE_NAME = "warp_regions";
 
     @SqlUpdate("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
@@ -35,7 +34,7 @@ public interface WarpRegionDAO {
     @SqlUpdate("DELETE FROM " + TABLE_NAME + " WHERE name=:name")
     void deleteWarpRegion(@BindBean WarpRegion warp);
 
-    @SqlUpdate("UPDATE "+ TABLE_NAME + " SET world=:region.world, linkedWarp=:region.linkedWarp, "
+    @SqlUpdate("UPDATE " + TABLE_NAME + " SET world=:region.world, linkedWarp=:region.linkedWarp, "
             + "loc1x=:region.loc1x, loc1y=:region.loc1y, loc1z=:region.loc1z, "
             + "loc2x=:region.loc2x, loc2y=:region.loc2y, loc2z=:region.loc2z "
             + "WHERE name=:region.name")

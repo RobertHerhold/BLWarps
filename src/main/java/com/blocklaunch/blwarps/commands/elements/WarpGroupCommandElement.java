@@ -1,8 +1,7 @@
 package com.blocklaunch.blwarps.commands.elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Warp;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.ArgumentParseException;
@@ -10,13 +9,13 @@ import org.spongepowered.api.util.command.args.CommandArgs;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.args.CommandElement;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Warp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WarpGroupCommandElement extends CommandElement {
 
     private BLWarps plugin;
-    
+
     public WarpGroupCommandElement(BLWarps plugin, Text key) {
         super(key);
         this.plugin = plugin;
@@ -39,7 +38,7 @@ public class WarpGroupCommandElement extends CommandElement {
     @Override
     public List<String> complete(CommandSource source, CommandArgs args, CommandContext context) {
         List<String> groupNames = new ArrayList<String>();
-        for (Warp w : plugin.getWarpManager().getPayload()) {
+        for (Warp w : this.plugin.getWarpManager().getPayload()) {
             for (String group : w.getGroups()) {
                 if (!groupNames.contains(group)) {
                     groupNames.add(group);

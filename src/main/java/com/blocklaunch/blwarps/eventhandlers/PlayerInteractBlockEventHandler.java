@@ -1,7 +1,7 @@
 package com.blocklaunch.blwarps.eventhandlers;
 
-import java.util.List;
-
+import com.blocklaunch.blwarps.BLWarps;
+import com.google.common.base.Optional;
 import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.block.tileentity.TileEntityTypes;
 import org.spongepowered.api.data.manipulator.tileentity.SignData;
@@ -12,8 +12,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.world.Location;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.google.common.base.Optional;
+import java.util.List;
 
 /**
  * Listens for Players interacting with blocks If
@@ -56,10 +55,11 @@ public class PlayerInteractBlockEventHandler implements EventHandler<PlayerInter
         if (!Texts.toPlain(lines.get(1)).equalsIgnoreCase(SignChangeEventHandler.WARP_SIGN_PREFIX)) {
             return;
         }
-        // Don't need to validate that the warp actually exists --> Command executor will take care
+        // Don't need to validate that the warp actually exists --> Command
+        // executor will take care
         // of it. (along with permissions)
         String command = "warp " + Texts.toPlain(lines.get(2));
-        plugin.getGame().getCommandDispatcher().process(event.getUser(), command);
+        this.plugin.getGame().getCommandDispatcher().process(event.getUser(), command);
 
     }
 

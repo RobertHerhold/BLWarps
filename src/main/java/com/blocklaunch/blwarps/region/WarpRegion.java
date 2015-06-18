@@ -1,10 +1,10 @@
 package com.blocklaunch.blwarps.region;
 
-import java.text.DecimalFormat;
-
 import com.blocklaunch.blwarps.WarpBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.flowpowered.math.vector.Vector3d;
+
+import java.text.DecimalFormat;
 
 public class WarpRegion extends WarpBase {
 
@@ -30,13 +30,13 @@ public class WarpRegion extends WarpBase {
         this.minLoc = new Vector3d(Math.min(loc1.getX(), loc2.getX()), Math.min(loc1.getY(), loc2.getY()), Math.min(loc1.getZ(), loc2.getZ()));
         this.maxLoc = new Vector3d(Math.max(loc1.getX(), loc2.getX()), Math.max(loc1.getY(), loc2.getY()), Math.max(loc1.getZ(), loc2.getZ()));
 
-        this.loc1x = formatDouble(minLoc.getX());
-        this.loc1y = formatDouble(minLoc.getY());
-        this.loc1z = formatDouble(minLoc.getZ());
-        
-        this.loc2x = formatDouble(maxLoc.getX());
-        this.loc2y = formatDouble(maxLoc.getY());
-        this.loc2z = formatDouble(maxLoc.getZ());
+        this.loc1x = formatDouble(this.minLoc.getX());
+        this.loc1y = formatDouble(this.minLoc.getY());
+        this.loc1z = formatDouble(this.minLoc.getZ());
+
+        this.loc2x = formatDouble(this.maxLoc.getX());
+        this.loc2y = formatDouble(this.maxLoc.getY());
+        this.loc2z = formatDouble(this.maxLoc.getZ());
     }
 
     /**
@@ -45,8 +45,10 @@ public class WarpRegion extends WarpBase {
      */
     public boolean collidesWith(WarpRegion warpRegion) {
         // These two regions are Axis Aligned Bounding Boxes (AABBs)
-        // They are colliding if the first box's max point is greater than the second one's min
-        // point and that the first one's min point is less than the second one's max point.
+        // They are colliding if the first box's max point is greater than the
+        // second one's min
+        // point and that the first one's min point is less than the second
+        // one's max point.
         // It does not matter which box is "the first"
 
         return (this.maxLoc.getX() > warpRegion.getMinLoc().getX() && this.minLoc.getX() < warpRegion.getMaxLoc().getX()
@@ -61,7 +63,7 @@ public class WarpRegion extends WarpBase {
     }
 
     public String getLinkedWarpName() {
-        return linkedWarpName;
+        return this.linkedWarpName;
     }
 
     public void setLinkedWarpName(String linkedWarp) {
@@ -69,7 +71,7 @@ public class WarpRegion extends WarpBase {
     }
 
     public double getLoc1x() {
-        return loc1x;
+        return this.loc1x;
     }
 
     public void setLoc1x(double loc1x) {
@@ -77,7 +79,7 @@ public class WarpRegion extends WarpBase {
     }
 
     public double getLoc1y() {
-        return loc1y;
+        return this.loc1y;
     }
 
     public void setLoc1y(double loc1y) {
@@ -85,7 +87,7 @@ public class WarpRegion extends WarpBase {
     }
 
     public double getLoc1z() {
-        return loc1z;
+        return this.loc1z;
     }
 
     public void setLoc1z(double loc1z) {
@@ -93,7 +95,7 @@ public class WarpRegion extends WarpBase {
     }
 
     public double getLoc2x() {
-        return loc2x;
+        return this.loc2x;
     }
 
     public void setLoc2x(double loc2x) {
@@ -101,7 +103,7 @@ public class WarpRegion extends WarpBase {
     }
 
     public double getLoc2y() {
-        return loc2y;
+        return this.loc2y;
     }
 
     public void setLoc2y(double loc2y) {
@@ -109,7 +111,7 @@ public class WarpRegion extends WarpBase {
     }
 
     public double getLoc2z() {
-        return loc2z;
+        return this.loc2z;
     }
 
     public void setLoc2z(double loc2z) {
@@ -118,18 +120,18 @@ public class WarpRegion extends WarpBase {
 
     @JsonIgnore
     public Vector3d getMinLoc() {
-        if(minLoc == null) {
-            minLoc = new Vector3d(Math.min(loc1x, loc2x), Math.min(loc1y, loc2y), Math.min(loc1z, loc2z));
+        if (this.minLoc == null) {
+            this.minLoc = new Vector3d(Math.min(this.loc1x, this.loc2x), Math.min(this.loc1y, this.loc2y), Math.min(this.loc1z, this.loc2z));
         }
-        return minLoc;
+        return this.minLoc;
     }
 
     @JsonIgnore
     public Vector3d getMaxLoc() {
-        if(maxLoc == null) {
-            maxLoc = new Vector3d(Math.max(loc1x, loc2x), Math.max(loc1y, loc2y), Math.max(loc1z, loc2z));
+        if (this.maxLoc == null) {
+            this.maxLoc = new Vector3d(Math.max(this.loc1x, this.loc2x), Math.max(this.loc1y, this.loc2y), Math.max(this.loc1z, this.loc2z));
         }
-        return maxLoc;
+        return this.maxLoc;
     }
 
 }

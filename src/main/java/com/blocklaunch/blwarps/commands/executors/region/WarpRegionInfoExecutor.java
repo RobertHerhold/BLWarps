@@ -1,7 +1,12 @@
 package com.blocklaunch.blwarps.commands.executors.region;
 
-import java.util.List;
-
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Constants;
+import com.blocklaunch.blwarps.Util;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.region.WarpRegion;
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TextBuilder;
 import org.spongepowered.api.text.Texts;
@@ -12,13 +17,7 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Constants;
-import com.blocklaunch.blwarps.Util;
-import com.blocklaunch.blwarps.Warp;
-import com.blocklaunch.blwarps.region.WarpRegion;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class WarpRegionInfoExecutor implements CommandExecutor {
 
@@ -38,11 +37,11 @@ public class WarpRegionInfoExecutor implements CommandExecutor {
         }
 
         WarpRegion region = optRegion.get();
-        
-        Optional<Warp> linkedWarpOpt = plugin.getWarpManager().getOne(region.getLinkedWarpName());
+
+        Optional<Warp> linkedWarpOpt = this.plugin.getWarpManager().getOne(region.getLinkedWarpName());
         Text warpName = Texts.of(region.getLinkedWarpName());
-        if(linkedWarpOpt.isPresent()) {
-            if (plugin.getUtil().hasPermission(source, linkedWarpOpt.get()) == false) {
+        if (linkedWarpOpt.isPresent()) {
+            if (this.plugin.getUtil().hasPermission(source, linkedWarpOpt.get()) == false) {
                 source.sendMessage(Constants.NO_PERMISSION_MSG);
                 return CommandResult.empty();
             }
@@ -74,7 +73,7 @@ public class WarpRegionInfoExecutor implements CommandExecutor {
 
         TextBuilder builder = Texts.builder();
         for (int index = 0; index < groups.size(); index++) {
-            builder.append(plugin.getUtil().generateWarpGroupInfoText(groups.get(index)));
+            builder.append(this.plugin.getUtil().generateWarpGroupInfoText(groups.get(index)));
             if (groups.size() - 1 != index) {
                 // Not the last group name in the list
                 builder.append(Texts.of(", "));

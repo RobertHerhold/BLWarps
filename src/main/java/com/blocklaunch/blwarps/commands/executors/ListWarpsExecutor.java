@@ -1,8 +1,8 @@
 package com.blocklaunch.blwarps.commands.executors;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Constants;
+import com.blocklaunch.blwarps.Warp;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
@@ -13,9 +13,8 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Constants;
-import com.blocklaunch.blwarps.Warp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListWarpsExecutor implements CommandExecutor {
 
@@ -26,9 +25,9 @@ public class ListWarpsExecutor implements CommandExecutor {
     }
 
     /**
-     * Gets the currently loaded warps, paginates them into pages of size WARPS_PER_PAGE, and sends
-     * the warp names in a message to the player
-     * 
+     * Gets the currently loaded warps, paginates them into pages of size
+     * WARPS_PER_PAGE, and sends the warp names in a message to the player
+     *
      * @param source
      * @param args
      * @return
@@ -37,20 +36,20 @@ public class ListWarpsExecutor implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
-        if (plugin.getWarpManager().getPayload().isEmpty()) {
+        if (this.plugin.getWarpManager().getPayload().isEmpty()) {
             source.sendMessage(Constants.NO_WARPS_MSG);
             return CommandResult.success();
         }
 
         List<Text> warpNames = new ArrayList<Text>();
-        
-        for (Warp w : plugin.getWarpManager().getPayload()) {
-            if(plugin.getUtil().hasPermission(source, w)) {
-                warpNames.add(plugin.getUtil().generateWarpText(w));
+
+        for (Warp w : this.plugin.getWarpManager().getPayload()) {
+            if (this.plugin.getUtil().hasPermission(source, w)) {
+                warpNames.add(this.plugin.getUtil().generateWarpText(w));
             }
         }
 
-        PaginationService paginationService = plugin.getGame().getServiceManager().provide(PaginationService.class).get();
+        PaginationService paginationService = this.plugin.getGame().getServiceManager().provide(PaginationService.class).get();
         paginationService.builder().contents(warpNames).title(Texts.of(TextColors.BLUE, "Warps")).paddingString("-").sendTo(source);
 
         return CommandResult.success();

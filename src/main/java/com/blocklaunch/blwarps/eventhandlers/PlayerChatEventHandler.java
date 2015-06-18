@@ -1,20 +1,20 @@
 package com.blocklaunch.blwarps.eventhandlers;
 
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Util;
+import com.blocklaunch.blwarps.Warp;
+import com.google.common.base.Optional;
 import org.spongepowered.api.event.EventHandler;
 import org.spongepowered.api.event.entity.player.PlayerChatEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.util.command.CommandSource;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Warp;
-import com.google.common.base.Optional;
-
 /**
- * Class to listen for chat messages being sent If there are any words in the text that are the name
- * of a warp, replace that word with a Text object which, when clicked on, will warp the player to
- * that warp. If the player does not have permission to use that warp, the text will not be
- * transformed
+ * Class to listen for chat messages being sent If there are any words in the
+ * text that are the name of a warp, replace that word with a Text object which,
+ * when clicked on, will warp the player to that warp. If the player does not
+ * have permission to use that warp, the text will not be transformed
  */
 public class PlayerChatEventHandler implements EventHandler<PlayerChatEvent> {
 
@@ -33,24 +33,25 @@ public class PlayerChatEventHandler implements EventHandler<PlayerChatEvent> {
         String[] originalMessageWords = originalMessagePlain.split(SPACE);
 
         for (String word : originalMessageWords) {
-            if (plugin.getWarpManager().getNames().contains(word.toLowerCase())) {
-                Optional<Warp> optWarp = plugin.getWarpManager().getOne(word);
+            if (this.plugin.getWarpManager().getNames().contains(word.toLowerCase())) {
+                Optional<Warp> optWarp = this.plugin.getWarpManager().getOne(word);
                 if (!optWarp.isPresent()) {
                     continue;
                 }
 
                 Warp warp = optWarp.get();
                 CommandSource source = event.getSource();
-                if (!plugin.getUtil().hasPermission(source, warp)) {
+                if (!this.plugin.getUtil().hasPermission(source, warp)) {
                     continue;
                 }
 
-                Text text = plugin.getUtil().generateWarpText(warp);
-                // TODO Replace the original text's word representing the warp with this one ^
+                this.plugin.getUtil();
+                Text text = Util.generateWarpText(warp);
+                // TODO Replace the original text's word representing the warp
+                // with this one ^
             }
         }
 
     }
-
 
 }

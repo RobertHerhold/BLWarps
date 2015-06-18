@@ -1,11 +1,11 @@
 package com.blocklaunch.blwarps.managers.storage.sql.warpregion;
 
-import java.util.List;
-
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
 import com.blocklaunch.blwarps.managers.storage.sql.SqlManager;
 import com.blocklaunch.blwarps.region.WarpRegion;
+
+import java.util.List;
 
 public class SqlWarpRegionManager extends SqlManager<WarpRegion> implements StorageManager<WarpRegion> {
 
@@ -15,30 +15,30 @@ public class SqlWarpRegionManager extends SqlManager<WarpRegion> implements Stor
         super(plugin);
 
         // Use on demand so we don't have to bother closing connections
-        warpRegionDAO = dbi.onDemand(WarpRegionDAO.class);
+        this.warpRegionDAO = this.dbi.onDemand(WarpRegionDAO.class);
 
-        warpRegionDAO.createWarpRegionTable();
+        this.warpRegionDAO.createWarpRegionTable();
     }
 
     @Override
     public List<WarpRegion> load() {
-        return warpRegionDAO.getAllWarpRegions();
+        return this.warpRegionDAO.getAllWarpRegions();
     }
 
     @Override
     public void saveNew(WarpRegion region) {
-        warpRegionDAO.insertWarpRegion(region);
+        this.warpRegionDAO.insertWarpRegion(region);
     }
 
     @Override
     public void delete(WarpRegion region) {
-        warpRegionDAO.deleteWarpRegion(region);
+        this.warpRegionDAO.deleteWarpRegion(region);
 
     }
 
     @Override
     public void update(WarpRegion region) {
-        warpRegionDAO.updateWarpRegion(region);
+        this.warpRegionDAO.updateWarpRegion(region);
     }
 
 }

@@ -1,12 +1,5 @@
 package com.blocklaunch.blwarps.managers.storage;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import jersey.repackaged.com.google.common.collect.Lists;
-
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.WarpBase;
@@ -14,6 +7,12 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Optional;
+import jersey.repackaged.com.google.common.collect.Lists;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
 
@@ -69,8 +68,9 @@ public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
                 objectToRemove = object;
             }
         }
-        if (objectToRemove != null)
+        if (objectToRemove != null) {
             objects.remove(objectToRemove);
+        }
 
         writeOut(objects);
 
@@ -100,16 +100,16 @@ public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
     }
 
     private Optional<List<T>> readIn() {
-        if (!file.exists()) {
+        if (!this.file.exists()) {
             return Optional.absent();
         }
-        
+
         try {
-            JavaType type = mapper.getTypeFactory().constructParametricType(List.class, this.type);
-            List<T> objects = mapper.readValue(file, type);
+            JavaType type = this.mapper.getTypeFactory().constructParametricType(List.class, this.type);
+            List<T> objects = this.mapper.readValue(this.file, type);
             return Optional.of(objects);
         } catch (IOException e) {
-            plugin.getLogger().warn(Constants.ERROR_FILE_READ);
+            this.plugin.getLogger().warn(Constants.ERROR_FILE_READ);
             e.printStackTrace();
             return Optional.absent();
         }
@@ -117,11 +117,13 @@ public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
 
     private void writeOut(List<T> objects) {
         try {
-            file.createNewFile(); // Only creates the file if it doesn't already exist.
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            mapper.writeValue(file, objects);
+            this.file.createNewFile(); // Only creates the file if it doesn't
+                                       // already
+            // exist.
+            this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            this.mapper.writeValue(this.file, objects);
         } catch (IOException e) {
-            plugin.getLogger().warn(Constants.ERROR_FILE_WRITE);
+            this.plugin.getLogger().warn(Constants.ERROR_FILE_WRITE);
             e.printStackTrace();
         }
     }

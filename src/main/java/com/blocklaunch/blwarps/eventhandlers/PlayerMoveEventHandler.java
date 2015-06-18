@@ -1,8 +1,8 @@
 package com.blocklaunch.blwarps.eventhandlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.region.WarpRegion;
+import com.blocklaunch.blwarps.region.WarpRegionMBRConverter;
 import org.khelekore.prtree.MBR;
 import org.khelekore.prtree.PRTree;
 import org.khelekore.prtree.SimpleMBR;
@@ -11,9 +11,8 @@ import org.spongepowered.api.event.EventHandler;
 import org.spongepowered.api.event.entity.player.PlayerMoveEvent;
 import org.spongepowered.api.world.Location;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.region.WarpRegion;
-import com.blocklaunch.blwarps.region.WarpRegionMBRConverter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
 
@@ -23,7 +22,7 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
 
     public PlayerMoveEventHandler(BLWarps plugin) {
         this.plugin = plugin;
-        tree = new PRTree<WarpRegion>(new WarpRegionMBRConverter(), BRANCH_FACTOR);
+        this.tree = new PRTree<WarpRegion>(new WarpRegionMBRConverter(), BRANCH_FACTOR);
     }
 
     @Override
@@ -39,7 +38,7 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         MBR locationMBR = new SimpleMBR(location.getX(), location.getX(), location.getY(), location.getY(), location.getZ(), location.getZ());
 
         List<WarpRegion> warpRegions = new ArrayList<WarpRegion>();
-        for (WarpRegion r : tree.find(locationMBR)) {
+        for (WarpRegion r : this.tree.find(locationMBR)) {
             warpRegions.add(r);
         }
 

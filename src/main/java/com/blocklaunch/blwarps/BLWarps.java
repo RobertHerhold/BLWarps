@@ -1,27 +1,5 @@
 package com.blocklaunch.blwarps;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-
-import org.slf4j.Logger;
-import org.spongepowered.api.Game;
-import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.block.tileentity.SignChangeEvent;
-import org.spongepowered.api.event.entity.player.PlayerChatEvent;
-import org.spongepowered.api.event.entity.player.PlayerInteractBlockEvent;
-import org.spongepowered.api.event.entity.player.PlayerMoveEvent;
-import org.spongepowered.api.event.state.PreInitializationEvent;
-import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.service.config.DefaultConfig;
-import org.spongepowered.api.service.event.EventManager;
-
 import com.blocklaunch.blwarps.commands.WarpCommandGenerator;
 import com.blocklaunch.blwarps.eventhandlers.PlayerChatEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
@@ -37,12 +15,33 @@ import com.blocklaunch.blwarps.managers.storage.sql.warp.SqlWarpManager;
 import com.blocklaunch.blwarps.managers.storage.sql.warpregion.SqlWarpRegionManager;
 import com.blocklaunch.blwarps.region.WarpRegion;
 import com.google.inject.Inject;
+import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import org.slf4j.Logger;
+import org.spongepowered.api.Game;
+import org.spongepowered.api.event.Subscribe;
+import org.spongepowered.api.event.block.tileentity.SignChangeEvent;
+import org.spongepowered.api.event.entity.player.PlayerChatEvent;
+import org.spongepowered.api.event.entity.player.PlayerInteractBlockEvent;
+import org.spongepowered.api.event.entity.player.PlayerMoveEvent;
+import org.spongepowered.api.event.state.PreInitializationEvent;
+import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.service.config.DefaultConfig;
+import org.spongepowered.api.service.event.EventManager;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Plugin(id = PomData.ARTIFACT_ID, name = PomData.NAME, version = PomData.VERSION)
 public class BLWarps {
 
     /**
-     * Prefix to display at the beginning of messages to player, console outputs, etc.
+     * Prefix to display at the beginning of messages to player, console
+     * outputs, etc.
      */
     private Game game;
     private BLWarpsConfiguration config;
@@ -52,23 +51,18 @@ public class BLWarps {
     private Map<Class<? extends WarpBase>, WarpBaseManager<? extends WarpBase>> warpBaseManagers =
             new HashMap<Class<? extends WarpBase>, WarpBaseManager<? extends WarpBase>>();
 
-    @Inject
-    private Logger logger;
+    @Inject private Logger logger;
 
-    @Inject
-    @DefaultConfig(sharedRoot = false)
-    private File configFile;
+    @Inject @DefaultConfig(sharedRoot = false) private File configFile;
 
-    @Inject
-    @DefaultConfig(sharedRoot = false)
-    private ConfigurationLoader<CommentedConfigurationNode> configLoader;
+    @Inject @DefaultConfig(sharedRoot = false) private ConfigurationLoader<CommentedConfigurationNode> configLoader;
 
     @Subscribe
     public void preInit(PreInitializationEvent event) {
-        game = event.getGame();
+        this.game = event.getGame();
 
         // Create default config if it doesn't exist
-        if (!configFile.exists()) {
+        if (!this.configFile.exists()) {
             saveDefaultConfig();
         } else {
             loadConfig();
@@ -76,8 +70,8 @@ public class BLWarps {
 
         setupManagers();
 
-        warpBaseManagers.get(Warp.class).load();
-        warpBaseManagers.get(WarpRegion.class).load();
+        this.warpBaseManagers.get(Warp.class).load();
+        this.warpBaseManagers.get(WarpRegion.class).load();
 
         registerCommands();
         registerEventHandlers();
@@ -85,21 +79,21 @@ public class BLWarps {
     }
 
     private void registerCommands() {
-        logger.info("Registering commands");
-        game.getCommandDispatcher().register(this, new WarpCommandGenerator(this).mainWarpCommand(), "warp");
+        this.logger.info("Registering commands");
+        this.game.getCommandDispatcher().register(this, new WarpCommandGenerator(this).mainWarpCommand(), "warp");
     }
 
     /**
-     * Reads in config values supplied from the ConfigManager. Falls back on the default
-     * configuration values in Settings
+     * Reads in config values supplied from the ConfigManager. Falls back on the
+     * default configuration values in Settings
      */
     private void loadConfig() {
         ConfigurationNode rawConfig = null;
         try {
-            rawConfig = configLoader.load();
-            config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
+            rawConfig = this.configLoader.load();
+            this.config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
         } catch (IOException e) {
-            logger.warn("The configuration could not be loaded! Using the default configuration");
+            this.logger.warn("The configuration could not be loaded! Using the default configuration");
         } catch (IllegalArgumentException e) {
             // Everything after this is only for stringifying the array of all
             // StorageType values
@@ -111,51 +105,52 @@ public class BLWarps {
                     sb.append(", ");
                 }
             }
-            logger.warn("The specified storage type could not be found. Reverting to flatfile storage. Try: " + sb.toString());
+            this.logger.warn("The specified storage type could not be found. Reverting to flatfile storage. Try: " + sb.toString());
         } catch (ObjectMappingException e) {
-            logger.warn("There was an loading the configuration." + e.getStackTrace());
+            this.logger.warn("There was an loading the configuration." + e.getStackTrace());
         }
     }
 
     /**
      * Saves a config file with default values if it does not already exist
-     * 
-     * @return true if default config was successfully created, false if the file was not created
+     *
+     * @return true if default config was successfully created, false if the
+     *         file was not created
      */
     private void saveDefaultConfig() {
         try {
-            if (!configFile.exists()) {
-                logger.info("Generating config file...");
-                configFile.getParentFile().mkdirs();
-                configFile.createNewFile();
-                CommentedConfigurationNode rawConfig = configLoader.load();
+            if (!this.configFile.exists()) {
+                this.logger.info("Generating config file...");
+                this.configFile.getParentFile().mkdirs();
+                this.configFile.createNewFile();
+                CommentedConfigurationNode rawConfig = this.configLoader.load();
 
                 try {
                     // Populate config with default values
-                    config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
-                    BLWarpsConfiguration.MAPPER.bind(config).serialize(rawConfig);
+                    this.config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
+                    BLWarpsConfiguration.MAPPER.bind(this.config).serialize(rawConfig);
                 } catch (ObjectMappingException e) {
                     e.printStackTrace();
                 }
 
-                configLoader.save(rawConfig);
-                logger.info("Config file successfully generated.");
+                this.configLoader.save(rawConfig);
+                this.logger.info("Config file successfully generated.");
             } else {
                 return;
             }
         } catch (IOException exception) {
-            logger.warn("The default configuration could not be created!");
+            this.logger.warn("The default configuration could not be created!");
         }
     }
 
     private void setupManagers() {
-        File warpsFile = new File(configFile.getParentFile(), "warps.json");
-        File warpRegionFile = new File(configFile.getParentFile(), "warp-regions.json");
-        
+        File warpsFile = new File(this.configFile.getParentFile(), "warps.json");
+        File warpRegionFile = new File(this.configFile.getParentFile(), "warp-regions.json");
+
         StorageManager<Warp> warpStorage;
         StorageManager<WarpRegion> warpRegionStorage;
 
-        switch (config.getStorageType()) {
+        switch (this.config.getStorageType()) {
             case FLATFILE:
                 warpStorage = new FlatFileManager<Warp>(Warp.class, this, warpsFile);
                 warpRegionStorage = new FlatFileManager<WarpRegion>(WarpRegion.class, this, warpRegionFile);
@@ -173,14 +168,14 @@ public class BLWarps {
                 warpRegionStorage = new FlatFileManager<WarpRegion>(WarpRegion.class, this, warpRegionFile);
                 break;
         }
-        
-        warpBaseManagers.put(Warp.class, new WarpManager(this, warpStorage));
-        warpBaseManagers.put(WarpRegion.class, new WarpRegionManager(this, warpRegionStorage));
+
+        this.warpBaseManagers.put(Warp.class, new WarpManager(this, warpStorage));
+        this.warpBaseManagers.put(WarpRegion.class, new WarpRegionManager(this, warpRegionStorage));
 
     }
 
     private void registerEventHandlers() {
-        EventManager eventManager = game.getEventManager();
+        EventManager eventManager = this.game.getEventManager();
         // Filter chat & replace warp names in chat w/ clickable links
         eventManager.register(this, PlayerChatEvent.class, new PlayerChatEventHandler(this));
         // Watch for players right-clicking warp signs
@@ -192,27 +187,27 @@ public class BLWarps {
     }
 
     public Logger getLogger() {
-        return logger;
+        return this.logger;
     }
 
     public WarpManager getWarpManager() {
-        return (WarpManager) warpBaseManagers.get(Warp.class);
+        return (WarpManager) this.warpBaseManagers.get(Warp.class);
     }
-    
+
     public WarpRegionManager getWarpRegionManager() {
-        return (WarpRegionManager) warpBaseManagers.get(WarpRegion.class);
+        return (WarpRegionManager) this.warpBaseManagers.get(WarpRegion.class);
     }
 
     public BLWarpsConfiguration getConfig() {
-        return config;
+        return this.config;
     }
 
     public Game getGame() {
-        return game;
+        return this.game;
     }
 
     public Util getUtil() {
-        return util;
+        return this.util;
     }
 
 }

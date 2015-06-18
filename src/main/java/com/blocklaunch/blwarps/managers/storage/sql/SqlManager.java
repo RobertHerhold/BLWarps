@@ -1,23 +1,22 @@
 package com.blocklaunch.blwarps.managers.storage.sql;
 
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.WarpBase;
+import org.skife.jdbi.v2.DBI;
+import org.spongepowered.api.service.sql.SqlService;
+
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.skife.jdbi.v2.DBI;
-import org.spongepowered.api.service.sql.SqlService;
-
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.WarpBase;
-
 public abstract class SqlManager<T extends WarpBase> {
-    
+
     public DBI dbi;
     public BLWarps plugin;
-    
+
     public SqlManager(BLWarps plugin) {
         this.plugin = plugin;
-        
+
         SqlService sql = plugin.getGame().getServiceManager().provide(SqlService.class).get();
 
         DataSource dataSource = null;
@@ -27,7 +26,7 @@ public abstract class SqlManager<T extends WarpBase> {
             e.printStackTrace();
         }
 
-        dbi = new DBI(dataSource);
+        this.dbi = new DBI(dataSource);
     }
 
 }

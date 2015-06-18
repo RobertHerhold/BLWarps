@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps;
 
+import com.blocklaunch.blwarps.region.WarpRegion;
+import com.google.common.base.Optional;
 import org.spongepowered.api.data.DataManipulatorBuilder;
 import org.spongepowered.api.data.manipulator.tileentity.SignData;
 import org.spongepowered.api.text.Text;
@@ -7,9 +9,6 @@ import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandSource;
-
-import com.blocklaunch.blwarps.region.WarpRegion;
-import com.google.common.base.Optional;
 
 public class Util {
 
@@ -64,7 +63,7 @@ public class Util {
      * @return the formatted SignData indicating a valid warp sign
      */
     public SignData generateWarpSignData(Warp warp) {
-        Optional<DataManipulatorBuilder<SignData>> builder = plugin.getGame().getRegistry().getManipulatorRegistry().getBuilder(SignData.class);
+        Optional<DataManipulatorBuilder<SignData>> builder = this.plugin.getGame().getRegistry().getManipulatorRegistry().getBuilder(SignData.class);
         SignData signData = builder.get().create();
 
         signData.setLine(0, Texts.of());

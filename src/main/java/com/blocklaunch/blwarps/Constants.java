@@ -1,11 +1,11 @@
 package com.blocklaunch.blwarps;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Constants {
 

@@ -1,5 +1,9 @@
 package com.blocklaunch.blwarps.commands.executors;
 
+import com.blocklaunch.blwarps.BLWarps;
+import com.blocklaunch.blwarps.Constants;
+import com.blocklaunch.blwarps.Warp;
+import com.google.common.base.Optional;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -9,12 +13,8 @@ import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
 
-import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.Constants;
-import com.blocklaunch.blwarps.Warp;
-import com.google.common.base.Optional;
-
 public class WarpExecutor implements CommandExecutor {
+
     private BLWarps plugin;
 
     public WarpExecutor(BLWarps plugin) {
@@ -37,12 +37,12 @@ public class WarpExecutor implements CommandExecutor {
 
         Warp warp = optWarp.get();
 
-        if (plugin.getUtil().hasPermission(player, warp) == false) {
+        if (this.plugin.getUtil().hasPermission(player, warp) == false) {
             player.sendMessage(Constants.NO_PERMISSION_MSG);
             return CommandResult.empty();
         }
 
-        Optional<String> optError = plugin.getWarpManager().scheduleWarp(player, warp);
+        Optional<String> optError = this.plugin.getWarpManager().scheduleWarp(player, warp);
 
         if (optError.isPresent()) {
             player.sendMessage(Texts.of(TextColors.RED, Constants.ERROR_WARPING_MSG + optError.get()));
