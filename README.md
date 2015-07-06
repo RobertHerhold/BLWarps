@@ -24,9 +24,9 @@ Note: In the following commands, square brackets (`[]`) indicate optional argume
  * Displays information about the specified warp group
 
 ##Permissions
-Permissions can be required for either individual warps, or warp groups. For example, a player could use the warp `spawn`, which belonged to the warp group `sector_a` (just a bogus example), if he/she hadd any of the following permissions:
- * `blwarps.warp.spawn`
- * `blwarps.warp.group.sector_a`
+Permissions can be required for either individual warps, or warp groups, as shown below:
+ * `blwarps.warp.<warp name>`
+ * `blwarps.warp.group.<group name>`
  * `blwarps.warp.*` (wildcard --> warp to anywhere)
 
 ##Warp Signs
