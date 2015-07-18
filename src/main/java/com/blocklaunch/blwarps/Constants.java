@@ -49,5 +49,5 @@ public class Constants {
     public static final Text INVENTORY_FULL_MSG = Texts.of(TextColors.RED, PREFIX + " Your inventory is full! Please clear a slot and try again.");
     public static final Text NO_WARPS_AFFECTED_MSG = Texts.of(TextColors.RED, PREFIX + " No warps were affected!");
     public static final Text WORLD_NOT_FOUND_MSG = Texts.of(TextColors.RED, PREFIX + " The world you requested to be warped to could not be found!");
-
+    public static final Text DONT_MOVE_MSG = Texts.of(TextColors.GREEN, Constants.PREFIX + " Do not move or get hurt or your warp will be canceled!");
 }

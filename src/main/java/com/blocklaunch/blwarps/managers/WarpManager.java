@@ -119,7 +119,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
 
         // If the pvp-protect config setting is set to true, warn the player not to move
         if (this.plugin.getConfig().isPvpProtect() == true) {
-            player.sendMessage(Texts.of(TextColors.GREEN, Constants.PREFIX + " Do not move or get hurt or your warp will be canceled!"));
+            player.sendMessage(Constants.DONT_MOVE_MSG);
         }
 
     }
