@@ -2,16 +2,20 @@ package com.blocklaunch.blwarps.managers;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
+import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
 import com.blocklaunch.blwarps.runnables.WarpPlayerRunnable;
 import com.google.common.base.Optional;
 import org.spongepowered.api.entity.player.Player;
 import org.spongepowered.api.service.scheduler.Task;
+import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -101,21 +105,23 @@ public class WarpManager extends WarpBaseManager<Warp> {
      * @param warp The location the player is to be warped to
      * @return An error if one exists, or Optional.absent() otherwise
      */
-    public Optional<String> scheduleWarp(Player player, Warp warp) {
-        long delay = this.plugin.getConfig().getWarpDelay() * Constants.TICKS_PER_SECOND;
-
+    public void scheduleWarp(Player player, Warp warp) {
         // Schedule the task
-        Optional<Task> optTask =
-                this.plugin.getGame().getSyncScheduler().runTaskAfter(this.plugin, new WarpPlayerRunnable(this.plugin, player, warp), delay);
+        Task scheduledWarpTask =
+                this.plugin.getGame().getScheduler().getTaskBuilder().delay(this.plugin.getConfig().getWarpDelay(), TimeUnit.SECONDS)
+                        .execute(new WarpPlayerRunnable(this.plugin, player, warp)).submit(this.plugin);
 
-        if (!optTask.isPresent()) {
-            // There was an error scheduling the warp
-            return Optional.of(Constants.ERROR_SCHEDULING_WARP);
+        this.warpsInProgress.put(player, scheduledWarpTask);
+
+        // Notify the player that they will be warped
+        player.sendMessage(Texts.of(TextColors.GREEN, Constants.PREFIX + " You will be warped to ", Util.generateWarpText(warp), " in ",
+                TextColors.GOLD, this.plugin.getConfig().getWarpDelay(), TextColors.GREEN, " seconds."));
+
+        // If the pvp-protect config setting is set to true, warn the player not to move
+        if (this.plugin.getConfig().isPvpProtect() == true) {
+            player.sendMessage(Texts.of(TextColors.GREEN, Constants.PREFIX + " Do not move or get hurt or your warp will be canceled!"));
         }
 
-        this.warpsInProgress.put(player, optTask.get());
-
-        return Optional.absent();
     }
 
     /**

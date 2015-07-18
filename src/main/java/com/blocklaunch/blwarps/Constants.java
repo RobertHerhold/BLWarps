@@ -10,7 +10,6 @@ import java.util.List;
 public class Constants {
 
     public static final String PREFIX = "[BLWarps]";
-    public static final int TICKS_PER_SECOND = 20;
 
     public static final List<String> FORBIDDEN_NAMES = Arrays.asList("set", "add", "create", "delete", "del", "list", "ls", "info", "group",
             "region", "sign");
@@ -41,8 +40,7 @@ public class Constants {
     public static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
     public static final String ERROR_FILE_READ = "There was an error reading the warps file!";
 
-    public static final String ERROR_SCHEDULING_WARP = "There was an error scheduling your warp. Please try again.";
-    public static final String WARP_SUCCESS_MSG = PREFIX + " You have been warped to ";
+    public static final Text WARP_SUCCESS_MSG = Texts.of(TextColors.GREEN, PREFIX + " You have been warped to ");
     public static final String ERROR_WARPING_MSG = PREFIX + " There was an error scheduling your warp: ";
     public static final Text NO_WARPS_MSG = Texts.of(TextColors.GREEN, PREFIX + " There were no warps to display.");
     public static final Text NO_WARP_REGIONS_MSG = Texts.of(TextColors.GREEN, PREFIX + " There were no warp regions to display.");

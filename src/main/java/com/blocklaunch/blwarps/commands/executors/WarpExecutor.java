@@ -42,12 +42,7 @@ public class WarpExecutor implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        Optional<String> optError = this.plugin.getWarpManager().scheduleWarp(player, warp);
-
-        if (optError.isPresent()) {
-            player.sendMessage(Texts.of(TextColors.RED, Constants.ERROR_WARPING_MSG + optError.get()));
-            return CommandResult.empty();
-        }
+        this.plugin.getWarpManager().scheduleWarp(player, warp);
 
         return CommandResult.success();
     }
