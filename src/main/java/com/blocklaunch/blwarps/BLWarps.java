@@ -22,10 +22,6 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.block.tileentity.SignChangeEvent;
-import org.spongepowered.api.event.entity.player.PlayerChatEvent;
-import org.spongepowered.api.event.entity.player.PlayerInteractBlockEvent;
-import org.spongepowered.api.event.entity.player.PlayerMoveEvent;
 import org.spongepowered.api.event.state.PreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.service.config.DefaultConfig;
@@ -177,13 +173,13 @@ public class BLWarps {
     private void registerEventHandlers() {
         EventManager eventManager = this.game.getEventManager();
         // Filter chat & replace warp names in chat w/ clickable links
-        eventManager.register(this, PlayerChatEvent.class, new PlayerChatEventHandler(this));
+        eventManager.register(this, new PlayerChatEventHandler(this));
         // Watch for players right-clicking warp signs
-        eventManager.register(this, PlayerInteractBlockEvent.class, new PlayerInteractBlockEventHandler(this));
+        eventManager.register(this, new PlayerInteractBlockEventHandler(this));
         // Watch for warp signs being created
-        eventManager.register(this, SignChangeEvent.class, new SignChangeEventHandler(this));
+        eventManager.register(this, new SignChangeEventHandler(this));
         // Watch for player movement (warp regions, cancelling warps)
-        eventManager.register(this, PlayerMoveEvent.class, new PlayerMoveEventHandler(this));
+        eventManager.register(this, new PlayerMoveEventHandler(this));
     }
 
     public Logger getLogger() {

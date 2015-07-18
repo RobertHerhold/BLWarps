@@ -4,7 +4,7 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.google.common.base.Optional;
-import org.spongepowered.api.event.EventHandler;
+import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerChatEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
@@ -16,7 +16,7 @@ import org.spongepowered.api.util.command.CommandSource;
  * when clicked on, will warp the player to that warp. If the player does not
  * have permission to use that warp, the text will not be transformed
  */
-public class PlayerChatEventHandler implements EventHandler<PlayerChatEvent> {
+public class PlayerChatEventHandler {
 
     private BLWarps plugin;
 
@@ -26,8 +26,8 @@ public class PlayerChatEventHandler implements EventHandler<PlayerChatEvent> {
 
     private static final String SPACE = " ";
 
-    @Override
-    public void handle(PlayerChatEvent event) throws Exception {
+    @Subscribe
+    public void playerChatEvent(PlayerChatEvent event) {
         Text originalMessage = event.getMessage();
         String originalMessagePlain = Texts.toPlain(originalMessage);
         String[] originalMessageWords = originalMessagePlain.split(SPACE);

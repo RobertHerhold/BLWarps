@@ -6,7 +6,7 @@ import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.block.tileentity.TileEntityTypes;
 import org.spongepowered.api.data.manipulator.tileentity.SignData;
 import org.spongepowered.api.entity.EntityInteractionTypes;
-import org.spongepowered.api.event.EventHandler;
+import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerInteractBlockEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Listens for Players interacting with blocks If
  */
-public class PlayerInteractBlockEventHandler implements EventHandler<PlayerInteractBlockEvent> {
+public class PlayerInteractBlockEventHandler {
 
     private BLWarps plugin;
 
@@ -25,8 +25,8 @@ public class PlayerInteractBlockEventHandler implements EventHandler<PlayerInter
         this.plugin = plugin;
     }
 
-    @Override
-    public void handle(PlayerInteractBlockEvent event) throws Exception {
+    @Subscribe
+    public void playerInteractBlock(PlayerInteractBlockEvent event) {
         // Ensure right click
         if (!(event.getInteractionType() == EntityInteractionTypes.USE)) {
             return;

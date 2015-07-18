@@ -7,14 +7,14 @@ import org.khelekore.prtree.MBR;
 import org.khelekore.prtree.PRTree;
 import org.khelekore.prtree.SimpleMBR;
 import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.event.EventHandler;
+import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerMoveEvent;
 import org.spongepowered.api.world.Location;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
+public class PlayerMoveEventHandler {
 
     private BLWarps plugin;
     private PRTree<WarpRegion> tree;
@@ -25,8 +25,8 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         this.tree = new PRTree<WarpRegion>(new WarpRegionMBRConverter(), BRANCH_FACTOR);
     }
 
-    @Override
-    public void handle(PlayerMoveEvent event) throws Exception {
+    @Subscribe
+    public void playerMove(PlayerMoveEvent event) throws Exception {
         Player player = event.getEntity();
         Location location = event.getNewLocation();
 
