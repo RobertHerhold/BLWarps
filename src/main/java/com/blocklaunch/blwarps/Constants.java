@@ -42,8 +42,8 @@ public class Constants {
 
     public static final Text WARP_SUCCESS_MSG = Texts.of(TextColors.GREEN, PREFIX + " You have been warped to ");
     public static final String ERROR_WARPING_MSG = PREFIX + " There was an error scheduling your warp: ";
-    public static final Text NO_WARPS_MSG = Texts.of(TextColors.GREEN, PREFIX + " There were no warps to display.");
-    public static final Text NO_WARP_REGIONS_MSG = Texts.of(TextColors.GREEN, PREFIX + " There were no warp regions to display.");
+    public static final Text NO_WARPS_MSG = Texts.of(TextColors.GREEN, PREFIX + " There are no warps to display.");
+    public static final Text NO_WARP_REGIONS_MSG = Texts.of(TextColors.GREEN, PREFIX + " There are no warp regions to display.");
     public static final Text MUST_BE_PLAYER_MSG = Texts.of(TextColors.RED, PREFIX + " You must be a player to send that command (not console)");
     public static final Text NO_PERMISSION_MSG = Texts.of(TextColors.RED, PREFIX + " You do not have permission to use that warp!");
     public static final Text INVENTORY_FULL_MSG = Texts.of(TextColors.RED, PREFIX + " Your inventory is full! Please clear a slot and try again.");

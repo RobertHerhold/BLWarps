@@ -40,7 +40,7 @@ public class ListWarpRegionsExecutor implements CommandExecutor {
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
 
         if (this.plugin.getWarpRegionManager().getPayload().isEmpty()) {
-            source.sendMessage(Constants.NO_WARPS_MSG);
+            source.sendMessage(Constants.NO_WARP_REGIONS_MSG);
             return CommandResult.success();
         }
 
