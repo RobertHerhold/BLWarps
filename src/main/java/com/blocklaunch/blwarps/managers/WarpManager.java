@@ -117,7 +117,8 @@ public class WarpManager extends WarpBaseManager<Warp> {
         player.sendMessage(Texts.of(TextColors.GREEN, Constants.PREFIX + " You will be warped to ", Util.generateWarpText(warp), " in ",
                 TextColors.GOLD, this.plugin.getConfig().getWarpDelay(), TextColors.GREEN, " seconds."));
 
-        // If the pvp-protect config setting is set to true, warn the player not to move
+        // If the pvp-protect config setting is set to true, warn the player not
+        // to move
         if (this.plugin.getConfig().isPvpProtect() == true) {
             player.sendMessage(Constants.DONT_MOVE_MSG);
         }

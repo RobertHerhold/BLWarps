@@ -4,12 +4,18 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
 import com.blocklaunch.blwarps.region.WarpRegion;
+import com.blocklaunch.blwarps.region.WarpRegionMBRConverter;
 import com.google.common.base.Optional;
+import org.khelekore.prtree.PRTree;
 
 public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
 
+    private PRTree<WarpRegion> tree;
+    private static final int BRANCH_FACTOR = 5;
+
     public WarpRegionManager(BLWarps plugin, StorageManager<WarpRegion> storage) {
         super(plugin, storage);
+        this.tree = new PRTree<WarpRegion>(new WarpRegionMBRConverter(), BRANCH_FACTOR);
     }
 
     /**
@@ -40,6 +46,17 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
         // No errors, return an absent optional
         return Optional.absent();
 
+    }
+
+    @Override
+    public void load() {
+        super.load();
+        // Load warp regions into PR tree
+        this.tree.load(super.getPayload());
+    }
+
+    public PRTree<WarpRegion> getPRTree() {
+        return this.tree;
     }
 
 }
