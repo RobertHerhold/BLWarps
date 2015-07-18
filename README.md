@@ -10,7 +10,7 @@ Note: In the following commands, square brackets (`[]`) indicate optional argume
 * `/warp delete <warp name>`
  * Delete the warp with name `warp name`.
 * `/warp list`
- * List all of the currently saved warps. Optionally, specify a `page number`.
+ * List all of the currently active warps.
  * Only the warps that the `CommandSource` has permission to use will be displayed to them
 * `/warp info <warp name>`
  * Displays information about the specified warp
@@ -49,8 +49,6 @@ Regardless of the storage solution, each warp has 5 properties:
 
 And optional properties:
 * groups - the groups of which the warp belongs to
-
-Note: If an attempt to save warps with any storage method fails, the plugin will revert to a flat file to store the warps.
 
 ###Flat File Storage
 For flat file storage, warps are stored as JSON (serialized using [Jackson](http://wiki.fasterxml.com/JacksonHome)) in the `config/BLWarps/warps.json` file. A sample `warps.json` file would be similar to the following:
