@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps;
 
+import com.blocklaunch.blwarps.eventhandlers.PlayerChangeHealthEventHandler;
+
 import com.blocklaunch.blwarps.commands.WarpCommandGenerator;
 import com.blocklaunch.blwarps.eventhandlers.PlayerChatEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
@@ -180,6 +182,9 @@ public class BLWarps {
         eventManager.register(this, new SignChangeEventHandler(this));
         // Watch for player movement (warp regions, cancelling warps)
         eventManager.register(this, new PlayerMoveEventHandler(this));
+        // Watch for player damage - cancel warp if pvp-protect setting is
+        // enabled
+        eventManager.register(this, new PlayerChangeHealthEventHandler(this));
     }
 
     public Logger getLogger() {
