@@ -31,7 +31,10 @@ public class PlayerMoveEventHandler {
         // If pvp-protect config setting is on, cancel the warp
         if (this.plugin.getConfig().isPvpProtect()) {
             if (this.plugin.getWarpManager().isWarping(player)) {
-                this.plugin.getWarpManager().cancelWarp(player);
+                // Check that the player's location actually changed - don't want to cancel for looking around
+                if(!event.getOldLocation().equals(event.getNewLocation())) {
+                    this.plugin.getWarpManager().cancelWarp(player);    
+                }
             }
         }
 
