@@ -40,7 +40,6 @@ public class Constants {
     public static final String ERROR_FILE_WRITE = "There was an error writing to the file!";
     public static final String ERROR_FILE_READ = "There was an error reading the warps file!";
 
-    public static final Text WARP_SUCCESS_MSG = Texts.of(TextColors.GREEN, PREFIX + " You have been warped to ");
     public static final String ERROR_WARPING_MSG = PREFIX + " There was an error scheduling your warp: ";
     public static final Text NO_WARPS_MSG = Texts.of(TextColors.GREEN, PREFIX + " There are no warps to display.");
     public static final Text NO_WARP_REGIONS_MSG = Texts.of(TextColors.GREEN, PREFIX + " There are no warp regions to display.");
