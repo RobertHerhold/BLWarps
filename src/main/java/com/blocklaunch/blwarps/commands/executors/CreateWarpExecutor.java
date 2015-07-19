@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps.commands.executors;
 
+import com.blocklaunch.blwarps.Util;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
@@ -50,7 +52,7 @@ public class CreateWarpExecutor implements CommandExecutor {
             source.sendMessage(Texts.builder(Constants.ERROR_CREATE_WARP_MSG + error.get()).color(TextColors.RED).build());
             return CommandResult.empty();
         } else {
-            source.sendMessage(Constants.SUCCESS_DELETE_WARP_MSG.builder().append(this.plugin.getUtil().generateWarpText(newWarp)).build());
+            source.sendMessage(Texts.of(Constants.SUCCESS_CREATE_WARP_MSG, Util.generateWarpText(newWarp)));
             return CommandResult.success();
         }
     }

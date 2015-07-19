@@ -8,7 +8,6 @@ import com.blocklaunch.blwarps.region.WarpRegion;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.TextBuilder;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.command.CommandException;
@@ -63,24 +62,6 @@ public class WarpRegionInfoExecutor implements CommandExecutor {
 
         return CommandResult.success();
 
-    }
-
-    private Text generateGroupList(Warp warp) {
-        List<String> groups = warp.getGroups();
-        if (groups.isEmpty()) {
-            return Texts.of("none");
-        }
-
-        TextBuilder builder = Texts.builder();
-        for (int index = 0; index < groups.size(); index++) {
-            builder.append(this.plugin.getUtil().generateWarpGroupInfoText(groups.get(index)));
-            if (groups.size() - 1 != index) {
-                // Not the last group name in the list
-                builder.append(Texts.of(", "));
-            }
-        }
-
-        return builder.build();
     }
 
 }

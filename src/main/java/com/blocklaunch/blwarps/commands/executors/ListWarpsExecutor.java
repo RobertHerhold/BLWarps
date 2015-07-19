@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps.commands.executors;
 
+import com.blocklaunch.blwarps.Util;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
@@ -45,7 +47,7 @@ public class ListWarpsExecutor implements CommandExecutor {
 
         for (Warp w : this.plugin.getWarpManager().getPayload()) {
             if (this.plugin.getUtil().hasPermission(source, w)) {
-                warpNames.add(this.plugin.getUtil().generateWarpText(w));
+                warpNames.add(Util.generateWarpText(w));
             }
         }
 

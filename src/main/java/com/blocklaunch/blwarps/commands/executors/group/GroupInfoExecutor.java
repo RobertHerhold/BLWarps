@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps.commands.executors.group;
 
+import com.blocklaunch.blwarps.Util;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
@@ -75,7 +77,7 @@ public class GroupInfoExecutor implements CommandExecutor {
 
         TextBuilder builder = Texts.builder();
         for (int index = 0; index < warpsInGroup.size(); index++) {
-            builder.append(this.plugin.getUtil().generateWarpText(warpsInGroup.get(index)));
+            builder.append(Util.generateWarpText(warpsInGroup.get(index)));
             if (warpsInGroup.size() - 1 != index) {
                 // Not the last warp in the list
                 builder.append(Texts.of(", "));
