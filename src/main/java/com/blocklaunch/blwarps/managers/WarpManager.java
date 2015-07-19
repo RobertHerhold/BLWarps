@@ -125,6 +125,25 @@ public class WarpManager extends WarpBaseManager<Warp> {
 
     }
 
+    public void cancelWarp(Player player) {
+        Task task = this.warpsInProgress.get(player);
+        task.cancel();
+        Warp previousDestination = ((WarpPlayerRunnable) task.getRunnable()).getWarp();
+
+        player.sendMessage(Texts.of(TextColors.RED, Constants.PREFIX + " Your warp to ", Util.generateWarpText(previousDestination),
+                " has been canceled!"));
+        warpsInProgress.remove(player);
+    }
+
+    public Optional<Warp> getPlayerDestination(Player player) {
+        if (!this.warpsInProgress.containsKey(player)) {
+            return Optional.absent();
+        }
+        Task task = this.warpsInProgress.get(player);
+        Warp destination = ((WarpPlayerRunnable) task.getRunnable()).getWarp();
+        return Optional.of(destination);
+    }
+
     /**
      * Removes the specified player from the map of players who are waiting to
      * be warped

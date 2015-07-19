@@ -15,7 +15,7 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
 
     public WarpRegionManager(BLWarps plugin, StorageManager<WarpRegion> storage) {
         super(plugin, storage);
-        this.tree = new PRTree<WarpRegion>(new WarpRegionMBRConverter(), BRANCH_FACTOR);
+        this.tree = constructPRTree();
     }
 
     /**
@@ -25,7 +25,6 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
      */
     @Override
     public Optional<String> addNew(WarpRegion newWarpRegion) {
-
         for (WarpRegion warpRegion : this.payload) {
             if (warpRegion.getName().equalsIgnoreCase(newWarpRegion.getName())) {
                 // A warp with that name already exists
@@ -43,6 +42,9 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
         // shuts down to prevent loss of data if the server crashed
         this.storage.saveNew(newWarpRegion);
 
+        // Reload the PR tree w/ the new region
+        reloadPRTree();
+
         // No errors, return an absent optional
         return Optional.absent();
 
@@ -51,8 +53,27 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
     @Override
     public void load() {
         super.load();
-        // Load warp regions into PR tree
-        this.tree.load(super.getPayload());
+        reloadPRTree();
+    }
+
+    /**
+     * Load warp regions into PR tree
+     */
+    private void reloadPRTree() {
+        try {
+            this.tree.load(super.getPayload());
+        } catch (IllegalStateException e) {
+            // Tree is already loaded
+            // Have to re-instantiate the tree b/c you cannot load the regions
+            // twice
+            this.tree = constructPRTree();
+            this.tree.load(super.getPayload());
+        }
+
+    }
+
+    private PRTree<WarpRegion> constructPRTree() {
+        return new PRTree<WarpRegion>(new WarpRegionMBRConverter(), BRANCH_FACTOR);
     }
 
     public PRTree<WarpRegion> getPRTree() {

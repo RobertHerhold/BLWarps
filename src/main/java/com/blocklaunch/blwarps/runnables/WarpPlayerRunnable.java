@@ -32,4 +32,8 @@ public class WarpPlayerRunnable implements Runnable {
 
     }
 
+    public Warp getWarp() {
+        return this.warp;
+    }
+
 }
