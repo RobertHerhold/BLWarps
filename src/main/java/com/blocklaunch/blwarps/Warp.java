@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.flowpowered.math.vector.Vector3d;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,11 +62,6 @@ public class Warp extends WarpBase {
             this.position = new Vector3d(this.x, this.y, this.z);
         }
         return this.position;
-    }
-
-    private double formatDouble(double d) {
-        DecimalFormat f = new DecimalFormat("##.00");
-        return Double.valueOf(f.format(d));
     }
 
     public double getX() {
