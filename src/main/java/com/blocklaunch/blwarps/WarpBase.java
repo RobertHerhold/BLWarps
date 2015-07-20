@@ -1,6 +1,9 @@
 package com.blocklaunch.blwarps;
 
 import javax.validation.constraints.Size;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public abstract class WarpBase {
 
@@ -32,6 +35,11 @@ public abstract class WarpBase {
 
     public void setWorld(String world) {
         this.world = world;
+    }
+
+    protected double formatDouble(double d) {
+        DecimalFormat f = new DecimalFormat("##.00", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        return Double.valueOf(f.format(d));
     }
 
 }

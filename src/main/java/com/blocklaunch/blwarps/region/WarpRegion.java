@@ -4,8 +4,6 @@ import com.blocklaunch.blwarps.WarpBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.flowpowered.math.vector.Vector3d;
 
-import java.text.DecimalFormat;
-
 public class WarpRegion extends WarpBase {
 
     private String linkedWarpName;
@@ -55,11 +53,6 @@ public class WarpRegion extends WarpBase {
                 && this.maxLoc.getY() > warpRegion.getMinLoc().getY() && this.minLoc.getY() < warpRegion.getMaxLoc().getY()
                 && this.maxLoc.getZ() > warpRegion.getMinLoc().getZ() && this.minLoc.getZ() < warpRegion.getMaxLoc().getZ());
 
-    }
-
-    private double formatDouble(double d) {
-        DecimalFormat f = new DecimalFormat("##.00");
-        return Double.valueOf(f.format(d));
     }
 
     public String getLinkedWarpName() {
