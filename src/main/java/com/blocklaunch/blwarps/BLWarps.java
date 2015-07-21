@@ -37,17 +37,14 @@ import java.util.Map;
 @Plugin(id = PomData.ARTIFACT_ID, name = PomData.NAME, version = PomData.VERSION)
 public class BLWarps {
 
-    /**
-     * Prefix to display at the beginning of messages to player, console
-     * outputs, etc.
-     */
-    private Game game;
     private BLWarpsConfiguration config;
 
     private Util util = new Util(this);
 
     private Map<Class<? extends WarpBase>, WarpBaseManager<? extends WarpBase>> warpBaseManagers =
             new HashMap<Class<? extends WarpBase>, WarpBaseManager<? extends WarpBase>>();
+
+    @Inject private Game game;
 
     @Inject private Logger logger;
 
@@ -57,28 +54,23 @@ public class BLWarps {
 
     @Subscribe
     public void preInit(PreInitializationEvent event) {
-        this.game = event.getGame();
-
-        // Create default config if it doesn't exist
-        if (!this.configFile.exists()) {
-            saveDefaultConfig();
-        } else {
-            loadConfig();
-        }
-
+        setupConfig();
         setupManagers();
-
-        this.warpBaseManagers.get(Warp.class).load();
-        this.warpBaseManagers.get(WarpRegion.class).load();
-
         registerCommands();
         registerEventHandlers();
-
     }
 
     private void registerCommands() {
         this.logger.info("Registering commands");
         this.game.getCommandDispatcher().register(this, new WarpCommandGenerator(this).mainWarpCommand(), "warp");
+    }
+
+    private void setupConfig() {
+        if (!this.configFile.exists()) {
+            saveDefaultConfig();
+        } else {
+            loadConfig();
+        }
     }
 
     /**
@@ -117,25 +109,21 @@ public class BLWarps {
      */
     private void saveDefaultConfig() {
         try {
-            if (!this.configFile.exists()) {
-                this.logger.info("Generating config file...");
-                this.configFile.getParentFile().mkdirs();
-                this.configFile.createNewFile();
-                CommentedConfigurationNode rawConfig = this.configLoader.load();
+            this.logger.info("Generating config file...");
+            this.configFile.getParentFile().mkdirs();
+            this.configFile.createNewFile();
+            CommentedConfigurationNode rawConfig = this.configLoader.load();
 
-                try {
-                    // Populate config with default values
-                    this.config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
-                    BLWarpsConfiguration.MAPPER.bind(this.config).serialize(rawConfig);
-                } catch (ObjectMappingException e) {
-                    e.printStackTrace();
-                }
-
-                this.configLoader.save(rawConfig);
-                this.logger.info("Config file successfully generated.");
-            } else {
-                return;
+            try {
+                // Populate config with default values
+                this.config = BLWarpsConfiguration.MAPPER.bindToNew().populate(rawConfig);
+                BLWarpsConfiguration.MAPPER.bind(this.config).serialize(rawConfig);
+            } catch (ObjectMappingException e) {
+                e.printStackTrace();
             }
+
+            this.configLoader.save(rawConfig);
+            this.logger.info("Config file successfully generated.");
         } catch (IOException exception) {
             this.logger.warn("The default configuration could not be created!");
         }
@@ -169,6 +157,10 @@ public class BLWarps {
 
         this.warpBaseManagers.put(Warp.class, new WarpManager(this, warpStorage));
         this.warpBaseManagers.put(WarpRegion.class, new WarpRegionManager(this, warpRegionStorage));
+
+        for (WarpBaseManager<? extends WarpBase> manager : this.warpBaseManagers.values()) {
+            manager.load();
+        }
 
     }
 
