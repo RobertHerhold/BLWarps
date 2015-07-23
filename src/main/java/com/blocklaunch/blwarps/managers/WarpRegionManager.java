@@ -55,6 +55,12 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
         super.load();
         reloadPRTree();
     }
+    
+    @Override
+    public void deleteOne(WarpRegion region) {
+        super.deleteOne(region);
+        reloadPRTree();
+    }
 
     /**
      * Load warp regions into PR tree

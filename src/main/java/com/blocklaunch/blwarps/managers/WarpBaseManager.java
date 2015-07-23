@@ -37,6 +37,7 @@ public abstract class WarpBaseManager<T extends WarpBase> {
 
     public void deleteOne(T t) {
         this.payload.remove(t);
+        this.storage.delete(t);
     }
 
     public List<T> getPayload() {

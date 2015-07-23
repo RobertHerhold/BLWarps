@@ -25,16 +25,18 @@ public class PlayerMoveEventHandler {
 
     @Subscribe
     public void playerMove(PlayerMoveEvent event) throws Exception {
+        if (event.getOldLocation().equals(event.getNewLocation())) {
+            // Don't do anything if a player just looks around, but doesn't move
+            return;
+        }
+
         Player player = event.getEntity();
         Location location = event.getNewLocation();
 
         // If pvp-protect config setting is on, cancel the warp
         if (this.plugin.getConfig().isPvpProtect()) {
             if (this.plugin.getWarpManager().isWarping(player)) {
-                // Check that the player's location actually changed - don't want to cancel for looking around
-                if(!event.getOldLocation().equals(event.getNewLocation())) {
-                    this.plugin.getWarpManager().cancelWarp(player);    
-                }
+                this.plugin.getWarpManager().cancelWarp(player);
             }
         }
 
@@ -56,7 +58,7 @@ public class PlayerMoveEventHandler {
         if (!linkedWarpOpt.isPresent()) {
             this.plugin.getLogger().warn(
                     "Player " + player.getName() + " attempted to use warp region " + region.getName() + ", but the linked warp "
-                            + region.getLinkedWarpName() + "was not found!");
+                            + region.getLinkedWarpName() + " was not found!");
 
             return;
         }
