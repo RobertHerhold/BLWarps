@@ -13,7 +13,7 @@ Note: In the following commands, square brackets (`[]`) indicate optional argume
 * `/warp list`
  * List all of the currently active warps.
  * Only the warps that the `CommandSource` has permission to use will be displayed to them
-* `/warp info <warp name>`∏
+* `/warp info <warp name>`
  * Displays information about the specified warp
 
 ### Group Commands
