@@ -19,20 +19,42 @@ public class Util {
         this.plugin = plugin;
     }
 
+    //
+    // Warp Text
+    //
+
     public static Text generateWarpText(Warp warp) {
         return Texts.builder(warp.getName()).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp " + warp.getName()))
                 .onHover(TextActions.showText(Texts.of("Warp to ", TextColors.GOLD, warp.getName()))).build();
 
     }
 
+    public static Text generateDeleteWarpText(Warp warp) {
+        return Texts.builder("[X]").color(TextColors.RED).onClick(TextActions.runCommand("/warp delete " + warp.getName()))
+                .onHover(TextActions.showText(Texts.of(TextColors.RED, "Delete ", TextColors.GOLD, warp.getName()))).build();
+    }
+
+    //
+    // Warp Group Text
+    //
+
     public static Text generateWarpGroupInfoText(String groupName) {
         return Texts.builder(groupName).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp group info " + groupName))
                 .onHover(TextActions.showText(Texts.of("Show ", TextColors.GOLD, groupName, TextColors.WHITE, " info."))).build();
     }
 
+    //
+    // Warp Region Text
+    //
+
     public static Text generateWarpRegionInfoText(WarpRegion region) {
         return Texts.builder(region.getName()).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp region info " + region.getName()))
                 .onHover(TextActions.showText(Texts.of("Show ", TextColors.GOLD, region.getName(), TextColors.WHITE, " info."))).build();
+    }
+
+    public static Text generateDeleteWarpRegionText(WarpRegion region) {
+        return Texts.builder("[X]").color(TextColors.RED).onClick(TextActions.runCommand("/warp region delete " + region.getName()))
+                .onHover(TextActions.showText(Texts.of(TextColors.RED, "Delete warp region ", TextColors.GOLD, region.getName()))).build();
     }
 
     public boolean hasPermission(CommandSource source, Warp warp) {
