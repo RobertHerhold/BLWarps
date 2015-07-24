@@ -36,7 +36,6 @@ public class Util {
     }
 
     public static Text generateUndoDeleteWarpText(Warp warp) {
-        System.out.println("/warp set " + warp.getName() + " " + warp.getPosition());
         return Texts.builder("Undo").color(TextColors.RED)
                 .onClick(TextActions.runCommand("/warp set " + warp.getName() + " " + Util.vector3dToCommandFriendlyString(warp.getPosition())))
                 .onHover(TextActions.showText(Texts.of(TextColors.RED, "Undo delete warp ", TextColors.GOLD, warp.getName()))).build();
