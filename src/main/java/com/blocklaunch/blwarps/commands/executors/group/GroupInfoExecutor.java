@@ -77,7 +77,7 @@ public class GroupInfoExecutor implements CommandExecutor {
 
         TextBuilder builder = Texts.builder();
         for (int index = 0; index < warpsInGroup.size(); index++) {
-            builder.append(Util.generateWarpText(warpsInGroup.get(index)));
+            builder.append(Util.warpText(warpsInGroup.get(index)));
             if (warpsInGroup.size() - 1 != index) {
                 // Not the last warp in the list
                 builder.append(Texts.of(", "));

@@ -35,7 +35,7 @@ public class DeleteWarpRegionExecutor implements CommandExecutor {
         this.plugin.getWarpRegionManager().deleteOne(region);
 
         source.sendMessage(Texts.of(Constants.SUCCESS_DELETE_WARP_REGION_MSG, TextColors.GOLD, region.getName(), TextColors.WHITE, " - ",
-                Util.generateUndoDeleteWarpRegionText(region)));
+                Util.undoDeleteWarpRegionText(region)));
         return CommandResult.success();
     }
 

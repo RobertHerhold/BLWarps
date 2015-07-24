@@ -24,18 +24,18 @@ public class Util {
     // Warp Text
     //
 
-    public static Text generateWarpText(Warp warp) {
+    public static Text warpText(Warp warp) {
         return Texts.builder(warp.getName()).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp " + warp.getName()))
                 .onHover(TextActions.showText(Texts.of("Warp to ", TextColors.GOLD, warp.getName()))).build();
 
     }
 
-    public static Text generateDeleteWarpText(Warp warp) {
+    public static Text deleteWarpText(Warp warp) {
         return Texts.builder("[X]").color(TextColors.RED).onClick(TextActions.runCommand("/warp delete " + warp.getName()))
                 .onHover(TextActions.showText(Texts.of(TextColors.RED, "Delete ", TextColors.GOLD, warp.getName()))).build();
     }
 
-    public static Text generateUndoDeleteWarpText(Warp warp) {
+    public static Text undoDeleteWarpText(Warp warp) {
         return Texts.builder("Undo").color(TextColors.RED)
                 .onClick(TextActions.runCommand("/warp set " + warp.getName() + " " + Util.vector3dToCommandFriendlyString(warp.getPosition())))
                 .onHover(TextActions.showText(Texts.of(TextColors.RED, "Undo delete warp ", TextColors.GOLD, warp.getName()))).build();
@@ -45,7 +45,7 @@ public class Util {
     // Warp Group Text
     //
 
-    public static Text generateWarpGroupInfoText(String groupName) {
+    public static Text warpGroupInfoText(String groupName) {
         return Texts.builder(groupName).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp group info " + groupName))
                 .onHover(TextActions.showText(Texts.of("Show ", TextColors.GOLD, groupName, TextColors.WHITE, " info."))).build();
     }
@@ -54,17 +54,17 @@ public class Util {
     // Warp Region Text
     //
 
-    public static Text generateWarpRegionInfoText(WarpRegion region) {
+    public static Text warpRegionInfoText(WarpRegion region) {
         return Texts.builder(region.getName()).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp region info " + region.getName()))
                 .onHover(TextActions.showText(Texts.of("Show ", TextColors.GOLD, region.getName(), TextColors.WHITE, " info."))).build();
     }
 
-    public static Text generateDeleteWarpRegionText(WarpRegion region) {
+    public static Text deleteWarpRegionText(WarpRegion region) {
         return Texts.builder("[X]").color(TextColors.RED).onClick(TextActions.runCommand("/warp region delete " + region.getName()))
                 .onHover(TextActions.showText(Texts.of(TextColors.RED, "Delete warp region ", TextColors.GOLD, region.getName()))).build();
     }
 
-    public static Text generateUndoDeleteWarpRegionText(WarpRegion region) {
+    public static Text undoDeleteWarpRegionText(WarpRegion region) {
         return Texts
                 .builder("Undo")
                 .color(TextColors.RED)

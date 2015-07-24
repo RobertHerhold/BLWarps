@@ -58,7 +58,7 @@ public class CreateWarpRegionExecutor implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        source.sendMessage(Texts.of(Constants.SUCCESS_CREATE_WARP_REGION_MSG, Util.generateWarpRegionInfoText(region)));
+        source.sendMessage(Texts.of(Constants.SUCCESS_CREATE_WARP_REGION_MSG, Util.warpRegionInfoText(region)));
         return CommandResult.success();
     }
 }

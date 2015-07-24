@@ -42,7 +42,7 @@ public class WarpInfoExecutor implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        Text warpName = Util.generateWarpText(warp);
+        Text warpName = Util.warpText(warp);
 
         List<Text> warpInfo = Lists.newArrayList();
 
@@ -68,7 +68,7 @@ public class WarpInfoExecutor implements CommandExecutor {
 
         TextBuilder builder = Texts.builder();
         for (int index = 0; index < groups.size(); index++) {
-            builder.append(Util.generateWarpGroupInfoText(groups.get(index)));
+            builder.append(Util.warpGroupInfoText(groups.get(index)));
             if (groups.size() - 1 != index) {
                 // Not the last group name in the list
                 builder.append(Texts.of(", "));

@@ -44,7 +44,7 @@ public class WarpRegionInfoExecutor implements CommandExecutor {
                 source.sendMessage(Constants.NO_PERMISSION_MSG);
                 return CommandResult.empty();
             }
-            warpName = Util.generateWarpText(linkedWarpOpt.get());
+            warpName = Util.warpText(linkedWarpOpt.get());
         }
 
         List<Text> regionInfo = Lists.newArrayList();

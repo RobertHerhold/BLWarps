@@ -46,7 +46,7 @@ public class PlayerChatEventHandler {
                 }
 
                 this.plugin.getUtil();
-                Text text = Util.generateWarpText(warp);
+                Text text = Util.warpText(warp);
                 // TODO Replace the original text's word representing the warp
                 // with this one ^
             }

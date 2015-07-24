@@ -114,7 +114,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
         this.warpsInProgress.put(player, scheduledWarpTask);
 
         // Notify the player that they will be warped
-        player.sendMessage(Texts.of(TextColors.GREEN, Constants.PREFIX + " You will be warped to ", Util.generateWarpText(warp), " in ",
+        player.sendMessage(Texts.of(TextColors.GREEN, Constants.PREFIX + " You will be warped to ", Util.warpText(warp), " in ",
                 TextColors.GOLD, this.plugin.getConfig().getWarpDelay(), TextColors.GREEN, " seconds."));
 
         // If the pvp-protect config setting is set to true, warn the player not
@@ -130,7 +130,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
         task.cancel();
         Warp previousDestination = ((WarpPlayerRunnable) task.getRunnable()).getWarp();
 
-        player.sendMessage(Texts.of(TextColors.RED, Constants.PREFIX + " Your warp to ", Util.generateWarpText(previousDestination),
+        player.sendMessage(Texts.of(TextColors.RED, Constants.PREFIX + " Your warp to ", Util.warpText(previousDestination),
                 " has been canceled!"));
         warpsInProgress.remove(player);
     }

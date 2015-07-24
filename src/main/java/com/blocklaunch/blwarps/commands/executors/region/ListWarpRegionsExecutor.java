@@ -54,7 +54,7 @@ public class ListWarpRegionsExecutor implements CommandExecutor {
                 }
             }
             warpRegionNames
-                    .add(Texts.of(Util.generateWarpRegionInfoText(region), TextColors.WHITE, " - ", Util.generateDeleteWarpRegionText(region)));
+                    .add(Texts.of(Util.warpRegionInfoText(region), TextColors.WHITE, " - ", Util.deleteWarpRegionText(region)));
         }
 
         PaginationService paginationService = this.plugin.getGame().getServiceManager().provide(PaginationService.class).get();
