@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps.commands.executors.region;
 
+import com.blocklaunch.blwarps.Util;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.region.WarpRegion;
@@ -32,7 +34,8 @@ public class DeleteWarpRegionExecutor implements CommandExecutor {
 
         this.plugin.getWarpRegionManager().deleteOne(region);
 
-        source.sendMessage(Constants.SUCCESS_DELETE_WARP_REGION_MSG.builder().append(Texts.of(TextColors.GOLD, region.getName())).build());
+        source.sendMessage(Texts.of(Constants.SUCCESS_DELETE_WARP_REGION_MSG, TextColors.GOLD, region.getName(), TextColors.WHITE, " - ",
+                Util.generateUndoDeleteWarpRegionText(region)));
         return CommandResult.success();
     }
 

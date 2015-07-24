@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps.commands.executors;
 
+import com.blocklaunch.blwarps.Util;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
@@ -32,7 +34,8 @@ public class DeleteWarpExecutor implements CommandExecutor {
 
         this.plugin.getWarpManager().deleteOne(warp);
 
-        source.sendMessage(Constants.SUCCESS_DELETE_WARP_MSG.builder().append(Texts.of(TextColors.GOLD, warp.getName())).build());
+        source.sendMessage(Texts.of(Constants.SUCCESS_DELETE_WARP_MSG, TextColors.GOLD, warp.getName(), TextColors.WHITE, " - ",
+                Util.generateUndoDeleteWarpText(warp)));
         return CommandResult.success();
     }
 

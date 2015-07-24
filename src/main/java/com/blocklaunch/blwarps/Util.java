@@ -1,6 +1,7 @@
 package com.blocklaunch.blwarps;
 
 import com.blocklaunch.blwarps.region.WarpRegion;
+import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
 import org.spongepowered.api.data.DataManipulatorBuilder;
 import org.spongepowered.api.data.manipulator.tileentity.SignData;
@@ -34,6 +35,13 @@ public class Util {
                 .onHover(TextActions.showText(Texts.of(TextColors.RED, "Delete ", TextColors.GOLD, warp.getName()))).build();
     }
 
+    public static Text generateUndoDeleteWarpText(Warp warp) {
+        System.out.println("/warp set " + warp.getName() + " " + warp.getPosition());
+        return Texts.builder("Undo").color(TextColors.RED)
+                .onClick(TextActions.runCommand("/warp set " + warp.getName() + " " + Util.vector3dToCommandFriendlyString(warp.getPosition())))
+                .onHover(TextActions.showText(Texts.of(TextColors.RED, "Undo delete warp ", TextColors.GOLD, warp.getName()))).build();
+    }
+
     //
     // Warp Group Text
     //
@@ -55,6 +63,28 @@ public class Util {
     public static Text generateDeleteWarpRegionText(WarpRegion region) {
         return Texts.builder("[X]").color(TextColors.RED).onClick(TextActions.runCommand("/warp region delete " + region.getName()))
                 .onHover(TextActions.showText(Texts.of(TextColors.RED, "Delete warp region ", TextColors.GOLD, region.getName()))).build();
+    }
+
+    public static Text generateUndoDeleteWarpRegionText(WarpRegion region) {
+        return Texts
+                .builder("Undo")
+                .color(TextColors.RED)
+                .onClick(
+                        TextActions.runCommand("/warp region add " + region.getName() + " " + region.getLinkedWarpName() + " "
+                                + Util.vector3dToCommandFriendlyString(region.getMinLoc())
+                                + " " + Util.vector3dToCommandFriendlyString(region.getMaxLoc())))
+                .onHover(TextActions.showText(Texts.of(TextColors.RED, "Undo delete warp region ", TextColors.GOLD, region.getName()))).build();
+    }
+
+    public static String vector3dToCommandFriendlyString(Vector3d vector) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(vector.getX());
+        sb.append(",");
+        sb.append(vector.getY());
+        sb.append(",");
+        sb.append(vector.getZ());
+
+        return sb.toString();
     }
 
     public boolean hasPermission(CommandSource source, Warp warp) {
