@@ -12,6 +12,7 @@ import jersey.repackaged.com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
@@ -60,16 +61,12 @@ public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
             return;
         }
         List<T> objects = objectsOpt.get();
+        Iterator<T> iterator = objects.iterator();
 
-        // Temporary warp for avoiding ConcurrentModificationException
-        T objectToRemove = null;
-        for (T object : objects) {
-            if (object.getName().equalsIgnoreCase(t.getName())) {
-                objectToRemove = object;
+        while (iterator.hasNext()) {
+            if (iterator.next().getName().equalsIgnoreCase(t.getName())) {
+                iterator.remove();
             }
-        }
-        if (objectToRemove != null) {
-            objects.remove(objectToRemove);
         }
 
         writeOut(objects);
@@ -84,18 +81,15 @@ public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
             return;
         }
         List<T> objects = objectsOpt.get();
+        Iterator<T> iterator = objects.iterator();
 
-        // Temporary warp for avoiding ConcurrentModificationException
-        T objectToUpdate = null;
-        for (T t : objects) {
-            if (t.getName().equalsIgnoreCase(updatedObject.getName())) {
-                objectToUpdate = t;
+        while (iterator.hasNext()) {
+            if (iterator.next().getName().equalsIgnoreCase(updatedObject.getName())) {
+                iterator.remove();
             }
         }
-        if (objectToUpdate != null) {
-            objects.remove(objectToUpdate);
-            objects.add(updatedObject);
-        }
+
+        objects.add(updatedObject);
         writeOut(objects);
     }
 
