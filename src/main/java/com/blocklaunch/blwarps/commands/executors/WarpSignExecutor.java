@@ -43,7 +43,7 @@ public class WarpSignExecutor implements CommandExecutor {
         }
 
         ItemStack warpSign =
-                this.plugin.getGame().getRegistry().getItemBuilder().itemType(ItemTypes.SIGN).quantity(1)
+                this.plugin.getGame().getRegistry().createItemBuilder().itemType(ItemTypes.SIGN).quantity(1)
                         .itemData(this.plugin.getUtil().generateWarpSignData(warp)).build();
 
         if (player.getInventory().offer(warpSign) == false) {

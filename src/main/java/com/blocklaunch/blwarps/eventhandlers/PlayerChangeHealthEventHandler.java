@@ -14,16 +14,16 @@ public class PlayerChangeHealthEventHandler {
 
     @Subscribe
     public void playerChangeHealth(PlayerChangeHealthEvent event) {
-        if(plugin.getConfig().isPvpProtect()) {
+        if (this.plugin.getConfig().isPvpProtect()) {
             // pvp-protect setting is enabled
-            if(plugin.getWarpManager().isWarping(event.getEntity())) {
+            if (this.plugin.getWarpManager().isWarping(event.getEntity())) {
                 // Player is warping
-                if(event.getNewData().getHealth() < event.getOldData().getHealth()) {
+                if (event.getNewData().health().get() < event.getOldData().health().get()) {
                     // Player was damaged
-                    plugin.getWarpManager().cancelWarp(event.getEntity());
+                    this.plugin.getWarpManager().cancelWarp(event.getEntity());
                 }
             }
-            
+
         }
     }
 }

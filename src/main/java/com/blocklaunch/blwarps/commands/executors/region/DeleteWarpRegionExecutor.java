@@ -1,9 +1,8 @@
 package com.blocklaunch.blwarps.commands.executors.region;
 
-import com.blocklaunch.blwarps.Util;
-
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
+import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.region.WarpRegion;
 import com.google.common.base.Optional;
 import org.spongepowered.api.text.Texts;

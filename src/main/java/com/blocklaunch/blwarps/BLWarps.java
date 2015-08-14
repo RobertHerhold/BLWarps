@@ -1,8 +1,7 @@
 package com.blocklaunch.blwarps;
 
-import com.blocklaunch.blwarps.eventhandlers.PlayerChangeHealthEventHandler;
-
 import com.blocklaunch.blwarps.commands.WarpCommandGenerator;
+import com.blocklaunch.blwarps.eventhandlers.PlayerChangeHealthEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerChatEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerMoveEventHandler;

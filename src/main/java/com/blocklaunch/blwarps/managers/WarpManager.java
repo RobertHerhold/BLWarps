@@ -108,7 +108,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
     public void scheduleWarp(Player player, Warp warp) {
         // Schedule the task
         Task scheduledWarpTask =
-                this.plugin.getGame().getScheduler().getTaskBuilder().delay(this.plugin.getConfig().getWarpDelay(), TimeUnit.SECONDS)
+                this.plugin.getGame().getScheduler().createTaskBuilder().delay(this.plugin.getConfig().getWarpDelay(), TimeUnit.SECONDS)
                         .execute(new WarpPlayerRunnable(this.plugin, player, warp)).submit(this.plugin);
 
         this.warpsInProgress.put(player, scheduledWarpTask);
@@ -132,7 +132,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
 
         player.sendMessage(Texts.of(TextColors.RED, Constants.PREFIX + " Your warp to ", Util.warpText(previousDestination),
                 " has been canceled!"));
-        warpsInProgress.remove(player);
+        this.warpsInProgress.remove(player);
     }
 
     public Optional<Warp> getPlayerDestination(Player player) {

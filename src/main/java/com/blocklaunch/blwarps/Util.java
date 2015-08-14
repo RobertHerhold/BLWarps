@@ -3,8 +3,10 @@ package com.blocklaunch.blwarps;
 import com.blocklaunch.blwarps.region.WarpRegion;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
-import org.spongepowered.api.data.DataManipulatorBuilder;
-import org.spongepowered.api.data.manipulator.tileentity.SignData;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
+import org.spongepowered.api.data.manipulator.immutable.tileentity.ImmutableSignData;
+import org.spongepowered.api.data.manipulator.mutable.tileentity.SignData;
+import org.spongepowered.api.data.value.mutable.ListValue;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.action.TextActions;
@@ -114,14 +116,16 @@ public class Util {
      * @return the formatted SignData indicating a valid warp sign
      */
     public SignData generateWarpSignData(Warp warp) {
-        Optional<DataManipulatorBuilder<SignData>> builder = this.plugin.getGame().getRegistry().getManipulatorRegistry().getBuilder(SignData.class);
+        Optional<DataManipulatorBuilder<SignData, ImmutableSignData>> builder =
+                this.plugin.getGame().getRegistry().getManipulatorRegistry().getBuilder(SignData.class);
         SignData signData = builder.get().create();
+        ListValue<Text> lines = signData.lines();
 
-        signData.setLine(0, Texts.of());
-        signData.setLine(1, Texts.of(TextColors.DARK_BLUE, WARP_SIGN_PREFIX));
-        signData.setLine(2, Texts.of(TextColors.GOLD, warp.getName()));
-        signData.setLine(3, Texts.of());
-
+        lines.set(0, Texts.of());
+        lines.set(1, Texts.of(TextColors.DARK_BLUE, WARP_SIGN_PREFIX));
+        lines.set(2, Texts.of(TextColors.GOLD, warp.getName()));
+        lines.set(3, Texts.of());
+        
         return signData;
 
     }

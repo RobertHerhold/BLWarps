@@ -4,15 +4,14 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.google.common.base.Optional;
 import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.block.tileentity.TileEntityTypes;
-import org.spongepowered.api.data.manipulator.tileentity.SignData;
+import org.spongepowered.api.data.manipulator.mutable.tileentity.SignData;
+import org.spongepowered.api.data.value.mutable.ListValue;
 import org.spongepowered.api.entity.EntityInteractionTypes;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.entity.player.PlayerInteractBlockEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.world.Location;
-
-import java.util.List;
 
 /**
  * Listens for Players interacting with blocks If
@@ -32,7 +31,7 @@ public class PlayerInteractBlockEventHandler {
             return;
         }
 
-        Location block = event.getBlock();
+        Location block = event.getLocation();
 
         // Ensure the block is a tile entity
         if (!block.getTileEntity().isPresent()) {
@@ -51,7 +50,7 @@ public class PlayerInteractBlockEventHandler {
             return;
         }
         // Validate that this is supposed to be a warp sign
-        List<Text> lines = signData.get().getLines();
+        ListValue<Text> lines = signData.get().lines();
         if (!Texts.toPlain(lines.get(1)).equalsIgnoreCase(SignChangeEventHandler.WARP_SIGN_PREFIX)) {
             return;
         }
