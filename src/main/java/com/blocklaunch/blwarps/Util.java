@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps;
 
+import org.spongepowered.api.data.key.Keys;
+
 import com.blocklaunch.blwarps.region.WarpRegion;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
@@ -125,6 +127,10 @@ public class Util {
         lines.set(1, Texts.of(TextColors.DARK_BLUE, WARP_SIGN_PREFIX));
         lines.set(2, Texts.of(TextColors.GOLD, warp.getName()));
         lines.set(3, Texts.of());
+        
+        signData.set(lines);
+        
+//        signData.set(Keys.SIGN_LINES, lines);
         
         return signData;
 
