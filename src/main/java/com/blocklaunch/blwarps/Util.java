@@ -130,8 +130,6 @@ public class Util {
         
         signData.set(lines);
         
-//        signData.set(Keys.SIGN_LINES, lines);
-        
         return signData;
 
     }
