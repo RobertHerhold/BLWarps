@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps.eventhandlers;
 
+import org.spongepowered.api.world.World;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.google.common.base.Optional;
 import org.spongepowered.api.block.tileentity.TileEntity;
@@ -31,12 +33,13 @@ public class PlayerInteractBlockEventHandler {
             return;
         }
 
-        Location block = event.getLocation();
+        Location<World> block = event.getLocation();
 
         // Ensure the block is a tile entity
         if (!block.getTileEntity().isPresent()) {
             return;
         }
+        
         // Ensure the tile entity is a sign
         if (!(block.getTileEntity().get().getType() == TileEntityTypes.SIGN)) {
             return;
