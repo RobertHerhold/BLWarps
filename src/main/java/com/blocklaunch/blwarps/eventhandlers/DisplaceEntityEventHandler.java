@@ -7,31 +7,33 @@ import com.blocklaunch.blwarps.region.WarpRegion;
 import com.google.common.base.Optional;
 import org.khelekore.prtree.MBR;
 import org.khelekore.prtree.SimpleMBR;
-import org.spongepowered.api.entity.player.Player;
-import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.entity.player.PlayerMoveEvent;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.entity.DisplaceEntityEvent;
 import org.spongepowered.api.world.Location;
+import org.spongepowered.api.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerMoveEventHandler {
+public class DisplaceEntityEventHandler {
 
     private BLWarps plugin;
 
-    public PlayerMoveEventHandler(BLWarps plugin) {
+    public DisplaceEntityEventHandler(BLWarps plugin) {
         this.plugin = plugin;
     }
 
-    @Subscribe
-    public void playerMove(PlayerMoveEvent event) throws Exception {
-        if (event.getOldLocation().equals(event.getNewLocation())) {
+    @Listener
+    public void playerMove(DisplaceEntityEvent.Move.TargetPlayer event) throws Exception {
+        System.out.println("move");
+        if (event.getFromTransform().getLocation().equals(event.getToTransform().getLocation())) {
             // Don't do anything if a player just looks around, but doesn't move
             return;
         }
-
-        Player player = event.getEntity();
-        Location location = event.getNewLocation();
+        
+        Player player = event.getTargetEntity();
+        Location<World> location = event.getToTransform().getLocation();
 
         // If pvp-protect config setting is on, cancel the warp
         if (this.plugin.getConfig().isPvpProtect()) {
@@ -79,7 +81,7 @@ public class PlayerMoveEventHandler {
 
     }
 
-    private List<WarpRegion> getContainingRegions(Location location) {
+    private List<WarpRegion> getContainingRegions(Location<World> location) {
         MBR locationMBR = new SimpleMBR(location.getX(), location.getX(), location.getY(), location.getY(), location.getZ(), location.getZ());
         List<WarpRegion> warpRegions = new ArrayList<WarpRegion>();
 

@@ -4,24 +4,25 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.google.common.base.Optional;
 import org.spongepowered.api.data.value.mutable.ListValue;
-import org.spongepowered.api.event.Subscribe;
-import org.spongepowered.api.event.block.tileentity.SignChangeEvent;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.block.tileentity.ChangeSignEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Texts;
 
-public class SignChangeEventHandler {
+public class ChangeSignEventHandler {
 
     private BLWarps plugin;
 
     public static final String WARP_SIGN_PREFIX = "[Warp]";
 
-    public SignChangeEventHandler(BLWarps plugin) {
+    public ChangeSignEventHandler(BLWarps plugin) {
         this.plugin = plugin;
     }
 
-    @Subscribe
-    public void signChange(SignChangeEvent event) throws Exception {
-        ListValue<Text> lines = event.getNewData().lines();
+    @Listener
+    public void signChange(ChangeSignEvent event) throws Exception {
+        ListValue<Text> lines = event.getText().lines();
+
         // Check that the first line is [warp]
         if (Texts.toPlain(lines.get(0)).equalsIgnoreCase(WARP_SIGN_PREFIX)) {
             // Second line has to be the name of the warp
@@ -30,7 +31,7 @@ public class SignChangeEventHandler {
             if (!optWarp.isPresent()) {
                 return;
             }
-            event.setNewData(this.plugin.getUtil().generateWarpSignData(optWarp.get()));
+            event.getText().set(this.plugin.getUtil().generateWarpSignData(optWarp.get()).getValues());
         }
 
     }

@@ -3,7 +3,7 @@ package com.blocklaunch.blwarps.runnables;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
-import org.spongepowered.api.entity.player.Player;
+import org.spongepowered.api.entity.living.player.Player;
 
 public class WarpPlayerRunnable implements Runnable {
 
