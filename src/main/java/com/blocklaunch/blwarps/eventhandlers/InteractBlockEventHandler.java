@@ -1,7 +1,7 @@
 package com.blocklaunch.blwarps.eventhandlers;
 
 import com.blocklaunch.blwarps.BLWarps;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.block.tileentity.TileEntityTypes;
 import org.spongepowered.api.data.manipulator.mutable.tileentity.SignData;

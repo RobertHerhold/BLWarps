@@ -6,7 +6,7 @@ import com.blocklaunch.blwarps.WarpBase;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import jersey.repackaged.com.google.common.collect.Lists;
 
 import java.io.File;
@@ -95,7 +95,7 @@ public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
 
     private Optional<List<T>> readIn() {
         if (!this.file.exists()) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         try {
@@ -105,7 +105,7 @@ public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
         } catch (IOException e) {
             this.plugin.getLogger().warn(Constants.ERROR_FILE_READ);
             e.printStackTrace();
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 

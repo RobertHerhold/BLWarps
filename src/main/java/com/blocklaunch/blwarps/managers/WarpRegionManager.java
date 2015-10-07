@@ -5,7 +5,7 @@ import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
 import com.blocklaunch.blwarps.region.WarpRegion;
 import com.blocklaunch.blwarps.region.WarpRegionMBRConverter;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.khelekore.prtree.PRTree;
 
 public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
@@ -21,7 +21,7 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
     /**
      * @param warpName The name of the warp
      * @param warpLocation The location of the warp
-     * @return An error if the warp already exists, Optional.absent() otherwise
+     * @return An error if the warp already exists, Optional.empty() otherwise
      */
     @Override
     public Optional<String> addNew(WarpRegion newWarpRegion) {
@@ -46,7 +46,7 @@ public class WarpRegionManager extends WarpBaseManager<WarpRegion> {
         reloadPRTree();
 
         // No errors, return an absent optional
-        return Optional.absent();
+        return Optional.empty();
 
     }
 

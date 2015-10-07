@@ -1,8 +1,9 @@
 package com.blocklaunch.blwarps;
 
+import java.util.Optional;
+
 import com.blocklaunch.blwarps.region.WarpRegion;
 import com.flowpowered.math.vector.Vector3d;
-import com.google.common.base.Optional;
 import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
 import org.spongepowered.api.data.manipulator.immutable.tileentity.ImmutableSignData;
 import org.spongepowered.api.data.manipulator.mutable.tileentity.SignData;

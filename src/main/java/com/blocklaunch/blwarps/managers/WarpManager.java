@@ -6,7 +6,6 @@ import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
 import com.blocklaunch.blwarps.runnables.WarpPlayerRunnable;
-import com.google.common.base.Optional;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.service.scheduler.Task;
 import org.spongepowered.api.text.Texts;
@@ -14,6 +13,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +37,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
      *
      * @param warpName The name of the warp
      * @param warpLocation The location of the warp
-     * @return An error if the warp already exists, Optional.absent() otherwise
+     * @return An error if the warp already exists, Optional.empty() otherwise
      */
     @Override
     public Optional<String> addNew(Warp newWarp) {
@@ -64,7 +64,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
         this.storage.saveNew(newWarp);
 
         // No errors, return an absent optional
-        return Optional.absent();
+        return Optional.empty();
 
     }
 
@@ -103,7 +103,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
      *
      * @param player The player to be warped
      * @param warp The location the player is to be warped to
-     * @return An error if one exists, or Optional.absent() otherwise
+     * @return An error if one exists, or Optional.empty() otherwise
      */
     public void scheduleWarp(Player player, Warp warp) {
         // Schedule the task
@@ -137,7 +137,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
 
     public Optional<Warp> getPlayerDestination(Player player) {
         if (!this.warpsInProgress.containsKey(player)) {
-            return Optional.absent();
+            return Optional.empty();
         }
         Task task = this.warpsInProgress.get(player);
         Warp destination = ((WarpPlayerRunnable) task.getRunnable()).getWarp();

@@ -3,7 +3,7 @@ package com.blocklaunch.blwarps.managers;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.WarpBase;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public abstract class WarpBaseManager<T extends WarpBase> {
                 return Optional.of(warpBase);
             }
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public void load() {

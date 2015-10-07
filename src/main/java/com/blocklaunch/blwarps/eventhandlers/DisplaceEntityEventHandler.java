@@ -4,7 +4,7 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.exceptions.MultipleWarpRegionsException;
 import com.blocklaunch.blwarps.region.WarpRegion;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.khelekore.prtree.MBR;
 import org.khelekore.prtree.SimpleMBR;
 import org.spongepowered.api.entity.living.player.Player;
@@ -26,7 +26,6 @@ public class DisplaceEntityEventHandler {
 
     @Listener
     public void playerMove(DisplaceEntityEvent.Move.TargetPlayer event) throws Exception {
-        System.out.println("move");
         if (event.getFromTransform().getLocation().equals(event.getToTransform().getLocation())) {
             // Don't do anything if a player just looks around, but doesn't move
             return;

@@ -5,7 +5,6 @@ import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.flowpowered.math.vector.Vector3d;
-import com.google.common.base.Optional;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
@@ -14,6 +13,8 @@ import org.spongepowered.api.util.command.CommandResult;
 import org.spongepowered.api.util.command.CommandSource;
 import org.spongepowered.api.util.command.args.CommandContext;
 import org.spongepowered.api.util.command.spec.CommandExecutor;
+
+import java.util.Optional;
 
 public class CreateWarpExecutor implements CommandExecutor {
 
@@ -32,15 +33,15 @@ public class CreateWarpExecutor implements CommandExecutor {
         // Make sure the source is a player before attempting to get their
         // location
         Player player = (Player) source;
-
-        String warpName = (String) args.getOne("name").or("warp");
+        
+        String warpName = (String) args.getOne("name").orElse("warp");
 
         if (Constants.FORBIDDEN_NAMES.contains(warpName.toLowerCase())) {
             source.sendMessage(Constants.CANNOT_USE_FORBIDDEN_NAME_MSG);
             return CommandResult.empty();
         }
 
-        Vector3d position = (Vector3d) args.getOne("position").or(player.getLocation().getPosition());
+        Vector3d position = (Vector3d) args.getOne("position").orElse(player.getLocation().getPosition());
 
         String worldName = player.getWorld().getName();
 

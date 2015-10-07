@@ -2,7 +2,7 @@ package com.blocklaunch.blwarps.eventhandlers;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.spongepowered.api.data.value.mutable.ListValue;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.tileentity.ChangeSignEvent;
