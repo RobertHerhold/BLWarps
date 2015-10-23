@@ -26,7 +26,7 @@ public class DisplaceEntityEventHandler {
 
     @Listener
     public void playerMove(DisplaceEntityEvent.Move.TargetPlayer event) throws Exception {
-        if (event.getFromTransform().getLocation().equals(event.getToTransform().getLocation())) {
+        if (event.getFromTransform().getPosition().equals(event.getToTransform().getPosition())) {
             // Don't do anything if a player just looks around, but doesn't move
             return;
         }
@@ -68,6 +68,7 @@ public class DisplaceEntityEventHandler {
         // Cancel the possibly existing scheduled warp before warping to the new
         // warp
         if (existingDestinationOpt.isPresent()) {
+            System.out.println("Player already warping: " + existingDestinationOpt.get().getName());
             // Only cancel it if the existing scheduled warp is different than
             // the new one
             if (!existingDestinationOpt.get().getName().equals(linkedWarpOpt.get().getName())) {
@@ -75,6 +76,7 @@ public class DisplaceEntityEventHandler {
                 this.plugin.getWarpManager().scheduleWarp(player, linkedWarpOpt.get());
             }
         } else {
+            System.out.println("Player not warping");
             this.plugin.getWarpManager().scheduleWarp(player, linkedWarpOpt.get());
         }
 

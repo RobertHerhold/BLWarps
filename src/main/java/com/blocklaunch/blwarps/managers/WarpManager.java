@@ -4,8 +4,8 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.consumers.WarpPlayerConsumer;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
-import com.blocklaunch.blwarps.runnables.WarpPlayerRunnable;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.service.scheduler.Task;
 import org.spongepowered.api.text.Texts;
@@ -109,7 +109,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
         // Schedule the task
         Task scheduledWarpTask =
                 this.plugin.getGame().getScheduler().createTaskBuilder().delay(this.plugin.getConfig().getWarpDelay(), TimeUnit.SECONDS)
-                        .execute(new WarpPlayerRunnable(this.plugin, player, warp)).submit(this.plugin);
+                        .execute(new WarpPlayerConsumer(this.plugin, player, warp)).submit(this.plugin);
 
         this.warpsInProgress.put(player, scheduledWarpTask);
 
@@ -128,7 +128,8 @@ public class WarpManager extends WarpBaseManager<Warp> {
     public void cancelWarp(Player player) {
         Task task = this.warpsInProgress.get(player);
         task.cancel();
-        Warp previousDestination = ((WarpPlayerRunnable) task.getRunnable()).getWarp();
+        
+        Warp previousDestination = ((WarpPlayerConsumer) task.getConsumer()).getWarp();
 
         player.sendMessage(Texts.of(TextColors.RED, Constants.PREFIX + " Your warp to ", Util.warpText(previousDestination),
                 " has been canceled!"));
@@ -140,7 +141,7 @@ public class WarpManager extends WarpBaseManager<Warp> {
             return Optional.empty();
         }
         Task task = this.warpsInProgress.get(player);
-        Warp destination = ((WarpPlayerRunnable) task.getRunnable()).getWarp();
+        Warp destination = ((WarpPlayerConsumer) task.getConsumer()).getWarp();
         return Optional.of(destination);
     }
 
