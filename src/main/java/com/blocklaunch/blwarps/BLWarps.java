@@ -91,7 +91,7 @@ public class BLWarps {
             }
             this.logger.warn("The specified storage type could not be found. Reverting to flatfile storage. Try: " + sb.toString());
         } catch (ObjectMappingException e) {
-            this.logger.warn("There was an loading the configuration." + e.getStackTrace());
+            this.logger.warn("There was an error loading the configuration." + e.getStackTrace());
         }
     }
 
