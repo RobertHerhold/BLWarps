@@ -3,14 +3,15 @@ package com.blocklaunch.blwarps.commands.executors.group;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
-import java.util.Optional;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
+
+import java.util.Optional;
 
 public class RemoveWarpFromGroupExecutor implements CommandExecutor {
 
@@ -40,14 +41,14 @@ public class RemoveWarpFromGroupExecutor implements CommandExecutor {
         String group = optGroup.get();
 
         if (!warp.getGroups().contains(group)) {
-            source.sendMessage(Texts.of(TextColors.RED, Constants.PREFIX + " ", TextColors.GOLD, warp.getName(), TextColors.RED,
+            source.sendMessage(Text.of(TextColors.RED, Constants.PREFIX + " ", TextColors.GOLD, warp.getName(), TextColors.RED,
                     " is not in the group ", TextColors.GOLD, group, TextColors.RED, "."));
             return CommandResult.empty();
         }
 
         this.plugin.getWarpManager().removeWarpFromGroup(warp, group);
 
-        source.sendMessage(Texts.of(TextColors.GREEN, Constants.PREFIX + " You have successfully removed ", TextColors.GOLD, warp.getName(),
+        source.sendMessage(Text.of(TextColors.GREEN, Constants.PREFIX + " You have successfully removed ", TextColors.GOLD, warp.getName(),
                 TextColors.GREEN, " from ", TextColors.GOLD, group, TextColors.GREEN, "."));
 
         return CommandResult.success();

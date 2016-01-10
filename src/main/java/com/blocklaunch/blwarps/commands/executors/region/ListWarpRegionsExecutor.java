@@ -5,19 +5,19 @@ import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.region.WarpRegion;
-import java.util.Optional;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ListWarpRegionsExecutor implements CommandExecutor {
 
@@ -49,16 +49,16 @@ public class ListWarpRegionsExecutor implements CommandExecutor {
         for (WarpRegion region : this.plugin.getWarpRegionManager().getPayload()) {
             Optional<Warp> linkedWarpOpt = this.plugin.getWarpManager().getOne(region.getLinkedWarpName());
             if (linkedWarpOpt.isPresent()) {
-                if (this.plugin.getUtil().hasPermission(source, linkedWarpOpt.get()) == false) {
+                if (Util.hasPermission(source, linkedWarpOpt.get()) == false) {
                     continue;
                 }
             }
             warpRegionNames
-                    .add(Texts.of(Util.warpRegionInfoText(region), TextColors.WHITE, " - ", Util.deleteWarpRegionText(region)));
+                    .add(Text.of(Util.warpRegionInfoText(region), TextColors.WHITE, " - ", Util.deleteWarpRegionText(region)));
         }
 
-        PaginationService paginationService = this.plugin.getGame().getServiceManager().provide(PaginationService.class).get();
-        paginationService.builder().contents(warpRegionNames).title(Texts.of(TextColors.BLUE, "WarpRegions")).paddingString("-").sendTo(source);
+        PaginationService paginationService = Sponge.getServiceManager().provide(PaginationService.class).get();
+        paginationService.builder().contents(warpRegionNames).title(Text.of(TextColors.BLUE, "WarpRegions")).paddingString("-").sendTo(source);
 
         return CommandResult.success();
     }

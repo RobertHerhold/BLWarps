@@ -6,7 +6,6 @@ import com.blocklaunch.blwarps.WarpBase;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import java.util.Optional;
 import jersey.repackaged.com.google.common.collect.Lists;
 
 import java.io.File;
@@ -14,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
 
@@ -99,6 +99,7 @@ public class FlatFileManager<T extends WarpBase> implements StorageManager<T> {
         }
 
         try {
+            @SuppressWarnings("deprecation")
             JavaType type = this.mapper.getTypeFactory().constructParametricType(List.class, this.type);
             List<T> objects = this.mapper.readValue(this.file, type);
             return Optional.of(objects);

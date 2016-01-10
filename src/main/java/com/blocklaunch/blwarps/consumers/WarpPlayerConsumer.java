@@ -1,11 +1,10 @@
 package com.blocklaunch.blwarps.consumers;
 
-import org.spongepowered.api.service.scheduler.Task;
-
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.scheduler.Task;
 
 import java.util.function.Consumer;
 

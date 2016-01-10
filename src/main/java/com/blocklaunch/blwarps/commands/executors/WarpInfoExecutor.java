@@ -1,30 +1,22 @@
 package com.blocklaunch.blwarps.commands.executors;
 
-import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
-import java.util.Optional;
 import com.google.common.collect.Lists;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.TextBuilder;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text.Builder;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WarpInfoExecutor implements CommandExecutor {
-
-    private BLWarps plugin;
-
-    public WarpInfoExecutor(BLWarps plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
@@ -37,7 +29,7 @@ public class WarpInfoExecutor implements CommandExecutor {
 
         Warp warp = optWarp.get();
 
-        if (this.plugin.getUtil().hasPermission(source, warp) == false) {
+        if (Util.hasPermission(source, warp) == false) {
             source.sendMessage(Constants.NO_PERMISSION_MSG);
             return CommandResult.empty();
         }
@@ -46,11 +38,11 @@ public class WarpInfoExecutor implements CommandExecutor {
 
         List<Text> warpInfo = Lists.newArrayList();
 
-        warpInfo.add(Texts.of(TextColors.BLUE, "---------------", warpName, "---------------"));
-        warpInfo.add(Texts.of(TextColors.BLUE, "Name: ", warpName));
-        warpInfo.add(Texts.of(TextColors.BLUE, "World: ", TextColors.WHITE, warp.getWorld()));
-        warpInfo.add(Texts.of(TextColors.BLUE, "Location: ", TextColors.WHITE, warp.getPosition()));
-        warpInfo.add(Texts.of(TextColors.BLUE, "Groups: ", generateGroupList(warp)));
+        warpInfo.add(Text.of(TextColors.BLUE, "---------------", warpName, "---------------"));
+        warpInfo.add(Text.of(TextColors.BLUE, "Name: ", warpName));
+        warpInfo.add(Text.of(TextColors.BLUE, "World: ", TextColors.WHITE, warp.getWorld()));
+        warpInfo.add(Text.of(TextColors.BLUE, "Location: ", TextColors.WHITE, warp.getPosition()));
+        warpInfo.add(Text.of(TextColors.BLUE, "Groups: ", generateGroupList(warp)));
 
         for (Text infoLine : warpInfo) {
             source.sendMessage(infoLine);
@@ -63,15 +55,15 @@ public class WarpInfoExecutor implements CommandExecutor {
     private Text generateGroupList(Warp warp) {
         List<String> groups = warp.getGroups();
         if (groups.isEmpty()) {
-            return Texts.of("none");
+            return Text.of("none");
         }
 
-        TextBuilder builder = Texts.builder();
+        Builder builder = Text.builder();
         for (int index = 0; index < groups.size(); index++) {
             builder.append(Util.warpGroupInfoText(groups.get(index)));
             if (groups.size() - 1 != index) {
                 // Not the last group name in the list
-                builder.append(Texts.of(", "));
+                builder.append(Text.of(", "));
             }
         }
 

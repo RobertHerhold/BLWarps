@@ -4,20 +4,19 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
-import java.util.Optional;
 import com.google.common.collect.Lists;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.TextBuilder;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text.Builder;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GroupInfoExecutor implements CommandExecutor {
 
@@ -46,9 +45,9 @@ public class GroupInfoExecutor implements CommandExecutor {
 
         List<Text> warpInfo = Lists.newArrayList();
 
-        warpInfo.add(Texts.of(TextColors.BLUE, "---------------", groupName, "---------------"));
-        warpInfo.add(Texts.of(TextColors.BLUE, "Name: ", TextColors.WHITE, groupName));
-        warpInfo.add(Texts.of(TextColors.BLUE, "Warps: ", optWarpsInGroup.get()));
+        warpInfo.add(Text.of(TextColors.BLUE, "---------------", groupName, "---------------"));
+        warpInfo.add(Text.of(TextColors.BLUE, "Name: ", TextColors.WHITE, groupName));
+        warpInfo.add(Text.of(TextColors.BLUE, "Warps: ", optWarpsInGroup.get()));
 
         for (Text groupInfoLine : warpInfo) {
             source.sendMessage(groupInfoLine);
@@ -74,12 +73,12 @@ public class GroupInfoExecutor implements CommandExecutor {
             }
         }
 
-        TextBuilder builder = Texts.builder();
+        Builder builder = Text.builder();
         for (int index = 0; index < warpsInGroup.size(); index++) {
             builder.append(Util.warpText(warpsInGroup.get(index)));
             if (warpsInGroup.size() - 1 != index) {
                 // Not the last warp in the list
-                builder.append(Texts.of(", "));
+                builder.append(Text.of(", "));
             }
         }
 

@@ -3,14 +3,15 @@ package com.blocklaunch.blwarps.commands.executors.group;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
-import java.util.Optional;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
+
+import java.util.Optional;
 
 public class DeleteGroupExecutor implements CommandExecutor {
 
@@ -44,7 +45,7 @@ public class DeleteGroupExecutor implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        source.sendMessage(Texts.of(TextColors.GREEN, Constants.PREFIX + " The ", TextColors.GOLD, group, TextColors.GREEN,
+        source.sendMessage(Text.of(TextColors.GREEN, Constants.PREFIX + " The ", TextColors.GOLD, group, TextColors.GREEN,
                 " group tag was removed from ", TextColors.GOLD, affectedCounter, TextColors.GREEN, " warps."));
 
         return CommandResult.builder().successCount(affectedCounter).build();

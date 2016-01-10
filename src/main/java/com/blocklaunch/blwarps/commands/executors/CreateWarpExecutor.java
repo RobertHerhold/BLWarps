@@ -5,14 +5,14 @@ import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.flowpowered.math.vector.Vector3d;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import java.util.Optional;
 
@@ -33,7 +33,7 @@ public class CreateWarpExecutor implements CommandExecutor {
         // Make sure the source is a player before attempting to get their
         // location
         Player player = (Player) source;
-        
+
         String warpName = (String) args.getOne("name").orElse("warp");
 
         if (Constants.FORBIDDEN_NAMES.contains(warpName.toLowerCase())) {
@@ -49,10 +49,10 @@ public class CreateWarpExecutor implements CommandExecutor {
 
         Optional<String> error = this.plugin.getWarpManager().addNew(newWarp);
         if (error.isPresent()) {
-            source.sendMessage(Texts.builder(Constants.ERROR_CREATE_WARP_MSG + error.get()).color(TextColors.RED).build());
+            source.sendMessage(Text.builder(Constants.ERROR_CREATE_WARP_MSG + error.get()).color(TextColors.RED).build());
             return CommandResult.empty();
         } else {
-            source.sendMessage(Texts.of(Constants.SUCCESS_CREATE_WARP_MSG, Util.warpText(newWarp)));
+            source.sendMessage(Text.of(Constants.SUCCESS_CREATE_WARP_MSG, Util.warpText(newWarp)));
             return CommandResult.success();
         }
     }

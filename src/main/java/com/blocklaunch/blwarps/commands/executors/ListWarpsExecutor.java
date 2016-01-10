@@ -4,15 +4,15 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +45,13 @@ public class ListWarpsExecutor implements CommandExecutor {
         List<Text> warpNames = new ArrayList<Text>();
 
         for (Warp w : this.plugin.getWarpManager().getPayload()) {
-            if (this.plugin.getUtil().hasPermission(source, w)) {
-                warpNames.add(Texts.of(Util.warpText(w), TextColors.WHITE, " - ", Util.deleteWarpText(w)));
+            if (Util.hasPermission(source, w)) {
+                warpNames.add(Text.of(Util.warpText(w), TextColors.WHITE, " - ", Util.deleteWarpText(w)));
             }
         }
 
-        PaginationService paginationService = this.plugin.getGame().getServiceManager().provide(PaginationService.class).get();
-        paginationService.builder().contents(warpNames).title(Texts.of(TextColors.BLUE, "Warps")).paddingString("-").sendTo(source);
+        PaginationService paginationService = Sponge.getServiceManager().provide(PaginationService.class).get();
+        paginationService.builder().contents(warpNames).title(Text.of(TextColors.BLUE, "Warps")).paddingString("-").sendTo(source);
 
         return CommandResult.success();
     }

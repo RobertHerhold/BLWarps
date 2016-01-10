@@ -5,18 +5,17 @@ import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.region.WarpRegion;
-import java.util.Optional;
 import com.google.common.collect.Lists;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Texts;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WarpRegionInfoExecutor implements CommandExecutor {
 
@@ -38,9 +37,9 @@ public class WarpRegionInfoExecutor implements CommandExecutor {
         WarpRegion region = optRegion.get();
 
         Optional<Warp> linkedWarpOpt = this.plugin.getWarpManager().getOne(region.getLinkedWarpName());
-        Text warpName = Texts.of(region.getLinkedWarpName());
+        Text warpName = Text.of(region.getLinkedWarpName());
         if (linkedWarpOpt.isPresent()) {
-            if (this.plugin.getUtil().hasPermission(source, linkedWarpOpt.get()) == false) {
+            if (Util.hasPermission(source, linkedWarpOpt.get()) == false) {
                 source.sendMessage(Constants.NO_PERMISSION_MSG);
                 return CommandResult.empty();
             }
@@ -49,11 +48,11 @@ public class WarpRegionInfoExecutor implements CommandExecutor {
 
         List<Text> regionInfo = Lists.newArrayList();
 
-        regionInfo.add(Texts.of(TextColors.BLUE, "---------------", region.getName(), "---------------"));
-        regionInfo.add(Texts.of(TextColors.BLUE, "Name: ", TextColors.WHITE, region.getName()));
-        regionInfo.add(Texts.of(TextColors.BLUE, "World: ", TextColors.WHITE, region.getWorld()));
-        regionInfo.add(Texts.of(TextColors.BLUE, "Linked Warp: ", warpName));
-        regionInfo.add(Texts.of(TextColors.BLUE, "Bounds: ", TextColors.WHITE, region.getMinLoc(), TextColors.BLUE, " to ", TextColors.WHITE,
+        regionInfo.add(Text.of(TextColors.BLUE, "---------------", region.getName(), "---------------"));
+        regionInfo.add(Text.of(TextColors.BLUE, "Name: ", TextColors.WHITE, region.getName()));
+        regionInfo.add(Text.of(TextColors.BLUE, "World: ", TextColors.WHITE, region.getWorld()));
+        regionInfo.add(Text.of(TextColors.BLUE, "Linked Warp: ", warpName));
+        regionInfo.add(Text.of(TextColors.BLUE, "Bounds: ", TextColors.WHITE, region.getMinLoc(), TextColors.BLUE, " to ", TextColors.WHITE,
                 region.getMaxLoc()));
 
         for (Text infoLine : regionInfo) {

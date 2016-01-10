@@ -4,14 +4,15 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.region.WarpRegion;
-import java.util.Optional;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
+
+import java.util.Optional;
 
 public class DeleteWarpRegionExecutor implements CommandExecutor {
 
@@ -33,7 +34,7 @@ public class DeleteWarpRegionExecutor implements CommandExecutor {
 
         this.plugin.getWarpRegionManager().deleteOne(region);
 
-        source.sendMessage(Texts.of(Constants.SUCCESS_DELETE_WARP_REGION_MSG, TextColors.GOLD, region.getName(), TextColors.WHITE, " - ",
+        source.sendMessage(Text.of(Constants.SUCCESS_DELETE_WARP_REGION_MSG, TextColors.GOLD, region.getName(), TextColors.WHITE, " - ",
                 Util.undoDeleteWarpRegionText(region)));
         return CommandResult.success();
     }

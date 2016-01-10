@@ -6,9 +6,10 @@ import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.consumers.WarpPlayerConsumer;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.service.scheduler.Task;
-import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.scheduler.Task;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.HashMap;
@@ -108,13 +109,13 @@ public class WarpManager extends WarpBaseManager<Warp> {
     public void scheduleWarp(Player player, Warp warp) {
         // Schedule the task
         Task scheduledWarpTask =
-                this.plugin.getGame().getScheduler().createTaskBuilder().delay(this.plugin.getConfig().getWarpDelay(), TimeUnit.SECONDS)
+                Sponge.getScheduler().createTaskBuilder().delay(this.plugin.getConfig().getWarpDelay(), TimeUnit.SECONDS)
                         .execute(new WarpPlayerConsumer(this.plugin, player, warp)).submit(this.plugin);
 
         this.warpsInProgress.put(player, scheduledWarpTask);
 
         // Notify the player that they will be warped
-        player.sendMessage(Texts.of(TextColors.GREEN, Constants.PREFIX + " You will be warped to ", Util.warpText(warp), " in ",
+        player.sendMessage(Text.of(TextColors.GREEN, Constants.PREFIX + " You will be warped to ", Util.warpText(warp), " in ",
                 TextColors.GOLD, this.plugin.getConfig().getWarpDelay(), TextColors.GREEN, " seconds."));
 
         // If the pvp-protect config setting is set to true, warn the player not
@@ -128,10 +129,10 @@ public class WarpManager extends WarpBaseManager<Warp> {
     public void cancelWarp(Player player) {
         Task task = this.warpsInProgress.get(player);
         task.cancel();
-        
+
         Warp previousDestination = ((WarpPlayerConsumer) task.getConsumer()).getWarp();
 
-        player.sendMessage(Texts.of(TextColors.RED, Constants.PREFIX + " Your warp to ", Util.warpText(previousDestination),
+        player.sendMessage(Text.of(TextColors.RED, Constants.PREFIX + " Your warp to ", Util.warpText(previousDestination),
                 " has been canceled!"));
         this.warpsInProgress.remove(player);
     }

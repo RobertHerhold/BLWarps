@@ -1,25 +1,21 @@
 package com.blocklaunch.blwarps.commands.executors;
 
-import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
+import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
-import java.util.Optional;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
+
+import java.util.Optional;
 
 public class WarpSignExecutor implements CommandExecutor {
-
-    private BLWarps plugin;
-
-    public WarpSignExecutor(BLWarps plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
@@ -37,16 +33,17 @@ public class WarpSignExecutor implements CommandExecutor {
 
         Warp warp = optWarp.get();
 
-        if (this.plugin.getUtil().hasPermission(player, warp) == false) {
+        if (Util.hasPermission(player, warp) == false) {
             player.sendMessage(Constants.NO_PERMISSION_MSG);
             return CommandResult.empty();
         }
 
         ItemStack warpSign =
-                this.plugin.getGame().getRegistry().createItemBuilder().itemType(ItemTypes.SIGN).quantity(1)
-                        .itemData(this.plugin.getUtil().generateWarpSignData(warp)).build();
+                Sponge.getRegistry().createBuilder(ItemStack.Builder.class).itemType(ItemTypes.SIGN).quantity(1)
+                        .itemData(Util.generateWarpSignData(warp)).build();
 
-        if (player.getInventory().offer(warpSign) == false) {
+        if (!player.getInventory().offer(warpSign).getRejectedItems().isEmpty()) {
+            // Some items were rejected
             player.sendMessage(Constants.INVENTORY_FULL_MSG);
             return CommandResult.empty();
         }

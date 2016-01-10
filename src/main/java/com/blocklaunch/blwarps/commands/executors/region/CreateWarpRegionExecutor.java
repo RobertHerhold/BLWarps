@@ -6,14 +6,15 @@ import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.region.WarpRegion;
 import com.flowpowered.math.vector.Vector3d;
-import java.util.Optional;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Texts;
-import org.spongepowered.api.util.command.CommandException;
-import org.spongepowered.api.util.command.CommandResult;
-import org.spongepowered.api.util.command.CommandSource;
-import org.spongepowered.api.util.command.args.CommandContext;
-import org.spongepowered.api.util.command.spec.CommandExecutor;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
 
 public class CreateWarpRegionExecutor implements CommandExecutor {
 
@@ -54,11 +55,11 @@ public class CreateWarpRegionExecutor implements CommandExecutor {
 
         Optional<String> optError = this.plugin.getWarpRegionManager().addNew(region);
         if (optError.isPresent()) {
-            source.sendMessage(Texts.of(Constants.ERROR_CREATE_WARP_REGION_MSG, optError.get()));
+            source.sendMessage(Text.of(Constants.ERROR_CREATE_WARP_REGION_MSG, optError.get()));
             return CommandResult.empty();
         }
 
-        source.sendMessage(Texts.of(Constants.SUCCESS_CREATE_WARP_REGION_MSG, Util.warpRegionInfoText(region)));
+        source.sendMessage(Text.of(Constants.SUCCESS_CREATE_WARP_REGION_MSG, Util.warpRegionInfoText(region)));
         return CommandResult.success();
     }
 }

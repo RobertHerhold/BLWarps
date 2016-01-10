@@ -20,17 +20,17 @@ public class DamageEntityEventHandler {
         }
 
         Player player = (Player) event.getTargetEntity();
-        
+
         if (!this.plugin.getConfig().isPvpProtect()) {
             return;
         }
         // pvp-protect setting is enabled
-        
+
         if (!this.plugin.getWarpManager().isWarping(player)) {
             return;
         }
         // Player is warping
-        
+
         this.plugin.getWarpManager().cancelWarp(player);
 
     }

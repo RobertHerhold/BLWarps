@@ -4,7 +4,6 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.exceptions.MultipleWarpRegionsException;
 import com.blocklaunch.blwarps.region.WarpRegion;
-import java.util.Optional;
 import org.khelekore.prtree.MBR;
 import org.khelekore.prtree.SimpleMBR;
 import org.spongepowered.api.entity.living.player.Player;
@@ -15,6 +14,7 @@ import org.spongepowered.api.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DisplaceEntityEventHandler {
 
@@ -30,7 +30,7 @@ public class DisplaceEntityEventHandler {
             // Don't do anything if a player just looks around, but doesn't move
             return;
         }
-        
+
         Player player = event.getTargetEntity();
         Location<World> location = event.getToTransform().getLocation();
 
@@ -68,7 +68,7 @@ public class DisplaceEntityEventHandler {
         // Cancel the possibly existing scheduled warp before warping to the new
         // warp
         if (existingDestinationOpt.isPresent()) {
-            System.out.println("Player already warping: " + existingDestinationOpt.get().getName());
+//            System.out.println("Player already warping: " + existingDestinationOpt.get().getName());
             // Only cancel it if the existing scheduled warp is different than
             // the new one
             if (!existingDestinationOpt.get().getName().equals(linkedWarpOpt.get().getName())) {
@@ -76,7 +76,7 @@ public class DisplaceEntityEventHandler {
                 this.plugin.getWarpManager().scheduleWarp(player, linkedWarpOpt.get());
             }
         } else {
-            System.out.println("Player not warping");
+//            System.out.println("Player not warping");
             this.plugin.getWarpManager().scheduleWarp(player, linkedWarpOpt.get());
         }
 

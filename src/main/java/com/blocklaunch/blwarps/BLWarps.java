@@ -1,9 +1,9 @@
 package com.blocklaunch.blwarps;
 
 import com.blocklaunch.blwarps.commands.WarpCommandGenerator;
+import com.blocklaunch.blwarps.eventhandlers.ChangeSignEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.DamageEntityEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.DisplaceEntityEventHandler;
-import com.blocklaunch.blwarps.eventhandlers.ChangeSignEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.InteractBlockEventHandler;
 import com.blocklaunch.blwarps.managers.WarpBaseManager;
 import com.blocklaunch.blwarps.managers.WarpManager;
@@ -20,12 +20,12 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.slf4j.Logger;
-import org.spongepowered.api.Game;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.event.EventManager;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.service.config.DefaultConfig;
-import org.spongepowered.api.service.event.EventManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,12 +37,8 @@ public class BLWarps {
 
     private BLWarpsConfiguration config;
 
-    private Util util = new Util(this);
-
     private Map<Class<? extends WarpBase>, WarpBaseManager<? extends WarpBase>> warpBaseManagers =
             new HashMap<Class<? extends WarpBase>, WarpBaseManager<? extends WarpBase>>();
-
-    @Inject private Game game;
 
     @Inject private Logger logger;
 
@@ -60,7 +56,7 @@ public class BLWarps {
 
     private void registerCommands() {
         this.logger.info("Registering commands");
-        this.game.getCommandDispatcher().register(this, new WarpCommandGenerator(this).mainWarpCommand(), "warp");
+        Sponge.getCommandManager().register(this, new WarpCommandGenerator(this).mainWarpCommand(), "warp");
     }
 
     private void setupConfig() {
@@ -163,10 +159,10 @@ public class BLWarps {
     }
 
     private void registerEventHandlers() {
-        EventManager eventManager = this.game.getEventManager();
-        
+        EventManager eventManager = Sponge.getEventManager();
+
         // Watch for players right-clicking warp signs
-        eventManager.registerListeners(this, new InteractBlockEventHandler(this));
+        eventManager.registerListeners(this, new InteractBlockEventHandler());
         // Watch for warp signs being created
         eventManager.registerListeners(this, new ChangeSignEventHandler(this));
         // Watch for player movement (warp regions, cancelling warps)
@@ -190,14 +186,6 @@ public class BLWarps {
 
     public BLWarpsConfiguration getConfig() {
         return this.config;
-    }
-
-    public Game getGame() {
-        return this.game;
-    }
-
-    public Util getUtil() {
-        return this.util;
     }
 
 }
