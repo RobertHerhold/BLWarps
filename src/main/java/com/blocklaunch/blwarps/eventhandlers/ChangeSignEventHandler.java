@@ -3,6 +3,10 @@ package com.blocklaunch.blwarps.eventhandlers;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.data.WarpData;
+import com.blocklaunch.blwarps.data.WarpDataManipulatorBuilder;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.DataTransactionResult;
 import org.spongepowered.api.data.value.mutable.ListValue;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.tileentity.ChangeSignEvent;
@@ -33,6 +37,10 @@ public class ChangeSignEventHandler {
                 return;
             }
             event.getText().set(Util.generateWarpSignData(optWarp.get()).getValues());
+
+            WarpDataManipulatorBuilder builder = (WarpDataManipulatorBuilder) Sponge.getDataManager().getManipulatorBuilder(WarpData.class).get();
+            WarpData data = builder.createFrom(optWarp.get());
+            DataTransactionResult result = event.getTargetTile().offer(data);
         }
 
     }
