@@ -16,8 +16,6 @@ import java.util.Optional;
 
 public class Util {
 
-    public static final String WARP_SIGN_PREFIX = "[Warp]";
-
     //
     // Warp Text
     //
@@ -118,7 +116,7 @@ public class Util {
         ListValue<Text> lines = signData.lines();
 
         lines.set(0, Text.of());
-        lines.set(1, Text.of(TextColors.DARK_BLUE, WARP_SIGN_PREFIX));
+        lines.set(1, Text.of(TextColors.DARK_BLUE, Constants.WARP_SIGN_PREFIX));
         lines.set(2, Text.of(TextColors.GOLD, warp.getName()));
         lines.set(3, Text.of());
 

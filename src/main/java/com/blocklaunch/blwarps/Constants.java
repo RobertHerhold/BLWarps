@@ -13,6 +13,7 @@ public class Constants {
      * outputs, etc.
      */
     public static final String PREFIX = "[BLWarps]";
+    public static final String WARP_SIGN_PREFIX = "[Warp]";
 
     public static final List<String> FORBIDDEN_NAMES = Arrays.asList("set", "add", "create", "delete", "del", "list", "ls", "info", "group",
             "region", "sign");
