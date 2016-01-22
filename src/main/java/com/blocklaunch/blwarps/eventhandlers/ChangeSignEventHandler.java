@@ -1,5 +1,8 @@
 package com.blocklaunch.blwarps.eventhandlers;
 
+import org.spongepowered.api.text.format.TextColors;
+
+import org.spongepowered.api.entity.living.player.Player;
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
@@ -40,8 +43,21 @@ public class ChangeSignEventHandler {
             WarpDataManipulatorBuilder builder = (WarpDataManipulatorBuilder) Sponge.getDataManager().getManipulatorBuilder(WarpData.class).get();
             WarpData data = builder.createFrom(optWarp.get());
             DataTransactionResult result = event.getTargetTile().offer(data);
+
+            if (!result.isSuccessful()) {
+                // Couldn't offer WarpData to the sign - log in the console and
+                // warn the possible player that placed the sign
+                String error =
+                        "Failed to offer WarpData " + data.toContainer().toString() + " to the Sign at "
+                                + event.getTargetTile().getLocation().toString();
+                plugin.getLogger().warn(error);
+                Optional<Player> optPlayer = event.getCause().first(Player.class);
+                if (optPlayer.isPresent()) {
+                    optPlayer.get().sendMessage(Text.of(TextColors.RED, Constants.PREFIX, " ", error));
+                }
+
+            }
         }
 
     }
-
 }
