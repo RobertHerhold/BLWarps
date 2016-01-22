@@ -1,14 +1,13 @@
 package com.blocklaunch.blwarps.eventhandlers;
 
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.data.WarpKeys;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.block.tileentity.TileEntity;
+import org.spongepowered.api.block.tileentity.Sign;
 import org.spongepowered.api.block.tileentity.TileEntityTypes;
-import org.spongepowered.api.data.manipulator.mutable.tileentity.SignData;
-import org.spongepowered.api.data.value.mutable.ListValue;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.InteractBlockEvent;
-import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -39,22 +38,15 @@ public class InteractBlockEventHandler {
             return;
         }
 
-        TileEntity signEntity = block.getTileEntity().get();
-        // Get the SignData
-        Optional<SignData> signData = signEntity.get(SignData.class);
-        // Shouldn't have to check this
-        if (!signData.isPresent()) {
+        Sign sign = (Sign) block.getTileEntity().get();
+
+        Optional<Warp> optWarp = sign.get(WarpKeys.WARP);
+        if (!optWarp.isPresent()) {
+            // Sign is not a warp sign
             return;
         }
-        // Validate that this is supposed to be a warp sign
-        ListValue<Text> lines = signData.get().lines();
-        if (!lines.get(1).toPlain().equalsIgnoreCase(ChangeSignEventHandler.WARP_SIGN_PREFIX)) {
-            return;
-        }
-        // Don't need to validate that the warp actually exists --> Command
-        // executor will take care
-        // of it. (along with permissions)
-        String command = "warp " + lines.get(2).toPlain();
+
+        String command = "warp " + optWarp.get().getName();
 
         Optional<Player> player = event.getCause().first(Player.class);
 

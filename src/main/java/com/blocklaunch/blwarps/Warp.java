@@ -1,9 +1,13 @@
 package com.blocklaunch.blwarps;
 
+import com.blocklaunch.blwarps.data.WarpDataQueries;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.flowpowered.math.vector.Vector3d;
+import org.spongepowered.api.data.DataContainer;
+import org.spongepowered.api.data.DataSerializable;
+import org.spongepowered.api.data.MemoryDataContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +18,7 @@ import java.util.List;
  *
  */
 @JsonInclude(Include.NON_EMPTY)
-public class Warp extends WarpBase {
+public class Warp extends WarpBase implements DataSerializable {
 
     private Vector3d position; // serialize the double x,y,z rather than the
                                // Vector3d
@@ -106,4 +110,20 @@ public class Warp extends WarpBase {
                 + "]";
     }
 
+    @JsonIgnore
+    @Override
+    public int getContentVersion() {
+        return 1;
+    }
+
+    @JsonIgnore
+    @Override
+    public DataContainer toContainer() {
+        return new MemoryDataContainer().set(WarpDataQueries.NAME, getName())
+                .set(WarpDataQueries.WORLD, getWorld())
+                .set(WarpDataQueries.X, getX())
+                .set(WarpDataQueries.Y, getY())
+                .set(WarpDataQueries.Z, getZ())
+                .set(WarpDataQueries.GROUPS, getGroups());
+    }
 }

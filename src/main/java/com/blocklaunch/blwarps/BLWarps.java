@@ -1,6 +1,10 @@
 package com.blocklaunch.blwarps;
 
 import com.blocklaunch.blwarps.commands.WarpCommandGenerator;
+import com.blocklaunch.blwarps.data.ImmutableWarpData;
+import com.blocklaunch.blwarps.data.WarpBuilder;
+import com.blocklaunch.blwarps.data.WarpData;
+import com.blocklaunch.blwarps.data.WarpDataManipulatorBuilder;
 import com.blocklaunch.blwarps.eventhandlers.ChangeSignEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.DamageEntityEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.DisplaceEntityEventHandler;
@@ -52,6 +56,12 @@ public class BLWarps {
         setupManagers();
         registerCommands();
         registerEventHandlers();
+        registerWarpData();
+    }
+
+    private void registerWarpData() {
+        Sponge.getDataManager().register(WarpData.class, ImmutableWarpData.class, new WarpDataManipulatorBuilder());
+        Sponge.getDataManager().registerBuilder(Warp.class, new WarpBuilder());
     }
 
     private void registerCommands() {
