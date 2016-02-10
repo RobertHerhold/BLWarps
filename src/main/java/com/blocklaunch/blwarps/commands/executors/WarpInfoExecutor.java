@@ -10,7 +10,6 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.Text.Builder;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.List;
@@ -42,7 +41,6 @@ public class WarpInfoExecutor implements CommandExecutor {
         warpInfo.add(Text.of(TextColors.BLUE, "Name: ", warpName));
         warpInfo.add(Text.of(TextColors.BLUE, "World: ", TextColors.WHITE, warp.getWorld()));
         warpInfo.add(Text.of(TextColors.BLUE, "Location: ", TextColors.WHITE, warp.getPosition()));
-        warpInfo.add(Text.of(TextColors.BLUE, "Groups: ", generateGroupList(warp)));
 
         for (Text infoLine : warpInfo) {
             source.sendMessage(infoLine);
@@ -50,24 +48,6 @@ public class WarpInfoExecutor implements CommandExecutor {
 
         return CommandResult.success();
 
-    }
-
-    private Text generateGroupList(Warp warp) {
-        List<String> groups = warp.getGroups();
-        if (groups.isEmpty()) {
-            return Text.of("none");
-        }
-
-        Builder builder = Text.builder();
-        for (int index = 0; index < groups.size(); index++) {
-            builder.append(Util.warpGroupInfoText(groups.get(index)));
-            if (groups.size() - 1 != index) {
-                // Not the last group name in the list
-                builder.append(Text.of(", "));
-            }
-        }
-
-        return builder.build();
     }
 
 }

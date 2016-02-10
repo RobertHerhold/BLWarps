@@ -4,7 +4,6 @@ import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.managers.storage.StorageManager;
 import com.blocklaunch.blwarps.managers.storage.sql.SqlManager;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class SqlWarpManager extends SqlManager<Warp> implements StorageManager<W
 
     @Override
     public void saveNew(Warp warp) {
-        this.warpDAO.insertWarp(warp, serializeGroupList(warp.getGroups()));
+        this.warpDAO.insertWarp(warp);
     }
 
     @Override
@@ -41,20 +40,7 @@ public class SqlWarpManager extends SqlManager<Warp> implements StorageManager<W
 
     @Override
     public void update(Warp warp) {
-        this.warpDAO.updateWarp(warp, serializeGroupList(warp.getGroups()));
-    }
-
-    private String serializeGroupList(List<String> groupList) {
-        // Use Jackson to serialize List<String> because JDBI doesn't seem to be
-        // able
-        String groups = "[]";
-        try {
-            groups = this.mapper.writeValueAsString(groupList);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return groups;
+        this.warpDAO.updateWarp(warp);
     }
 
 }

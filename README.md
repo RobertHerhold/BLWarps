@@ -16,16 +16,6 @@ Note: In the following commands, square brackets (`[]`) indicate optional argume
 * `/warp info <warp name>`
  * Displays information about the specified warp
 
-### Group Commands
-* `/warp group add <warp name> <group name>`
- * Add the warp with name `warp name` to the group `group name`.
-* `/warp group remove <warp name> <group name>`
- * Remove the warp with name `warp name` from the group `group name`
-* `/warp group removeall <group name>`
- * Remove all warps from the group with name `group name`
-* `/warp group info <group name>`
- * Displays information about the specified warp group
-
 ### Warp Region Commands
 * `/warp region set <region name> <warp name> <corner1> <corner1>`
  * Create a new warp region with name `region name`, linked warp with name `warp name` and corners `corner1` and `corner2`
@@ -50,10 +40,8 @@ Warp signs can be created for any previously established warp. To do this, simpl
 If you have correctly placed the sign, the text on the sign will be colored and reformatted. To use the sign to warp, simply right click on the sign.
 
 ## Permissions
-Permissions can be required for either individual warps, or warp groups, as shown below:
+Permission to use a warp is given on a per-warp basis, as shown below:
  * `blwarps.warp.<warp name>`
- * `blwarps.warp.group.<group name>`
- * `blwarps.warp.*` (wildcard --> warp to anywhere)
 
 ## Storage
 Regardless of the storage solution, each warp has 5 properties:
@@ -62,9 +50,6 @@ Regardless of the storage solution, each warp has 5 properties:
 * x - the x coordinate of the warp (stored as a double)
 * y - the y coordinate of the warp (stored as a double)
 * z - the z coordinate of the warp (stored as a double)
-
-And optional properties:
-* groups - the groups of which the warp belongs to
 
 ### Flat File Storage
 For flat file storage, warps are stored as JSON (serialized using [Jackson](http://wiki.fasterxml.com/JacksonHome)) in the `config/BLWarps/warps.json` file. A sample `warps.json` file would be similar to the following:
@@ -75,8 +60,7 @@ For flat file storage, warps are stored as JSON (serialized using [Jackson](http
     "world" : "world",
     "x" : 40.3,
     "y" : 41.0,
-    "z" : 72.07,
-    "groups" : [ "group", "group2" ]
+    "z" : 72.07
 }, {
     "name" : "warp2",
     "world" : "DIM-1",
@@ -94,7 +78,6 @@ For REST-based storage, HTTP requests are sent using the  [Jersey Client](https:
 * `POST` when saving a new warp
 * `DELETE` when deleting a warp. The warp's name will be a path parameter.
  * Ex: `http://localhost:8080/warps/deletethiswarp`
-* `PUT` when updating a warp (adding/removing groups)
 
 ## Building BLWarps
 BLWarps uses Maven as a dependency manager and build tool. To build the plugin from source, make sure [Maven](https://maven.apache.org/download.cgi) is installed, and run `mvn clean install`. The newly built plugin will be in `target/bl-warps-{version}.jar`. For developing, run the Maven build once, then add the `target/generated-sources/java-templates` directory as a source folder (see graphic below for how to do this in Eclipse).

@@ -9,9 +9,6 @@ import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataSerializable;
 import org.spongepowered.api.data.MemoryDataContainer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Bean for representing a warp with name and location. Meant for easy
  * (de)serialization with Jackson
@@ -26,7 +23,6 @@ public class Warp extends WarpBase implements DataSerializable {
     private double x;
     private double y;
     private double z;
-    private List<String> groups;
 
     // Empty constructor for Jackson
     public Warp() {
@@ -92,22 +88,10 @@ public class Warp extends WarpBase implements DataSerializable {
         this.z = z;
     }
 
-    public List<String> getGroups() {
-        if (this.groups == null) {
-            this.groups = new ArrayList<>();
-        }
-        return this.groups;
-    }
-
-    public void setGroups(List<String> groups) {
-        this.groups = groups;
-    }
-
     @Override
     public String toString() {
         return "Warp [position=" + this.position + ", name=" + this.name + ", world=" + this.world + ", x=" + this.x + ", y=" + this.y + ", z="
-                + this.z + ", groups=" + this.groups
-                + "]";
+                + this.z + "]";
     }
 
     @JsonIgnore
@@ -123,7 +107,6 @@ public class Warp extends WarpBase implements DataSerializable {
                 .set(WarpDataQueries.WORLD, getWorld())
                 .set(WarpDataQueries.X, getX())
                 .set(WarpDataQueries.Y, getY())
-                .set(WarpDataQueries.Z, getZ())
-                .set(WarpDataQueries.GROUPS, getGroups());
+                .set(WarpDataQueries.Z, getZ());
     }
 }

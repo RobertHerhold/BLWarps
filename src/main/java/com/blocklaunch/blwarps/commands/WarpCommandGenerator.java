@@ -2,7 +2,6 @@ package com.blocklaunch.blwarps.commands;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
-import com.blocklaunch.blwarps.commands.elements.WarpGroupCommandElement;
 import com.blocklaunch.blwarps.commands.elements.WarpRegionCommandElement;
 import com.blocklaunch.blwarps.commands.executors.CreateWarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.DeleteWarpExecutor;
@@ -10,10 +9,6 @@ import com.blocklaunch.blwarps.commands.executors.ListWarpsExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpInfoExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpSignExecutor;
-import com.blocklaunch.blwarps.commands.executors.group.AddWarpToGroupExecutor;
-import com.blocklaunch.blwarps.commands.executors.group.DeleteGroupExecutor;
-import com.blocklaunch.blwarps.commands.executors.group.GroupInfoExecutor;
-import com.blocklaunch.blwarps.commands.executors.group.RemoveWarpFromGroupExecutor;
 import com.blocklaunch.blwarps.commands.executors.region.CreateWarpRegionExecutor;
 import com.blocklaunch.blwarps.commands.executors.region.DeleteWarpRegionExecutor;
 import com.blocklaunch.blwarps.commands.executors.region.ListWarpRegionsExecutor;
@@ -41,7 +36,6 @@ public class WarpCommandGenerator {
         subCommands.put(Arrays.asList("delete", "del"), deleteWarpSubCommand());
         subCommands.put(Arrays.asList("list", "ls"), listWarpSubCommand());
         subCommands.put(Arrays.asList("info"), warpInfoSubCommand());
-        subCommands.put(Arrays.asList("group"), groupSubCommand());
         subCommands.put(Arrays.asList("region"), regionSubCommand());
         subCommands.put(Arrays.asList("sign"), warpSignSubCommand());
 
@@ -101,66 +95,6 @@ public class WarpCommandGenerator {
     private CommandSpec warpInfoSubCommand() {
         return CommandSpec.builder().permission("blwarps.info").description(Text.of("Display information about a warp"))
                 .executor(new WarpInfoExecutor()).arguments(new WarpCommandElement(this.plugin, Text.of("warp"))).build();
-    }
-
-    /**
-     * Command: "/warp group add:remove:delete:info
-     *
-     * @return
-     */
-    private CommandSpec groupSubCommand() {
-        HashMap<List<String>, CommandSpec> groupSubCommands = new HashMap<>();
-
-        groupSubCommands.put(Arrays.asList("add"), addWarpToGroupSubCommand());
-        groupSubCommands.put(Arrays.asList("remove"), removeWarpFromGroupSubCommand());
-        groupSubCommands.put(Arrays.asList("removeall", "delete"), deleteGroupSubCommand());
-        groupSubCommands.put(Arrays.asList("info"), groupInfoSubCommand());
-
-        return CommandSpec.builder().permission("blwarps.group").description(Text.of("Manage warp groups")).children(groupSubCommands).build();
-    }
-
-    /**
-     * Command: "/warp group add <warp name> <group name>
-     *
-     * @return
-     */
-    private CommandSpec addWarpToGroupSubCommand() {
-        return CommandSpec.builder().permission("blwarps.group.add").description(Text.of("Add a warp to a group"))
-                .executor(new AddWarpToGroupExecutor(this.plugin))
-                .arguments(new WarpCommandElement(this.plugin, Text.of("warp")), new WarpGroupCommandElement(this.plugin, Text.of("group")))
-                .build();
-    }
-
-    /**
-     * Command: "/warp group remove <warp name> <group name>"
-     *
-     * @return
-     */
-    private CommandSpec removeWarpFromGroupSubCommand() {
-        return CommandSpec.builder().permission("blwarps.group.remove").description(Text.of("Remove a warp from a group"))
-                .executor(new RemoveWarpFromGroupExecutor(this.plugin))
-                .arguments(new WarpCommandElement(this.plugin, Text.of("warp")), new WarpGroupCommandElement(this.plugin, Text.of("group")))
-                .build();
-    }
-
-    /**
-     * Command: "/warp group delete <group name>"
-     *
-     * @return
-     */
-    private CommandSpec deleteGroupSubCommand() {
-        return CommandSpec.builder().permission("blwarps.group.delete").description(Text.of("Delete a warp group"))
-                .executor(new DeleteGroupExecutor(this.plugin)).arguments(new WarpGroupCommandElement(this.plugin, Text.of("group"))).build();
-    }
-
-    /**
-     * Command: "/warp group info <group name>
-     *
-     * @return
-     */
-    private CommandSpec groupInfoSubCommand() {
-        return CommandSpec.builder().permission("blwarps.group.info").description(Text.of("Display information about a warp group"))
-                .executor(new GroupInfoExecutor(this.plugin)).arguments(new WarpGroupCommandElement(this.plugin, Text.of("group"))).build();
     }
 
     /**

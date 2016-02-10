@@ -70,36 +70,6 @@ public class WarpManager extends WarpBaseManager<Warp> {
     }
 
     /**
-     * Adds the warp to the specified group (puts the group's name in the list
-     * of the warp's groups)
-     *
-     * @param warp The warp to be added to the group
-     * @param group The group to add the warp to
-     */
-    public void addWarpToGroup(Warp warp, String group) {
-        if (warp.getGroups().contains(group)) {
-            return;
-        }
-        warp.getGroups().add(group);
-        this.storage.update(warp);
-    }
-
-    /**
-     * Removes the warp from the specified group (removes the group's name from
-     * the list of the warp's groups)
-     *
-     * @param warp The warp to be removed from the group
-     * @param group The group to remove the warp from
-     */
-    public void removeWarpFromGroup(Warp warp, String group) {
-        if (!warp.getGroups().contains(group)) {
-            return;
-        }
-        warp.getGroups().remove(group);
-        this.storage.update(warp);
-    }
-
-    /**
      * Schedules a task to warp the specified player to the specified warp
      *
      * @param player The player to be warped
