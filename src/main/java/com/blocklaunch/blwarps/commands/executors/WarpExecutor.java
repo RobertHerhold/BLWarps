@@ -23,6 +23,12 @@ public class WarpExecutor implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
+        // Execute any subcommand that was used
+        Optional<CommandExecutor> subCmdExecOpt = args.getOne("subcommand");
+        if(subCmdExecOpt.isPresent()) {
+            return subCmdExecOpt.get().execute(source, args);
+        }
+        
         if (!(source instanceof Player)) {
             source.sendMessage(Constants.MUST_BE_PLAYER_MSG);
             return CommandResult.empty();
