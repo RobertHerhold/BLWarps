@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps.commands;
 
+import com.blocklaunch.blwarps.commands.elements.WarpSubCommandElement;
+
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
 import com.blocklaunch.blwarps.commands.elements.WarpRegionCommandElement;
@@ -40,10 +42,14 @@ public class WarpCommandGenerator {
         subCommands.put(Arrays.asList("sign"), warpSignSubCommand());
 
         CommandSpec mainWarpCommand =
-                CommandSpec.builder().permission("blwarps.warp").description(Text.of("Teleport to a warp location"))
+                CommandSpec
+                        .builder()
+                        .description(Text.of("Teleport to a warp location"))
                         .extendedDescription(Text.of("Teleports you to the location of the specified warp."))
                         .executor(new WarpExecutor(this.plugin))
-                        .arguments(GenericArguments.firstParsing(new WarpCommandElement(this.plugin, Text.of("warp")))).children(subCommands)
+                        .arguments(
+                                GenericArguments.firstParsing(new WarpSubCommandElement(subCommands, Text.of("subcommand")), new WarpCommandElement(
+                                        this.plugin, Text.of("warp")))).children(subCommands)
                         .build();
         return mainWarpCommand;
     }
