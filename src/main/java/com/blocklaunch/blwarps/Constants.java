@@ -15,7 +15,7 @@ public class Constants {
     public static final String PREFIX = "[BLWarps]";
     public static final String WARP_SIGN_PREFIX = "[Warp]";
 
-    public static final List<String> FORBIDDEN_NAMES = Arrays.asList("set", "add", "create", "delete", "del", "list", "ls", "info", "group",
+    public static final List<String> FORBIDDEN_NAMES = Arrays.asList("set", "add", "create", "delete", "del", "list", "ls", "info",
             "region", "sign");
     public static final Text CANNOT_USE_FORBIDDEN_NAME_MSG = Text.of(TextColors.RED, PREFIX, " You cannot use that name!");
 

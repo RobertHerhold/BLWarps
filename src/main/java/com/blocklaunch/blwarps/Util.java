@@ -38,15 +38,6 @@ public class Util {
     }
 
     //
-    // Warp Group Text
-    //
-
-    public static Text warpGroupInfoText(String groupName) {
-        return Text.builder(groupName).color(TextColors.GOLD).onClick(TextActions.runCommand("/warp group info " + groupName))
-                .onHover(TextActions.showText(Text.of("Show ", TextColors.GOLD, groupName, TextColors.WHITE, " info."))).build();
-    }
-
-    //
     // Warp Region Text
     //
 

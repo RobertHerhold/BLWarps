@@ -11,7 +11,7 @@ import java.util.List;
 @RegisterMapper(WarpMapper.class)
 public interface WarpDAO {
 
-    @SqlUpdate("CREATE TABLE IF NOT EXISTS warps (name VARCHAR(45) NOT NULL, world VARCHAR(45) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, groups VARCHAR(45), PRIMARY KEY (name))")
+    @SqlUpdate("CREATE TABLE IF NOT EXISTS warps (name VARCHAR(45) NOT NULL, world VARCHAR(45) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, PRIMARY KEY (name))")
             void createWarpTable();
 
     @SqlUpdate("INSERT INTO warps (name, world, x, y, z) VALUES (:warp.name, :warp.world, :warp.x, :warp.y, :warp.z)")
