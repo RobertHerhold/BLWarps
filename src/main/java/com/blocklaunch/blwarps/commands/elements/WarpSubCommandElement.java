@@ -37,7 +37,7 @@ public class WarpSubCommandElement extends CommandElement {
                 }
             }
         }
-        return null;
+        throw args.createError(Text.of("'%s' did not match any subcommands", subCommand));
     }
 
     @Override
