@@ -32,6 +32,11 @@ public class Util {
                 .onHover(TextActions.showText(Text.of(TextColors.RED, "Delete ", TextColors.GOLD, warp.getId()))).build();
     }
 
+    public static Text warpInfoText(Warp warp) {
+        return Text.builder("[?]").color(TextColors.GOLD).onClick(TextActions.runCommand("/warp info " + warp.getId()))
+                .onHover(TextActions.showText(Text.of("Show ", TextColors.GOLD, warp.getId(), TextColors.WHITE, " info."))).build();
+    }
+
     public static Text undoDeleteWarpText(Warp warp) {
         String globalFlag = "";
         if (warp.getOwner().equalsIgnoreCase("global")) {

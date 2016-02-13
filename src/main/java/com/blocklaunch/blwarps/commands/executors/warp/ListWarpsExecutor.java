@@ -40,7 +40,7 @@ public class ListWarpsExecutor implements CommandExecutor {
 
         for (Warp w : this.plugin.getWarpManager().getPayload()) {
             if (Util.hasPermission(source, w)) {
-                warpNames.add(Text.of(Util.warpText(w), TextColors.WHITE, " - ", Util.deleteWarpText(w)));
+                warpNames.add(Text.of(Util.warpText(w), TextColors.WHITE," - ", Util.warpInfoText(w), " - ", Util.deleteWarpText(w)));
             }
         }
 
