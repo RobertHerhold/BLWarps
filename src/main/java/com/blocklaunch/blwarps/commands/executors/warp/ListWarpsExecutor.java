@@ -1,4 +1,4 @@
-package com.blocklaunch.blwarps.commands.executors;
+package com.blocklaunch.blwarps.commands.executors.warp;
 
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;

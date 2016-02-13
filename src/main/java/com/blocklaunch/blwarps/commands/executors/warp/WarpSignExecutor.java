@@ -1,34 +1,24 @@
-package com.blocklaunch.blwarps.commands.executors;
+package com.blocklaunch.blwarps.commands.executors.warp;
 
-import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Util;
 import com.blocklaunch.blwarps.Warp;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.Optional;
 
-public class WarpExecutor implements CommandExecutor {
-
-    private BLWarps plugin;
-
-    public WarpExecutor(BLWarps plugin) {
-        this.plugin = plugin;
-    }
+public class WarpSignExecutor implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
-        // Execute any subcommand that was used
-        Optional<CommandExecutor> subCmdExecOpt = args.getOne("subcommand");
-        if(subCmdExecOpt.isPresent()) {
-            return subCmdExecOpt.get().execute(source, args);
-        }
-        
         if (!(source instanceof Player)) {
             source.sendMessage(Constants.MUST_BE_PLAYER_MSG);
             return CommandResult.empty();
@@ -48,7 +38,15 @@ public class WarpExecutor implements CommandExecutor {
             return CommandResult.empty();
         }
 
-        this.plugin.getWarpManager().scheduleWarp(player, warp);
+        ItemStack warpSign =
+                Sponge.getRegistry().createBuilder(ItemStack.Builder.class).itemType(ItemTypes.SIGN).quantity(1)
+                        .itemData(Util.generateWarpSignData(warp)).build();
+
+        if (!player.getInventory().offer(warpSign).getRejectedItems().isEmpty()) {
+            // Some items were rejected
+            player.sendMessage(Constants.INVENTORY_FULL_MSG);
+            return CommandResult.empty();
+        }
 
         return CommandResult.success();
     }
