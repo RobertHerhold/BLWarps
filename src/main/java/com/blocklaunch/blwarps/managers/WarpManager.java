@@ -83,9 +83,15 @@ public class WarpManager extends WarpBaseManager<Warp> {
 
         this.warpsInProgress.put(player, scheduledWarpTask);
 
+        Text timingText = Text.of();
+
+        if (this.plugin.getConfig().getWarpDelay() != 0) {
+            timingText = Text.of(" in ",
+                    TextColors.GOLD, this.plugin.getConfig().getWarpDelay(), TextColors.GREEN, " seconds.");
+        }
+
         // Notify the player that they will be warped
-        player.sendMessage(Text.of(TextColors.GREEN, Constants.PREFIX + " You will be warped to ", Util.warpText(warp), " in ",
-                TextColors.GOLD, this.plugin.getConfig().getWarpDelay(), TextColors.GREEN, " seconds."));
+        player.sendMessage(Text.of(TextColors.GREEN, Constants.PREFIX + " You will be warped to ", Util.warpText(warp), timingText));
 
         // If the pvp-protect config setting is set to true, warn the player not
         // to move

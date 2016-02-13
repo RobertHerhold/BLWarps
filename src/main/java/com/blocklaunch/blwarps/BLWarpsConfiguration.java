@@ -29,7 +29,7 @@ public class BLWarpsConfiguration {
     /**
      * Time, in seconds, between initiating a warp and teleporting the player
      */
-    @Setting(value = "warp-delay", comment = "Time, in seconds, between initiating a warp and teleporting the player") private int warpDelay = 5;
+    @Setting(value = "warp-delay", comment = "Time, in seconds, between initiating a warp and teleporting the player") private int warpDelay = 0;
 
     /**
      * Whether or not to cancel a player's warp if they move or get hurt
