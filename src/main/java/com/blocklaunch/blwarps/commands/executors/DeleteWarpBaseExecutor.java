@@ -77,7 +77,7 @@ public class DeleteWarpBaseExecutor<T extends WarpBase> implements CommandExecut
 
         wbm.deleteOne(warpBase);
 
-        source.sendMessage(Text.of(TextColors.GREEN, Constants.PREFIX + " You successfully deleted the " + type.getSimpleName() + ":",
+        source.sendMessage(Text.of(TextColors.GREEN, Constants.PREFIX + " You successfully deleted the " + type.getSimpleName() + ": ",
                 TextColors.GOLD, warpBase.getId(), TextColors.WHITE, " - ",
                 undoText));
         return CommandResult.success();
