@@ -11,16 +11,16 @@ import java.util.List;
 @RegisterMapper(WarpMapper.class)
 public interface WarpDAO {
 
-    @SqlUpdate("CREATE TABLE IF NOT EXISTS warps (name VARCHAR(45) NOT NULL, world VARCHAR(45) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, PRIMARY KEY (name))")
+    @SqlUpdate("CREATE TABLE IF NOT EXISTS warps (id VARCHAR(45) NOT NULL, name VARCHAR(45) NOT NULL, world VARCHAR(45) NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, PRIMARY KEY (id))")
             void createWarpTable();
 
-    @SqlUpdate("INSERT INTO warps (name, world, x, y, z) VALUES (:warp.name, :warp.world, :warp.x, :warp.y, :warp.z)")
+    @SqlUpdate("INSERT INTO warps (id, name, world, x, y, z) VALUES (:warp.id, :warp.name, :warp.world, :warp.x, :warp.y, :warp.z)")
     void insertWarp(@BindBean("warp") Warp warp);
 
-    @SqlUpdate("DELETE FROM warps WHERE name=:name")
-    void deleteWarp(@BindBean Warp warp);
+    @SqlUpdate("DELETE FROM warps WHERE id=:warp.id")
+    void deleteWarp(@BindBean("warp") Warp warp);
 
-    @SqlUpdate("UPDATE warps SET world=:warp.world, x=:warp.x, y=:warp.y, z=:warp.z, WHERE name=:warp.name")
+    @SqlUpdate("UPDATE warps SET world=:warp.world, x=:warp.x, y=:warp.y, z=:warp.z, WHERE id=:warp.id")
     void updateWarp(@BindBean("warp") Warp warp);
 
     @SqlQuery("SELECT * FROM warps")

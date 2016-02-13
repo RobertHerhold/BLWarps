@@ -13,6 +13,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.util.Optional;
 
@@ -50,8 +51,29 @@ public class CreateWarpRegionExecutor implements CommandExecutor {
             source.sendMessage(Constants.SPECIFY_2_CORNERS_MSG);
         }
 
+        Warp linkedWarp = linkedWarpOpt.get();
+
+        // Is a global warp accesible to everyone w/ permission or a private
+        // warp
+        boolean isGlobal = (boolean) args.getOne("g").orElse(false);
+        String expectedWarpOwner = "";
+        if (isGlobal) {
+            // Check that the owner of the warp is "global"
+            expectedWarpOwner = "global";
+        } else {
+            // Check that the owner of the warp is the one trying to create the
+            // region
+            expectedWarpOwner = player.getUniqueId().toString();
+        }
+        
+        if (!linkedWarp.getOwner().equalsIgnoreCase(expectedWarpOwner)) {
+            source.sendMessage(Text.of(TextColors.RED, Constants.ERROR_CREATE_WARP_REGION_MSG, " You must own the warp you are linking to a region!"));
+            return CommandResult.empty();
+        }
+
         WarpRegion region =
-                new WarpRegion(linkedWarpOpt.get().getName(), regionNameOpt.get(), player.getWorld().getName(), corner1Opt.get(), corner2Opt.get());
+                new WarpRegion(linkedWarp.getOwner(), regionNameOpt.get(), linkedWarp.getId(), player.getWorld().getName(),
+                        corner1Opt.get(), corner2Opt.get());
 
         Optional<String> optError = this.plugin.getWarpRegionManager().addNew(region);
         if (optError.isPresent()) {

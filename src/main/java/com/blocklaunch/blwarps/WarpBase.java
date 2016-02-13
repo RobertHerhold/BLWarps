@@ -1,15 +1,22 @@
 package com.blocklaunch.blwarps;
 
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 
 public abstract class WarpBase {
 
-    // Max of 15 chars b/c a sign only fits 15 chars on a line
-    @Size(min = 1, max = 15) public String name;
+    public String id;
+    // Only allow alphanumeric names
+    @Pattern(regexp = "^[A-Za-z0-9]*$") public String name;
+    public String owner;
     public String world;
 
     // Empty constructor for Jackson
@@ -17,9 +24,19 @@ public abstract class WarpBase {
 
     }
 
-    public WarpBase(String name, String world) {
+    public WarpBase(String owner, String name, String world) {
+        this.owner = owner;
         this.name = name;
         this.world = world;
+        generateId();
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -36,6 +53,25 @@ public abstract class WarpBase {
 
     public void setWorld(String world) {
         this.world = world;
+    }
+
+    public String getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    private void generateId() {
+        try {
+            UUID playerUUID = UUID.fromString(owner);
+            Player player = Sponge.getServer().getPlayer(playerUUID).get();
+            this.id = player.getName() + "/" + this.name;
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            this.id = this.owner + "/" + this.name;
+        }
+
     }
 
     protected double formatDouble(double d) {

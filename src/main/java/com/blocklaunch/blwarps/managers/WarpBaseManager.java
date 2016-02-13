@@ -22,9 +22,9 @@ public abstract class WarpBaseManager<T extends WarpBase> {
         this.names = new ArrayList<String>();
     }
 
-    public Optional<T> getOne(String name) {
+    public Optional<T> getOne(String id) {
         for (T warpBase : this.payload) {
-            if (warpBase.getName().equalsIgnoreCase(name)) {
+            if (warpBase.getId().equalsIgnoreCase(id)) {
                 return Optional.of(warpBase);
             }
         }

@@ -54,12 +54,12 @@ public class DisplaceEntityEventHandler {
         }
 
         WarpRegion region = warpRegions.get(0);
-        Optional<Warp> linkedWarpOpt = this.plugin.getWarpManager().getOne(region.getLinkedWarpName());
+        Optional<Warp> linkedWarpOpt = this.plugin.getWarpManager().getOne(region.getLinkedWarpId());
 
         if (!linkedWarpOpt.isPresent()) {
             this.plugin.getLogger().warn(
                     "Player " + player.getName() + " attempted to use warp region " + region.getName() + ", but the linked warp "
-                            + region.getLinkedWarpName() + " was not found!");
+                            + region.getLinkedWarpId() + " was not found!");
 
             return;
         }

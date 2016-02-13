@@ -17,6 +17,11 @@ public class Constants {
 
     public static final List<String> FORBIDDEN_NAMES = Arrays.asList("set", "add", "create", "delete", "del", "list", "ls", "info",
             "region", "sign");
+    
+    public static final String WARP_CREATION_LIMIT_OPTION = "warpCreationLimit";
+    public static final Text CANT_PARSE_WARP_CREATION_LIMIT_OPTION_MSG = Text.of(TextColors.RED, PREFIX + " Failed to parse the "
+            + WARP_CREATION_LIMIT_OPTION + " option. Please notify an administrator");
+    
     public static final Text CANNOT_USE_FORBIDDEN_NAME_MSG = Text.of(TextColors.RED, PREFIX, " You cannot use that name!");
 
     public static final Text SUCCESS_CREATE_WARP_MSG = Text.of(TextColors.GREEN, PREFIX + " You have successfully created a warp: ");

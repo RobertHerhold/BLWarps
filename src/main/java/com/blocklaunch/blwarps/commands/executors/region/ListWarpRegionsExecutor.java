@@ -47,7 +47,7 @@ public class ListWarpRegionsExecutor implements CommandExecutor {
         List<Text> warpRegionNames = new ArrayList<Text>();
 
         for (WarpRegion region : this.plugin.getWarpRegionManager().getPayload()) {
-            Optional<Warp> linkedWarpOpt = this.plugin.getWarpManager().getOne(region.getLinkedWarpName());
+            Optional<Warp> linkedWarpOpt = this.plugin.getWarpManager().getOne(region.getLinkedWarpId());
             if (linkedWarpOpt.isPresent()) {
                 if (Util.hasPermission(source, linkedWarpOpt.get()) == false) {
                     continue;

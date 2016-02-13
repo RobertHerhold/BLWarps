@@ -5,6 +5,7 @@ import static com.blocklaunch.blwarps.data.WarpDataQueries.WORLD;
 import static com.blocklaunch.blwarps.data.WarpDataQueries.X;
 import static com.blocklaunch.blwarps.data.WarpDataQueries.Y;
 import static com.blocklaunch.blwarps.data.WarpDataQueries.Z;
+import static com.blocklaunch.blwarps.data.WarpDataQueries.OWNER;
 
 import com.blocklaunch.blwarps.Warp;
 import com.flowpowered.math.vector.Vector3d;
@@ -18,8 +19,8 @@ public class WarpBuilder implements DataBuilder<Warp> {
 
     @Override
     public Optional<Warp> build(DataView container) throws InvalidDataException {
-        if (container.contains(NAME, WORLD, X, Y, Z)) {
-            Warp warp = new Warp(
+        if (container.contains(NAME, WORLD, X, Y, Z, OWNER)) {
+            Warp warp = new Warp(container.getString(OWNER).get(),
                     container.getString(NAME).get(),
                     container.getString(WORLD).get(),
                     new Vector3d(

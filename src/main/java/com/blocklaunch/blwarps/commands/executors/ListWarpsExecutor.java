@@ -36,18 +36,17 @@ public class ListWarpsExecutor implements CommandExecutor {
      */
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
-
-        if (this.plugin.getWarpManager().getPayload().isEmpty()) {
-            source.sendMessage(Constants.NO_WARPS_MSG);
-            return CommandResult.success();
-        }
-
         List<Text> warpNames = new ArrayList<Text>();
 
         for (Warp w : this.plugin.getWarpManager().getPayload()) {
             if (Util.hasPermission(source, w)) {
                 warpNames.add(Text.of(Util.warpText(w), TextColors.WHITE, " - ", Util.deleteWarpText(w)));
             }
+        }
+
+        if (warpNames.isEmpty()) {
+            source.sendMessage(Constants.NO_WARPS_MSG);
+            return CommandResult.success();
         }
 
         PaginationService paginationService = Sponge.getServiceManager().provide(PaginationService.class).get();

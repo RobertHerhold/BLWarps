@@ -6,7 +6,7 @@ import com.flowpowered.math.vector.Vector3d;
 
 public class WarpRegion extends WarpBase {
 
-    private String linkedWarpName;
+    private String linkedWarpId;
     private double loc1x;
     private double loc1y;
     private double loc1z;
@@ -22,9 +22,9 @@ public class WarpRegion extends WarpBase {
 
     }
 
-    public WarpRegion(String linkedWarpName, String name, String world, Vector3d loc1, Vector3d loc2) {
-        super(name, world);
-        this.linkedWarpName = linkedWarpName;
+    public WarpRegion(String owner, String name, String linkedWarpId, String world, Vector3d loc1, Vector3d loc2) {
+        super(owner, name, world);
+        this.linkedWarpId = linkedWarpId;
         this.minLoc = new Vector3d(Math.min(loc1.getX(), loc2.getX()), Math.min(loc1.getY(), loc2.getY()), Math.min(loc1.getZ(), loc2.getZ()));
         this.maxLoc = new Vector3d(Math.max(loc1.getX(), loc2.getX()), Math.max(loc1.getY(), loc2.getY()), Math.max(loc1.getZ(), loc2.getZ()));
 
@@ -55,12 +55,12 @@ public class WarpRegion extends WarpBase {
 
     }
 
-    public String getLinkedWarpName() {
-        return this.linkedWarpName;
+    public String getLinkedWarpId() {
+        return this.linkedWarpId;
     }
 
-    public void setLinkedWarpName(String linkedWarp) {
-        this.linkedWarpName = linkedWarp;
+    public void setLinkedWarpId(String linkedWarp) {
+        this.linkedWarpId = linkedWarp;
     }
 
     public double getLoc1x() {

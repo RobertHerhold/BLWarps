@@ -15,7 +15,7 @@ public class WarpRegionMapper implements ResultSetMapper<WarpRegion> {
         Vector3d loc1 = new Vector3d(r.getInt("loc1x"), r.getInt("loc1y"), r.getInt("loc1z"));
         Vector3d loc2 = new Vector3d(r.getInt("loc2x"), r.getInt("loc2y"), r.getInt("loc2z"));
 
-        WarpRegion region = new WarpRegion(r.getString("linkedWarp"), r.getString("name"), r.getString("world"), loc1, loc2);
+        WarpRegion region = new WarpRegion(r.getString("owner"), r.getString("name"), r.getString("linkedWarp"), r.getString("world"), loc1, loc2);
 
         return region;
     }

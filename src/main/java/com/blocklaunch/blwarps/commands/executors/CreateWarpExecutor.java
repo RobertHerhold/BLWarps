@@ -11,9 +11,12 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.service.permission.Subject;
+import org.spongepowered.api.service.permission.option.OptionSubject;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CreateWarpExecutor implements CommandExecutor {
@@ -26,6 +29,7 @@ public class CreateWarpExecutor implements CommandExecutor {
 
     @Override
     public CommandResult execute(CommandSource source, CommandContext args) throws CommandException {
+
         if (!(source instanceof Player)) {
             source.sendMessage(Constants.MUST_BE_PLAYER_MSG);
             return CommandResult.empty();
@@ -41,11 +45,49 @@ public class CreateWarpExecutor implements CommandExecutor {
             return CommandResult.empty();
         }
 
+        // Is a global warp accesible to everyone w/ permission or a private
+        // warp
+        boolean isGlobal = (boolean) args.getOne("g").orElse(false);
+
+        String owner = "";
+
+        if (isGlobal) {
+            owner = "global";
+        } else {
+            int warpsAllowed = 0;
+
+            Subject subject = source.getContainingCollection().get(source.getIdentifier());
+            if (subject instanceof OptionSubject) {
+                Optional<String> warpLimitOption = ((OptionSubject) subject).getOption(Constants.WARP_CREATION_LIMIT_OPTION);
+                if (warpLimitOption.isPresent()) {
+                    // Try to parse the option to an integer, warn the player if
+                    // it
+                    // fails
+                    try {
+                        warpsAllowed = Integer.valueOf(warpLimitOption.get());
+                    } catch (NumberFormatException e) {
+                        player.sendMessage(Constants.CANT_PARSE_WARP_CREATION_LIMIT_OPTION_MSG);
+                        return CommandResult.empty();
+                    }
+                }
+            }
+
+            // Check if the player is within his/her limit
+            List<Warp> playerPrivateWarps = plugin.getWarpManager().getWarpsOwnedBy(player);
+            if (playerPrivateWarps.size() >= warpsAllowed) {
+                player.sendMessage(Text.of(TextColors.RED, Constants.PREFIX + " You cannot create anymore warps! You currently have ",
+                        TextColors.GOLD, playerPrivateWarps.size(), TextColors.RED, " and your limit is ", TextColors.GOLD, warpsAllowed,
+                        TextColors.RED, "!"));
+                return CommandResult.empty();
+            }
+            owner = player.getUniqueId().toString();
+        }
+
         Vector3d position = (Vector3d) args.getOne("position").orElse(player.getLocation().getPosition());
 
         String worldName = player.getWorld().getName();
 
-        Warp newWarp = new Warp(warpName, worldName, position);
+        Warp newWarp = new Warp(owner, warpName, worldName, position);
 
         Optional<String> error = this.plugin.getWarpManager().addNew(newWarp);
         if (error.isPresent()) {
@@ -56,5 +98,4 @@ public class CreateWarpExecutor implements CommandExecutor {
             return CommandResult.success();
         }
     }
-
 }

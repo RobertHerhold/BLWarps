@@ -12,7 +12,9 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -44,12 +46,9 @@ public class WarpManager extends WarpBaseManager<Warp> {
     public Optional<String> addNew(Warp newWarp) {
 
         for (Warp warp : this.payload) {
-            if (warp.getName().equalsIgnoreCase(newWarp.getName())) {
+            if (warp.getId().equalsIgnoreCase(newWarp.getId())) {
                 // A warp with that name already exists
                 return Optional.of(Constants.WARP_NAME_EXISTS);
-            }
-            if (warp.locationIsSame(newWarp)) {
-                return Optional.of(Constants.WARP_LOCATION_EXISTS);
             }
         }
         Set<ConstraintViolation<Warp>> violations = this.validator.validate(newWarp);
@@ -114,6 +113,16 @@ public class WarpManager extends WarpBaseManager<Warp> {
         Task task = this.warpsInProgress.get(player);
         Warp destination = ((WarpPlayerConsumer) task.getConsumer()).getWarp();
         return Optional.of(destination);
+    }
+
+    public List<Warp> getWarpsOwnedBy(Player player) {
+        List<Warp> warps = new ArrayList<Warp>();
+        for (Warp w : this.payload) {
+            if (w.getOwner().equalsIgnoreCase(player.getUniqueId().toString())) {
+                warps.add(w);
+            }
+        }
+        return warps;
     }
 
     /**

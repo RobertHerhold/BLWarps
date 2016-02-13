@@ -29,8 +29,8 @@ public class Warp extends WarpBase implements DataSerializable {
 
     }
 
-    public Warp(String name, String world, Vector3d position) {
-        super(name, world);
+    public Warp(String owner, String name, String world, Vector3d position) {
+        super(owner, name, world);
         this.position = position;
 
         this.x = formatDouble(position.getX());

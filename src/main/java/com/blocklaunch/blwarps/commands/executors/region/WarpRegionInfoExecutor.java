@@ -36,22 +36,23 @@ public class WarpRegionInfoExecutor implements CommandExecutor {
 
         WarpRegion region = optRegion.get();
 
-        Optional<Warp> linkedWarpOpt = this.plugin.getWarpManager().getOne(region.getLinkedWarpName());
-        Text warpName = Text.of(region.getLinkedWarpName());
+        Optional<Warp> linkedWarpOpt = this.plugin.getWarpManager().getOne(region.getLinkedWarpId());
+        Text warpId = Text.of(region.getLinkedWarpId());
         if (linkedWarpOpt.isPresent()) {
             if (Util.hasPermission(source, linkedWarpOpt.get()) == false) {
                 source.sendMessage(Constants.NO_PERMISSION_MSG);
                 return CommandResult.empty();
             }
-            warpName = Util.warpText(linkedWarpOpt.get());
+            warpId = Util.warpText(linkedWarpOpt.get());
         }
 
         List<Text> regionInfo = Lists.newArrayList();
 
-        regionInfo.add(Text.of(TextColors.BLUE, "---------------", region.getName(), "---------------"));
+        regionInfo.add(Text.of(TextColors.BLUE, "---------------", region.getId(), "---------------"));
+        regionInfo.add(Text.of(TextColors.BLUE, "ID: ", TextColors.WHITE, region.getId()));
         regionInfo.add(Text.of(TextColors.BLUE, "Name: ", TextColors.WHITE, region.getName()));
         regionInfo.add(Text.of(TextColors.BLUE, "World: ", TextColors.WHITE, region.getWorld()));
-        regionInfo.add(Text.of(TextColors.BLUE, "Linked Warp: ", warpName));
+        regionInfo.add(Text.of(TextColors.BLUE, "Linked Warp: ", TextColors.GOLD, warpId));
         regionInfo.add(Text.of(TextColors.BLUE, "Bounds: ", TextColors.WHITE, region.getMinLoc(), TextColors.BLUE, " to ", TextColors.WHITE,
                 region.getMaxLoc()));
 

@@ -1,20 +1,19 @@
 package com.blocklaunch.blwarps.commands;
 
-import com.blocklaunch.blwarps.commands.elements.WarpSubCommandElement;
-
 import com.blocklaunch.blwarps.BLWarps;
-import com.blocklaunch.blwarps.commands.elements.WarpCommandElement;
-import com.blocklaunch.blwarps.commands.elements.WarpRegionCommandElement;
+import com.blocklaunch.blwarps.Warp;
+import com.blocklaunch.blwarps.commands.elements.WarpBaseCommandElement;
+import com.blocklaunch.blwarps.commands.elements.WarpSubCommandElement;
 import com.blocklaunch.blwarps.commands.executors.CreateWarpExecutor;
-import com.blocklaunch.blwarps.commands.executors.DeleteWarpExecutor;
+import com.blocklaunch.blwarps.commands.executors.DeleteWarpBaseExecutor;
 import com.blocklaunch.blwarps.commands.executors.ListWarpsExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpInfoExecutor;
 import com.blocklaunch.blwarps.commands.executors.WarpSignExecutor;
 import com.blocklaunch.blwarps.commands.executors.region.CreateWarpRegionExecutor;
-import com.blocklaunch.blwarps.commands.executors.region.DeleteWarpRegionExecutor;
 import com.blocklaunch.blwarps.commands.executors.region.ListWarpRegionsExecutor;
 import com.blocklaunch.blwarps.commands.executors.region.WarpRegionInfoExecutor;
+import com.blocklaunch.blwarps.region.WarpRegion;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
@@ -48,14 +47,15 @@ public class WarpCommandGenerator {
                         .extendedDescription(Text.of("Teleports you to the location of the specified warp."))
                         .executor(new WarpExecutor(this.plugin))
                         .arguments(
-                                GenericArguments.firstParsing(new WarpSubCommandElement(subCommands, Text.of("subcommand")), new WarpCommandElement(
-                                        this.plugin, Text.of("warp")))).children(subCommands)
+                                GenericArguments.firstParsing(new WarpSubCommandElement(subCommands, Text.of("subcommand")),
+                                        new WarpBaseCommandElement<Warp>(Warp.class,
+                                                this.plugin, Text.of("warp")))).children(subCommands)
                         .build();
         return mainWarpCommand;
     }
 
     /**
-     * Command: "/warp set <warp name> [x] [y] [z]"
+     * Command: "/warp set [-g] <warp name> [x] [y] [z]"
      *
      * @return
      */
@@ -67,8 +67,9 @@ public class WarpCommandGenerator {
                 .extendedDescription(Text.of("Sets a warp at your location, or at the specified coordinates"))
                 .executor(new CreateWarpExecutor(this.plugin))
                 .arguments(
-                        GenericArguments.seq(GenericArguments.string(Text.of("name")),
-                                GenericArguments.optional(GenericArguments.vector3d(Text.of("position"))))).build();
+                        GenericArguments.flags().permissionFlag("blwarps.warp.create-global", "g")
+                                .buildWith(GenericArguments.string(Text.of("name"))),
+                        GenericArguments.optional(GenericArguments.vector3d(Text.of("position")))).build();
     }
 
     /**
@@ -77,9 +78,10 @@ public class WarpCommandGenerator {
      * @return
      */
     private CommandSpec deleteWarpSubCommand() {
-        return CommandSpec.builder().permission("blwarps.delete").description(Text.of("Delete a warp"))
-                .extendedDescription(Text.of("Deletes the warp with the specified name")).executor(new DeleteWarpExecutor(this.plugin))
-                .arguments(new WarpCommandElement(this.plugin, Text.of("warp"))).build();
+        return CommandSpec.builder().description(Text.of("Delete a warp"))
+                .extendedDescription(Text.of("Deletes the warp with the specified ID"))
+                .executor(new DeleteWarpBaseExecutor<Warp>(Warp.class, this.plugin))
+                .arguments(new WarpBaseCommandElement<Warp>(Warp.class, this.plugin, Text.of("warp"))).build();
     }
 
     /**
@@ -88,7 +90,7 @@ public class WarpCommandGenerator {
      * @return
      */
     private CommandSpec listWarpSubCommand() {
-        return CommandSpec.builder().permission("blwarps.list").description(Text.of("List warps"))
+        return CommandSpec.builder().description(Text.of("List warps"))
                 .extendedDescription(Text.of("Lists all warps, split up into pages.")).executor(new ListWarpsExecutor(this.plugin))
                 .arguments(GenericArguments.optional(GenericArguments.integer(Text.of("page")))).build();
     }
@@ -99,8 +101,8 @@ public class WarpCommandGenerator {
      * @return
      */
     private CommandSpec warpInfoSubCommand() {
-        return CommandSpec.builder().permission("blwarps.info").description(Text.of("Display information about a warp"))
-                .executor(new WarpInfoExecutor()).arguments(new WarpCommandElement(this.plugin, Text.of("warp"))).build();
+        return CommandSpec.builder().description(Text.of("Display information about a warp"))
+                .executor(new WarpInfoExecutor()).arguments(new WarpBaseCommandElement<Warp>(Warp.class, this.plugin, Text.of("warp"))).build();
     }
 
     /**
@@ -116,7 +118,7 @@ public class WarpCommandGenerator {
         regionSubCommands.put(Arrays.asList("list", "ls"), listWarpRegionSubCommand());
         regionSubCommands.put(Arrays.asList("info"), warpRegionInfoSubCommand());
 
-        return CommandSpec.builder().permission("blwarps.region").description(Text.of("Manage warp regions"))
+        return CommandSpec.builder().description(Text.of("Manage warp regions"))
                 .extendedDescription(Text.of("Manage regions in which a player will be warped upon entering")).children(regionSubCommands).build();
 
     }
@@ -132,7 +134,9 @@ public class WarpCommandGenerator {
                 .permission("blwarps.region.create")
                 .description(Text.of("Display information about a warp region"))
                 .executor(new CreateWarpRegionExecutor(this.plugin))
-                .arguments(GenericArguments.string(Text.of("name")), new WarpCommandElement(this.plugin, Text.of("warp")),
+                .arguments(GenericArguments.flags().permissionFlag("blwarps.warp.create-global", "g")
+                        .buildWith(GenericArguments.string(Text.of("name"))),
+                        new WarpBaseCommandElement<Warp>(Warp.class, this.plugin, Text.of("warp")),
                         GenericArguments.vector3d(Text.of("corner1")), GenericArguments.vector3d(Text.of("corner2"))).build();
     }
 
@@ -142,8 +146,13 @@ public class WarpCommandGenerator {
      * @return
      */
     private CommandSpec deleteWarpRegionSubCommand() {
-        return CommandSpec.builder().permission("blwarps.region.delete").description(Text.of("Delete a warp region"))
-                .executor(new DeleteWarpRegionExecutor(this.plugin)).arguments(new WarpRegionCommandElement(Text.of("region"), this.plugin)).build();
+        return CommandSpec
+                .builder()
+                .description(Text.of("Delete a warp region"))
+                .executor(new DeleteWarpBaseExecutor<WarpRegion>(WarpRegion.class, this.plugin))
+                .arguments(
+                        new WarpBaseCommandElement<WarpRegion>(WarpRegion.class, this.plugin, Text.of(WarpRegion.class.getSimpleName().toLowerCase())))
+                .build();
     }
 
     /**
@@ -152,7 +161,7 @@ public class WarpCommandGenerator {
      * @return
      */
     private CommandSpec listWarpRegionSubCommand() {
-        return CommandSpec.builder().permission("blwarps.region.list").description(Text.of("List warp regions"))
+        return CommandSpec.builder().description(Text.of("List warp regions"))
                 .extendedDescription(Text.of("Lists all warp regions, split up into pages.")).executor(new ListWarpRegionsExecutor(this.plugin))
                 .build();
     }
@@ -163,9 +172,10 @@ public class WarpCommandGenerator {
      * @return
      */
     private CommandSpec warpRegionInfoSubCommand() {
-        return CommandSpec.builder().permission("blwarps.region.info").description(Text.of("Create a warp region"))
+        return CommandSpec.builder().description(Text.of("Create a warp region"))
                 .extendedDescription(Text.of("Create a region in which a player will be warped upon entering"))
-                .executor(new WarpRegionInfoExecutor(this.plugin)).arguments(new WarpRegionCommandElement(Text.of("region"), this.plugin)).build();
+                .executor(new WarpRegionInfoExecutor(this.plugin))
+                .arguments(new WarpBaseCommandElement<WarpRegion>(WarpRegion.class, this.plugin, Text.of("region"))).build();
     }
 
     /**
@@ -176,7 +186,7 @@ public class WarpCommandGenerator {
     private CommandSpec warpSignSubCommand() {
         return CommandSpec.builder().permission("blwarps.sign").description(Text.of("Create warp signs"))
                 .executor(new WarpSignExecutor())
-                .arguments(new WarpCommandElement(this.plugin, Text.of("warp"))).build();
+                .arguments(new WarpBaseCommandElement<Warp>(Warp.class, this.plugin, Text.of("warp"))).build();
     }
 
 }

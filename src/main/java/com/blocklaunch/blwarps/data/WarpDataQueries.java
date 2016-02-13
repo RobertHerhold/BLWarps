@@ -11,5 +11,6 @@ public class WarpDataQueries {
     public static final DataQuery X = of("x");
     public static final DataQuery Y = of("y");
     public static final DataQuery Z = of("z");
+    public static final DataQuery OWNER = of("owner");
 
 }

@@ -194,6 +194,10 @@ public class BLWarps {
         return (WarpRegionManager) this.warpBaseManagers.get(WarpRegion.class);
     }
 
+    public Map<Class<? extends WarpBase>, WarpBaseManager<? extends WarpBase>> getWarpBaseManagers() {
+        return warpBaseManagers;
+    }
+
     public BLWarpsConfiguration getConfig() {
         return this.config;
     }
