@@ -1,5 +1,7 @@
 package com.blocklaunch.blwarps.eventhandlers;
 
+import org.spongepowered.api.event.filter.cause.First;
+
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.data.WarpKeys;
 import org.spongepowered.api.Sponge;
@@ -21,7 +23,7 @@ public class InteractBlockEventHandler {
     @Listener
     // InteractBlockEvent.Secondary = right click
             public
-            void handle(InteractBlockEvent.Secondary event) throws Exception {
+            void handle(InteractBlockEvent.Secondary event, @First Player player) throws Exception {
         if (!event.getTargetBlock().getLocation().isPresent()) {
             return;
         }
@@ -48,13 +50,7 @@ public class InteractBlockEventHandler {
 
         String command = "warp " + optWarp.get().getName();
 
-        Optional<Player> player = event.getCause().first(Player.class);
-
-        if (!player.isPresent()) {
-            return;
-        }
-
-        Sponge.getCommandManager().process(player.get(), command);
+        Sponge.getCommandManager().process(player, command);
     }
 
 }
