@@ -40,7 +40,7 @@ public class ListWarpsExecutor implements CommandExecutor {
 
         for (Warp w : this.plugin.getWarpManager().getPayload()) {
             if (Util.hasPermission(source, w)) {
-                warpNames.add(Text.of(Util.warpText(w), TextColors.WHITE," - ", Util.warpInfoText(w), " - ", Util.deleteWarpText(w)));
+                warpNames.add(Text.of(Util.warpText(w), TextColors.WHITE, " - ", Util.warpInfoText(w), " - ", Util.deleteWarpText(w)));
             }
         }
 
@@ -50,7 +50,7 @@ public class ListWarpsExecutor implements CommandExecutor {
         }
 
         PaginationService paginationService = Sponge.getServiceManager().provide(PaginationService.class).get();
-        paginationService.builder().contents(warpNames).title(Text.of(TextColors.BLUE, "Warps")).paddingString("-").sendTo(source);
+        paginationService.builder().contents(warpNames).title(Text.of(TextColors.BLUE, "Warps")).padding(Text.of("-")).sendTo(source);
 
         return CommandResult.success();
     }

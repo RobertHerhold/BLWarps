@@ -58,7 +58,7 @@ public class ListWarpRegionsExecutor implements CommandExecutor {
         }
 
         PaginationService paginationService = Sponge.getServiceManager().provide(PaginationService.class).get();
-        paginationService.builder().contents(warpRegionNames).title(Text.of(TextColors.BLUE, "WarpRegions")).paddingString("-").sendTo(source);
+        paginationService.builder().contents(warpRegionNames).title(Text.of(TextColors.BLUE, "WarpRegions")).padding(Text.of("-")).sendTo(source);
 
         return CommandResult.success();
     }

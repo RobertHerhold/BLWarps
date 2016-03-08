@@ -1,11 +1,5 @@
 package com.blocklaunch.blwarps.commands;
 
-import com.blocklaunch.blwarps.commands.executors.warp.CreateWarpExecutor;
-import com.blocklaunch.blwarps.commands.executors.warp.ListWarpsExecutor;
-import com.blocklaunch.blwarps.commands.executors.warp.WarpExecutor;
-import com.blocklaunch.blwarps.commands.executors.warp.WarpInfoExecutor;
-import com.blocklaunch.blwarps.commands.executors.warp.WarpSignExecutor;
-
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Warp;
 import com.blocklaunch.blwarps.commands.elements.WarpBaseCommandElement;
@@ -14,7 +8,13 @@ import com.blocklaunch.blwarps.commands.executors.DeleteWarpBaseExecutor;
 import com.blocklaunch.blwarps.commands.executors.region.CreateWarpRegionExecutor;
 import com.blocklaunch.blwarps.commands.executors.region.ListWarpRegionsExecutor;
 import com.blocklaunch.blwarps.commands.executors.region.WarpRegionInfoExecutor;
+import com.blocklaunch.blwarps.commands.executors.warp.CreateWarpExecutor;
+import com.blocklaunch.blwarps.commands.executors.warp.ListWarpsExecutor;
+import com.blocklaunch.blwarps.commands.executors.warp.WarpExecutor;
+import com.blocklaunch.blwarps.commands.executors.warp.WarpInfoExecutor;
+import com.blocklaunch.blwarps.commands.executors.warp.WarpSignExecutor;
 import com.blocklaunch.blwarps.region.WarpRegion;
+import org.spongepowered.api.command.args.CommandFlags;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
@@ -135,8 +135,10 @@ public class WarpCommandGenerator {
                 .permission("blwarps.region.create")
                 .description(Text.of("Display information about a warp region"))
                 .executor(new CreateWarpRegionExecutor(this.plugin))
-                .arguments(GenericArguments.flags().permissionFlag("blwarps.warp.create-global", "g")
-                        .buildWith(GenericArguments.string(Text.of("name"))),
+                .arguments(
+                        GenericArguments.flags().permissionFlag("blwarps.warp.create-global", "g")
+                                .setUnknownShortFlagBehavior(CommandFlags.UnknownFlagBehavior.IGNORE)
+                                .buildWith(GenericArguments.string(Text.of("name"))),
                         new WarpBaseCommandElement<Warp>(Warp.class, this.plugin, Text.of("warp")),
                         GenericArguments.vector3d(Text.of("corner1")), GenericArguments.vector3d(Text.of("corner2"))).build();
     }
